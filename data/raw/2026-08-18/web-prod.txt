@@ -1,0 +1,102 @@
+Channel: #qa-web-automation-prod (C083HQRCGR3)
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 15:52:33 +07 === 
+Message TS: 1787043153.636879
+:white_check_mark:WEB E2E Smoke Test [Brave]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32114985892/job/95645153169|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32114985892/artifacts/9317638434|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 13:37:43 +07 === 
+Message TS: 1787035063.894659
+:white_check_mark:WEB E2E Smoke Test [Chrome]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32105688003/job/95614537085|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32105688003/artifacts/9313737986|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 08:58:03 +07 === 
+Message TS: 1787018283.014579
+:white_check_mark:WEB E2E Smoke Test [Chrome]
+:large_green_circle: *Passed:* 5
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32089872955/job/95569821441|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32089872955/artifacts/9308030643|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 07:40:33 +07 === 
+Message TS: 1787013633.247159
+:white_check_mark:WEB E2E Smoke Test [Chrome]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32083552183/job/95551219523|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32083552183/artifacts/9306523907|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 06:56:10 +07 === 
+Message TS: 1787010970.558809
+:white_check_mark:WEB E2E Smoke Test [Brave]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32078947069/job/95537912903|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32078947069/artifacts/9305555060|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 05:50:43 +07 === 
+Message TS: 1787007043.789519
+:x:WEB E2E Smoke Test [Firefox]
+:large_green_circle: *Passed:* 18
+:red_circle: *Failed:* 2
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32074382983/job/95524293289|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32074382983/artifacts/9304049900|Test Report>
+<!subteam^S097FQJG11P> *Production tests are failing, please help to take a look ASAP*
+✘ Verify the navigation header renders correctly across all supported locales
+✘ Verify the navigation header stays identical across repeated reloads
+Thread: 2 replies (latest: 2026-08-18 08:51:38 +07)
+Reactions: eyes (1)
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 04:42:18 +07 === 
+Message TS: 1787002938.235559
+:white_check_mark:WEB E2E Smoke Test [Chrome]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32069401260/job/95508934541|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32069401260/artifacts/9302208510|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 04:13:47 +07 === 
+Message TS: 1787001227.567999
+:white_check_mark:WEB E2E Smoke Test [Brave]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32063992665/job/95491571383|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32063992665/artifacts/9301348253|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 03:44:51 +07 === 
+Message TS: 1786999491.247299
+:white_check_mark:WEB E2E Smoke Test [Chrome]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32053456841/job/95458131315|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32053456841/artifacts/9300423619|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-18 00:40:14 +07 === 
+Message TS: 1786988414.068499
+:white_check_mark:WEB E2E Smoke Test [Brave]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32048943564/job/95443388399|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32048943564/artifacts/9294797041|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-17 22:39:44 +07 === 
+Message TS: 1786981184.280459
+:white_check_mark:WEB E2E Smoke Test [Chrome]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32041326352/job/95421051082|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32041326352/artifacts/9292282207|Test Report>
+
+=== Message from qa-ui-bot-prod (B083SHPG3V1) at 2026-08-17 19:37:43 +07 === 
+Message TS: 1786970263.962479
+:white_check_mark:WEB E2E Smoke Test [Chrome]
+:large_green_circle: *Passed:* 20
+:red_circle: *Failed:* 0
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32028264196/job/95382251200|Actions Job>
+<https://github.com/gravity-technologies/qa-automation/actions/runs/32028264196/artifacts/9288789451|Test Report>

@@ -1,0 +1,113 @@
+{
+  "fetchedAt": "2026-08-18T16:15:00+07:00",
+  "issues": [
+    {
+      "key": "QE-935",
+      "summary": "[QA] Web & Mobile Test Stability — Keep SMOKE test flakiness <3% over 10 pipeline runs across PROD/TESTNET/STAGING",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-08-18",
+      "daysSinceCreated": 0,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-948",
+      "summary": "[QA] iOS Automation Coverage Parity with Android — Restore iOS pipeline and bring critical flows to Android-equivalent coverage",
+      "status": "To Do",
+      "duedate": "2026-09-15",
+      "created": "2026-08-18",
+      "daysSinceCreated": 0,
+      "priority": "High"
+    },
+    {
+      "key": "QE-949",
+      "summary": "[QA] Onboard WEB + MOBILE bug scenarios into automation — Convert high-severity and prod-leak bugs into automated regression tests",
+      "status": "To Do",
+      "duedate": "2026-09-15",
+      "created": "2026-08-18",
+      "daysSinceCreated": 0,
+      "priority": "High"
+    },
+    {
+      "key": "QE-964",
+      "summary": "[QA] Automation enhancements for WEB and MOBILE",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-08-18",
+      "daysSinceCreated": 0,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-965",
+      "summary": "[QA] Automation Test Monitoring and Communication Improvement",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-08-18",
+      "daysSinceCreated": 0,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-966",
+      "summary": "[QA] Trading module for WEB + MOBILE bug scenarios into automation",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-08-18",
+      "daysSinceCreated": 0,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-969",
+      "summary": "[Automation] Reduce browser runs for Trade-Indicators validation across all instruments",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-08-18",
+      "daysSinceCreated": 0,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-829",
+      "summary": "[AUTO - PWA] Implement automation for TP/SL trigger validation",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-07-28",
+      "daysSinceCreated": 21,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-828",
+      "summary": "[AUTO - PWA] Implement automation for split TP/SL",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-07-28",
+      "daysSinceCreated": 21,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-827",
+      "summary": "[AUTO - PWA] Implement automation for export history",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-07-28",
+      "daysSinceCreated": 21,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-826",
+      "summary": "[AUTO - PWA] Implement automation for CEV Ungated",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-07-28",
+      "daysSinceCreated": 21,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-812",
+      "summary": "[Automation] Capture network response logs during smoke test execution",
+      "status": "To Do",
+      "duedate": null,
+      "created": "2026-07-24",
+      "daysSinceCreated": 25,
+      "priority": "Medium"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "qa-daily-triage",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Block 1 (morning triage) + Block 2 (standup) automation for the QA daily checklist",
+  "bin": {
+    "ingest": "bin/ingest.js",
+    "report": "bin/report.js",
+    "classify": "bin/classify.js",
+    "index-tests": "bin/index-tests.js"
+  }
+}

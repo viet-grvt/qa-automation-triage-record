@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-18T09:16:26.174Z",
+  "generatedAt": "2026-08-19T01:20:36.212Z",
   "repo": "c:/Gravity/qa-automation",
   "counts": {
-    "web": 1073,
+    "web": 1086,
     "mobile": 129
   },
   "entries": [
@@ -1155,6 +1155,110 @@
       "norm": "verify max fills the full wallet balance",
       "file": "ui_tests/tests/deposit/deposit.spec.ts",
       "line": 179,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Log in with MetaMask",
+      "norm": "log in with metamask",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 24,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Open the Deposit page",
+      "norm": "open the deposit page",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 34,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify ETH cannot be selected for an external transfer",
+      "norm": "verify eth cannot be selected for an external transfer",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 40,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Open the external transfer form",
+      "norm": "open the external transfer form",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 45,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Read the assets offered for an external transfer",
+      "norm": "read the assets offered for an external transfer",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 50,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify GRVT cannot be selected for an external transfer",
+      "norm": "verify grvt cannot be selected for an external transfer",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 58,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Mint GRVT to the Funding Account",
+      "norm": "mint grvt to the funding account",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 63,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Open the external transfer form",
+      "norm": "open the external transfer form",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 67,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Read the assets offered for an external transfer",
+      "norm": "read the assets offered for an external transfer",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 72,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify USDT can still be transferred externally",
+      "norm": "verify usdt can still be transferred externally",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 80,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Send 1 USDT externally",
+      "norm": "send 1 usdt externally",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 85,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify GRVT can still be transferred internally",
+      "norm": "verify grvt can still be transferred internally",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 97,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Move 1 GRVT from the Funding account to TradingAccount1",
+      "norm": "move 1 grvt from the funding account to tradingaccount1",
+      "file": "ui_tests/tests/deposit/externalTransferBlockedAssets.spec.ts",
+      "line": 102,
       "suite": "web",
       "kind": "test"
     },

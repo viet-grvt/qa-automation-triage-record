@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "browserstack": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@browserstack/mcp-server@latest"],
+      "env": {
+        "BROWSERSTACK_USERNAME": "<your-browserstack-username>",
+        "BROWSERSTACK_ACCESS_KEY": "<your-browserstack-access-key>"
+      }
+    }
+  }
+}

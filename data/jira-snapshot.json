@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-08-18T16:15:00+07:00",
+  "fetchedAt": "2026-08-19T08:05:00+07:00",
   "issues": [
     {
       "key": "QE-935",
@@ -7,7 +7,7 @@
       "status": "To Do",
       "duedate": null,
       "created": "2026-08-18",
-      "daysSinceCreated": 0,
+      "daysSinceCreated": 1,
       "priority": "Medium"
     },
     {
@@ -16,7 +16,7 @@
       "status": "To Do",
       "duedate": "2026-09-15",
       "created": "2026-08-18",
-      "daysSinceCreated": 0,
+      "daysSinceCreated": 1,
       "priority": "High"
     },
     {
@@ -25,17 +25,8 @@
       "status": "To Do",
       "duedate": "2026-09-15",
       "created": "2026-08-18",
-      "daysSinceCreated": 0,
+      "daysSinceCreated": 1,
       "priority": "High"
-    },
-    {
-      "key": "QE-964",
-      "summary": "[QA] Automation enhancements for WEB and MOBILE",
-      "status": "To Do",
-      "duedate": null,
-      "created": "2026-08-18",
-      "daysSinceCreated": 0,
-      "priority": "Medium"
     },
     {
       "key": "QE-965",
@@ -43,7 +34,7 @@
       "status": "To Do",
       "duedate": null,
       "created": "2026-08-18",
-      "daysSinceCreated": 0,
+      "daysSinceCreated": 1,
       "priority": "Medium"
     },
     {
@@ -52,62 +43,80 @@
       "status": "To Do",
       "duedate": null,
       "created": "2026-08-18",
-      "daysSinceCreated": 0,
+      "daysSinceCreated": 1,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-950",
+      "summary": "[Automation] Stabilise navigation header checks on the strategies page and locale switching",
+      "status": "Done",
+      "duedate": null,
+      "created": "2026-08-18",
+      "daysSinceCreated": 1,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-963",
+      "summary": "[Automation] Fix deposit progress on wallet cancellation",
+      "status": "Done",
+      "duedate": null,
+      "created": "2026-08-18",
+      "daysSinceCreated": 1,
       "priority": "Medium"
     },
     {
       "key": "QE-969",
-      "summary": "[Automation] Reduce browser runs for Trade-Indicators validation across all instruments",
+      "summary": "[Automation] Fix trade-indicators hang on numeric tickers and reduce browser runs",
+      "status": "Done",
+      "duedate": null,
+      "created": "2026-08-18",
+      "daysSinceCreated": 1,
+      "priority": "Medium"
+    },
+    {
+      "key": "QE-972",
+      "summary": "[Automation] [WEB + MOBILE] Automate Price Alert price-type matrix — Mark Price must be absent for Spot pairs",
       "status": "To Do",
       "duedate": null,
       "created": "2026-08-18",
-      "daysSinceCreated": 0,
+      "daysSinceCreated": 1,
       "priority": "Medium"
     },
     {
-      "key": "QE-829",
-      "summary": "[AUTO - PWA] Implement automation for TP/SL trigger validation",
+      "key": "QE-973",
+      "summary": "[Automation][MOBILE] Automate order-form price validation — a zero price must not reach the order confirmation sheet",
       "status": "To Do",
       "duedate": null,
-      "created": "2026-07-28",
-      "daysSinceCreated": 21,
+      "created": "2026-08-18",
+      "daysSinceCreated": 1,
       "priority": "Medium"
     },
     {
-      "key": "QE-828",
-      "summary": "[AUTO - PWA] Implement automation for split TP/SL",
+      "key": "QE-974",
+      "summary": "[Automation] [MOBILE] Automate Quick Order insufficient-balance validation on Spot pairs",
       "status": "To Do",
       "duedate": null,
-      "created": "2026-07-28",
-      "daysSinceCreated": 21,
+      "created": "2026-08-18",
+      "daysSinceCreated": 1,
       "priority": "Medium"
     },
     {
-      "key": "QE-827",
-      "summary": "[AUTO - PWA] Implement automation for export history",
+      "key": "QE-975",
+      "summary": "[Automation][WEB + MOBILE] Automate Amount input maximum-value cap parity at 1,000,000,000 USDT",
       "status": "To Do",
       "duedate": null,
-      "created": "2026-07-28",
-      "daysSinceCreated": 21,
+      "created": "2026-08-18",
+      "daysSinceCreated": 1,
       "priority": "Medium"
     },
     {
-      "key": "QE-826",
-      "summary": "[AUTO - PWA] Implement automation for CEV Ungated",
+      "key": "QE-976",
+      "summary": "[Automation] [MOBILE] Automate locale layout assertions for Earn and Trade — text centering and overflow across ja and ru",
       "status": "To Do",
       "duedate": null,
-      "created": "2026-07-28",
-      "daysSinceCreated": 21,
-      "priority": "Medium"
-    },
-    {
-      "key": "QE-812",
-      "summary": "[Automation] Capture network response logs during smoke test execution",
-      "status": "To Do",
-      "duedate": null,
-      "created": "2026-07-24",
-      "daysSinceCreated": 25,
-      "priority": "Medium"
+      "created": "2026-08-18",
+      "daysSinceCreated": 1,
+      "priority": "Low"
     }
   ]
 }

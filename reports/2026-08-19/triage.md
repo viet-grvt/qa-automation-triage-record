@@ -1,0 +1,817 @@
+# TRIAGE RECORD — 19/08/2026
+
+Full record for the day. Block 2 is a summary of this file — it is never written from scratch.
+
+## 1.1 Channel status
+
+| Channel | Latest run | Pass/Total | Fully green? | Report |
+|---|---|---|---|---|
+| WEB-AUTOMATION-PROD | 08-19 07:43 | 20/20 | ✅ | [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32200253097/artifacts/9347943556) |
+| WEB-AUTOMATION-TESTNET | 08-19 06:58 | 45/45 | ✅ | [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191202927/artifacts/9346932741) |
+| WEB-AUTOMATION-STAGING | 08-19 06:25 | 25/43 | ❌ | [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263) |
+| MOBILE-AUTOMATION-TESTNET | 08-19 06:00 | 23/23 | ✅ | [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32190827039/artifacts/9345606222) |
+| — of which iOS | — | never run | ❌ never | — |
+
+**Total failures: 34** → ENV 1 · APP-BUG 0 · SCRIPT 33
+
+**Smoke accuracy: 🔴 BREACHED** — 18 script failure(s) on a smoke suite: _Verify button layout: overflow, overlap, truncation and height stability across all locales_, _Verify encoding, translations, number format and horizontal scroll across all locales_, _Verify navigation layout: overflow, overlap and height stability across all locales_, _Verify Trade-Indicators data for all instruments is rendered as expected_, _Verify user can remove margin from an Isolated position_, _Verify all records under the Recent Trades tab are populated as expected_, _Verify Order-Book data is displayed as expected_, _Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK)_, _Verify MARKET BUY/SELL order can be placed successfully_, _Verify order placement succeeds when quantity is expressed in USDT Notional_, _Verify REDUCE_ONLY type orders can be placed successfully_, _Verify IOC type orders can be placed successfully_, _Verify FOK type orders can be placed successfully_, _Verify POST_ONLY type orders can be placed successfully_, _Verify the top-level navigation header renders on every page_, _Verify MARKET order can be placed using Isolated margin mode_, _Verify LIMIT order can be placed using Isolated margin mode_, _Verify user can add margin to an Isolated position_. This breaks the QE-935 100% accuracy target and has to be called out in Block 2, not buried here.
+
+> ⚠️ **iOS has never run.** QE-948 Phase 1 is not started.
+
+## 1.2 Classification — one row per failing test
+
+### #qa-web-automation-testnet — 16 failures
+
+| # | Test | Suite/Env | Class | Root cause (one sentence) | Action | Ticket | Owner | ETA |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Verify long position: in-profit SL trigger price must be between… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 2 | Verify Trade-Indicators data for all instruments is rendered as… | regression/testnet | SCRIPT | The all-instrument sweep ran 345s and was still going when the regression job hit its time budget; it is the… | Fix | QE-969 | viet | 2026-08-19 |
+| | ↳ _triage incomplete: missing root cause_ | | | | | | | |
+| 3 | Verify all records under the Recent Trades tab are populated as… | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 4 | Verify Order-Book data is displayed as expected | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 5 | Verify trading chart candle-sticks are rendered as expected | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 6 | Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK) | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 7 | Verify editing a TP target trigger price persists after Confirm | regression/testnet | SCRIPT | splitTPSLPage.ts:305 asserts the edited trigger price persisted and gets false — the value read back after… | Fix | — | viet | 2026-08-20 |
+| | ↳ _triage incomplete: missing root cause_ | | | | | | | |
+| 8 | Verify data resets when a row is deleted or the tab is switched | regression/testnet | SCRIPT | splitTPSLPage.ts:305 asserts the edited trigger price persisted and gets false — the value read back after… | Fix | — | viet | 2026-08-20 |
+| | ↳ _triage incomplete: missing root cause_ | | | | | | | |
+| 9 | Verify Position TP/SL size matches the position when a trading login… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 10 | Verify short position: TP trigger price must be less than mark price | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 11 | Verify short position: in-profit SL trigger price must be between… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 12 | Verify Split TP for Short position: trigger price must be less than… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 13 | Verify SL trigger type can be selected at MAX slider on a Short… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 14 | Verify open limit order can be cancelled successfully | regression/testnet | SCRIPT | The Order price field is targeted as //label[div='Order price']/input, which never became visible within 30s,… | Fix | — | viet | 2026-08-20 |
+| 15 | Verify theme toggle, icons, and rendering work on all public pages in… | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 16 | **ENV cluster** — 1 test, one incident (detail in 1.5) | regression/testnet | ENV | approveMetamask aborted: the MetaMask extension window never opened (no chrome-extension page appeared in… | Monitor (ENV) | — | viet | 2026-08-20 |
+
+### #qa-web-automation-staging — 18 failures
+
+| # | Test | Suite/Env | Class | Root cause (one sentence) | Action | Ticket | Owner | ETA |
+|---|---|---|---|---|---|---|---|---|
+| 17 | Verify button layout: overflow, overlap, truncation and height… | smoke/staging | SCRIPT | changeLanguage (commonPage.ts:48) opens the panel via //*[@aria-label='Language'] then looks for the locale… | Fix | — | viet | 2026-08-19 |
+| 18 | Verify encoding, translations, number format and horizontal scroll… | smoke/staging | SCRIPT | changeLanguage (commonPage.ts:48) opens the panel via //*[@aria-label='Language'] then looks for the locale… | Fix | — | viet | 2026-08-19 |
+| 19 | Verify navigation layout: overflow, overlap and height stability… | smoke/staging | SCRIPT | changeLanguage (commonPage.ts:48) opens the panel via //*[@aria-label='Language'] then looks for the locale… | Fix | — | viet | 2026-08-19 |
+| 20 | Verify Trade-Indicators data for all instruments is rendered as… | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | QE-969 | viet | 2026-08-19 |
+| 21 | Verify user can remove margin from an Isolated position | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 22 | Verify all records under the Recent Trades tab are populated as… | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 23 | Verify Order-Book data is displayed as expected | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 24 | Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK) | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 25 | Verify MARKET BUY/SELL order can be placed successfully | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 26 | Verify order placement succeeds when quantity is expressed in USDT… | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 27 | Verify REDUCE_ONLY type orders can be placed successfully | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 28 | Verify IOC type orders can be placed successfully | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 29 | Verify FOK type orders can be placed successfully | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 30 | Verify POST_ONLY type orders can be placed successfully | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 31 | Verify the top-level navigation header renders on every page | smoke/staging | SCRIPT | headerNavPage.ts:405 asserts the prod-shaped item list; staging renders only [Earn APY | Trade | Invest] on… | Fix | — | viet | 2026-08-20 |
+| 32 | Verify MARKET order can be placed using Isolated margin mode | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 33 | Verify LIMIT order can be placed using Isolated margin mode | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+| 34 | Verify user can add margin to an Isolated position | smoke/staging | SCRIPT | instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a… | Fix | — | viet | 2026-08-19 |
+
+_Action is one of: **Fix** · **Quarantine** · **Raise PRO** · **Monitor (ENV)**. A row without an owner and an ETA is not finished triage._
+
+## 1.3 SCRIPT detail
+
+> This is what separates "fixed it" from "understood why it broke". **Prevention is mandatory.**
+
+### #qa-web-automation-testnet
+
+```
+[SCRIPT-01] Verify long position: in-profit SL trigger price must be between entry and mark prices
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 17 Aug
+Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Throw when the column label is not found instead of falling back to header.length — a silent fallback to the wrong column turns a rename into eight mystery timeouts.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-02] Verify Trade-Indicators data for all instruments is rendered as expected
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : ⚠️ not recorded — run /script-rca
+Fix         : ⚠️ not recorded
+Category    : ⚠️ not set
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : ⚠️ MISSING — without this the same class of failure returns
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-03] Verify all records under the Recent Trades tab are populated as expected
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
+Fix         : ⚠️ not recorded
+Category    : other (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Cap the instrument sweep's runtime (or split it into its own job) so one slow test cannot mark the rest of the suite red without running it.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-04] Verify Order-Book data is displayed as expected
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
+Fix         : ⚠️ not recorded
+Category    : other (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Cap the instrument sweep's runtime (or split it into its own job) so one slow test cannot mark the rest of the suite red without running it.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-05] Verify trading chart candle-sticks are rendered as expected
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
+Fix         : ⚠️ not recorded
+Category    : other (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Cap the instrument sweep's runtime (or split it into its own job) so one slow test cannot mark the rest of the suite red without running it.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-06] Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK)
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
+Fix         : ⚠️ not recorded
+Category    : other (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Cap the instrument sweep's runtime (or split it into its own job) so one slow test cannot mark the rest of the suite red without running it.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-07] Verify editing a TP target trigger price persists after Confirm
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : ⚠️ not recorded — run /script-rca
+Fix         : ⚠️ not recorded
+Category    : ⚠️ not set
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : ⚠️ MISSING — without this the same class of failure returns
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-08] Verify data resets when a row is deleted or the tab is switched
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : ⚠️ not recorded — run /script-rca
+Fix         : ⚠️ not recorded
+Category    : ⚠️ not set
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : ⚠️ MISSING — without this the same class of failure returns
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-09] Verify Position TP/SL size matches the position when a trading login is active
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Throw when the column label is not found instead of falling back to header.length — a silent fallback to the wrong column turns a rename into eight mystery timeouts.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-10] Verify short position: TP trigger price must be less than mark price
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Throw when the column label is not found instead of falling back to header.length — a silent fallback to the wrong column turns a rename into eight mystery timeouts.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-11] Verify short position: in-profit SL trigger price must be between mark and entry prices
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Throw when the column label is not found instead of falling back to header.length — a silent fallback to the wrong column turns a rename into eight mystery timeouts.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-12] Verify Split TP for Short position: trigger price must be less than mark price
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Throw when the column label is not found instead of falling back to header.length — a silent fallback to the wrong column turns a rename into eight mystery timeouts.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-13] Verify SL trigger type can be selected at MAX slider on a Short position
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Throw when the column label is not found instead of falling back to header.length — a silent fallback to the wrong column turns a rename into eight mystery timeouts.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-14] Verify open limit order can be cancelled successfully
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : The Order price field is targeted as //label[div='Order price']/input, which never became visible within 30s, so the limit buy was never placed and there was nothing left to cancel.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Target the price input by test id rather than by its visible label text, which changes with locale and copy edits.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-15] Verify theme toggle, icons, and rendering work on all public pages in both themes
+Env/Suite   : TESTNET / regression
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
+Fix         : ⚠️ not recorded
+Category    : other (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Cap the instrument sweep's runtime (or split it into its own job) so one slow test cannot mark the rest of the suite red without running it.
+Owner       : viet    ETA: 2026-08-20
+```
+
+### #qa-web-automation-staging
+
+```
+[SCRIPT-16] Verify button layout: overflow, overlap, truncation and height stability across all locales
+Env/Suite   : STAGING / smoke
+Failures    : 16 consecutive runs since 15 Aug
+Root cause  : changeLanguage (commonPage.ts:48) opens the panel via //*[@aria-label='Language'] then looks for the locale under its following-sibling; on staging the panel never becomes visible, so all 3 attempts time out and the locale sweep never starts.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Target the language control and its panel by test id rather than by aria-label plus sibling position, and assert the panel is open before selecting a locale.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-17] Verify encoding, translations, number format and horizontal scroll across all locales
+Env/Suite   : STAGING / smoke
+Failures    : 2 consecutive runs since 18 Aug
+Root cause  : changeLanguage (commonPage.ts:48) opens the panel via //*[@aria-label='Language'] then looks for the locale under its following-sibling; on staging the panel never becomes visible, so all 3 attempts time out and the locale sweep never starts.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Target the language control and its panel by test id rather than by aria-label plus sibling position, and assert the panel is open before selecting a locale.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-18] Verify navigation layout: overflow, overlap and height stability across all locales
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 15 Aug
+Root cause  : changeLanguage (commonPage.ts:48) opens the panel via //*[@aria-label='Language'] then looks for the locale under its following-sibling; on staging the panel never becomes visible, so all 3 attempts time out and the locale sweep never starts.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Target the language control and its panel by test id rather than by aria-label plus sibling position, and assert the panel is open before selecting a locale.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-19] Verify Trade-Indicators data for all instruments is rendered as expected
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : see PR
+Category    : brittle-locator (auto)
+PR          : https://grvt.atlassian.net/browse/QE-969
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-20] Verify user can remove margin from an Isolated position
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-21] Verify all records under the Recent Trades tab are populated as expected
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-22] Verify Order-Book data is displayed as expected
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-23] Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK)
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-24] Verify MARKET BUY/SELL order can be placed successfully
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-25] Verify order placement succeeds when quantity is expressed in USDT Notional
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-26] Verify REDUCE_ONLY type orders can be placed successfully
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-27] Verify IOC type orders can be placed successfully
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-28] Verify FOK type orders can be placed successfully
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-29] Verify POST_ONLY type orders can be placed successfully
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-30] Verify the top-level navigation header renders on every page
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : headerNavPage.ts:405 asserts the prod-shaped item list; staging renders only [Earn APY | Trade | Invest] on all 3 pages, so the expected set is wrong for this environment.
+Fix         : ⚠️ not recorded
+Category    : assertion-wrong (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Derive the expected header items per environment instead of hard-coding one list, so a staging-only nav change does not read as a failure.
+Owner       : viet    ETA: 2026-08-20
+```
+
+```
+[SCRIPT-31] Verify MARKET order can be placed using Isolated margin mode
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-32] Verify LIMIT order can be placed using Isolated margin mode
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+```
+[SCRIPT-33] Verify user can add margin to an Isolated position
+Env/Suite   : STAGING / smoke
+Failures    : 1 consecutive run since 18 Aug
+Root cause  : instrumentSelector (perpetualpage.ts:80) is a positional XPath keyed on the literal text 'Perpetual' with a preceding-sibling containing 'USDT'; it matches nothing in staging's trade header, so getActiveInstrument's textContent waits the full 30s on every instrument switch.
+Fix         : ⚠️ not recorded
+Category    : brittle-locator (auto)
+PR          : ⚠️ not linked
+Verify      : ⚠️ not verified — rerun it and record the result
+Prevention  : Replace the positional XPath with a stable test id on the instrument name, so the trade header can be restyled without breaking every order and market-data test at once.
+Owner       : viet    ETA: 2026-08-19
+```
+
+⚠️ 3 of 33 script failures have no prevention step recorded. Record it with `node tools/bin/script-rca.js --record ... --prevention "..."`.
+
+## 1.4 APP-BUG detail
+
+No product bugs found today.
+
+## 1.5 ENV — grouped, not one line per test
+
+### #qa-web-automation-testnet
+
+```
+ENV cluster : 1 test(s) — same incident, same explanation
+Tests       : Verify a USDC withdrawal completes and deducts the…
+Hypothesis  : approveMetamask aborted: the MetaMask extension window never opened (no chrome-extension page appeared in time), so the withdrawal could not be signed.
+Proposal    : add an env-health precondition before the suite, or retry-with-tagging so these do not count towards flakiness
+Owner       : viet
+```
+
+_ENV failures are never fixed by changing the test._
+
+## 1.6 Numbers for the daily log
+
+```
+Fully-green: PROD 100% · TESTNET 57.1% · STAGING 0% · TESTNET 100%
+Flakiness rolling 10 runs: WEB 5.9% · MOBILE 17.4%   (target <3%)
+Failures classified: ENV 1 / APP 0 / SCRIPT 33
+Failures with no verdict: 0   ✅
+Smoke accuracy: BREACHED
+```
+
+### Failed earlier, green again now
+
+Not in the table above because the latest run passed. They still need a verdict — a test that recovers on its own is flaky or platform-specific.
+
+- **Verify each download card points to the correct external URL** — staging/smoke, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32098546549/job/95594514219)
+- **Verify Trade-Indicators data for all instruments is rendered as expected** — testnet/smoke, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32098545871/job/95594507960)
+- **Verify login from Trade → stays on Trade** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify ISOLATED liquidation price is populated and bounded for every unit…** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify CROSS liquidation price respects equity coverage across every unit…** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify unit-preference switching does not change the computed liquidation price** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify margin-type toggle recalculates and ISOLATED is tighter than CROSS** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify liquidation price reacts to slider quantity per margin type and leaves…** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify liquidation price tightens monotonically as leverage increases** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify the liquidation distance matches the maintenance-margin math** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify invalid and boundary quantities never produce a garbage liquidation price** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify rapid quantity changes settle on the same value as a direct set** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify liquidation price is recomputed per instrument when switching markets** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify Market and Limit-at-mark agree at the same quantity** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify the liquidation price sweep creates no orders and leaves no position…** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+- **Verify user can burn vault shares and the burn appears in investment history** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
+
+---
+
+<details><summary>Terms used above</summary>
+
+| Term | Meaning | Whose job |
+|---|---|---|
+| **ENV** | the test environment broke, not the product and not our test | infra — we do not change the test |
+| **APP-BUG** | the product genuinely misbehaves; a customer could hit this | the dev team — needs a PRO ticket |
+| **SCRIPT** | the product is fine; our automated test is flaky, outdated or badly written | us — QA automation |
+| **Smoke** | The short suite that runs constantly; it must be trustworthy, so a false alarm here is urgent. | — |
+| **Regression** | The long suite. Slower, run less often, more tolerant of noise. | — |
+| **Quarantine** | Switching a test off deliberately, always with a ticket and a review date. | — |
+| **Fully green** | A run that finished with zero failures. | — |
+
+</details>
+
+<details><summary>Per-failure evidence and commands</summary>
+
+**Verify button layout: overflow, overlap, truncation and height stability across all locales** — web-staging
+- 16 in a row (worst 16), 100% of the last 10 runs
+- Code: `ui_tests/tests/languageUiLayout.spec.ts:289`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify encoding, translations, number format and horizontal scroll across all locales** — web-staging
+- 2 in a row (worst 2), 100% of the last 2 runs
+- Code: `ui_tests/tests/languageUiLayout.spec.ts:442`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify navigation layout: overflow, overlap and height stability across all locales** — web-staging
+- 1 in a row (worst 1), 10% of the last 10 runs
+- Code: `ui_tests/tests/languageUiLayout.spec.ts:326`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify Trade-Indicators data for all instruments is rendered as expected** — web-staging
+- 1 in a row (worst 1), 50% of the last 4 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:59`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify user can remove margin from an Isolated position** — web-staging
+- 1 in a row (worst 1), 66.7% of the last 3 runs, only on chrome
+- Code: `ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts:260`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify all records under the Recent Trades tab are populated as expected** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:139`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify Order-Book data is displayed as expected** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:163`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK)** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:205`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify MARKET BUY/SELL order can be placed successfully** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:352`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify order placement succeeds when quantity is expressed in USDT Notional** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:378`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify REDUCE_ONLY type orders can be placed successfully** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:405`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify IOC type orders can be placed successfully** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:443`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify FOK type orders can be placed successfully** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:478`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify POST_ONLY type orders can be placed successfully** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:513`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify the top-level navigation header renders on every page** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/headerNav.spec.ts:67`
+- Last edited 2026-08-18 by Pham The Viet — QE-950: Fix flaky navigation header tests on production smoke run (#1348)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify MARKET order can be placed using Isolated margin mode** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts:116`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify LIMIT order can be placed using Isolated margin mode** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts:153`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify user can add margin to an Isolated position** — web-staging
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts:195`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/job/95885663223) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191181406/artifacts/9346228263)
+- `gh run view 32191181406 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify long position: in-profit SL trigger price must be between entry and mark prices** — web-testnet
+- 1 in a row (worst 1), 66.7% of the last 3 runs
+- Code: `ui_tests/tests/placeOrders/tpslTriggerPriceRangeValidation.spec.ts:49`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify a USDC withdrawal completes and deducts the Funding account balance** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/deposit/withdrawal.spec.ts:201`
+- Last edited 2026-08-13 by Pham The Viet — Fix app version not displayed in allure report (#1328)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify Trade-Indicators data for all instruments is rendered as expected** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:59`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify all records under the Recent Trades tab are populated as expected** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:139`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify Order-Book data is displayed as expected** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:163`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify trading chart candle-sticks are rendered as expected** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:189`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK)** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/e2e_tests.spec.ts:205`
+- Last edited 2026-08-18 by Pham The Viet — QR-969  Fix trade-indicators hang on numeric tickers and reduce browser runs (#1351)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify editing a TP target trigger price persists after Confirm** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/splitTPSL.spec.ts:194`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify data resets when a row is deleted or the tab is switched** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/splitTPSL.spec.ts:386`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify Position TP/SL size matches the position when a trading login is active** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/tpslSendReasonableSize.spec.ts:37`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify short position: TP trigger price must be less than mark price** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/tpslTriggerPriceRangeValidation.spec.ts:62`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify short position: in-profit SL trigger price must be between mark and entry prices** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/tpslTriggerPriceRangeValidation.spec.ts:76`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify Split TP for Short position: trigger price must be less than mark price** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/tpslTriggerPriceRangeValidation.spec.ts:116`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify SL trigger type can be selected at MAX slider on a Short position** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/placeOrders/tpslTriggerTypeAtMaxSlider.spec.ts:51`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify open limit order can be cancelled successfully** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/spot/spotTrading.spec.ts:284`
+- Last edited 2026-08-12 by Pham The Viet — fix: Verify a new Sub-Account can be created (#1318)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+**Verify theme toggle, icons, and rendering work on all public pages in both themes** — web-testnet
+- 1 in a row (worst 1), 100% of the last 1 runs
+- Code: `ui_tests/tests/themeUiLayout.spec.ts:165`
+- Last edited 2026-08-11 by Pham The Viet — fix: Verify every page displays the selected language correctly (#1313)
+- [Actions job](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/job/95798956155) · [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32163926749/artifacts/9342813999)
+- `gh run view 32163926749 --log-failed -R gravity-technologies/qa-automation`
+
+</details>
+

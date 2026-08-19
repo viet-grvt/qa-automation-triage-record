@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node tools/bin/*)",
+      "Bash(node:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(git log:*)",
+      "Bash(git -C c:/Gravity/qa-automation log:*)",
+      "Bash(git -C c:/Gravity/qa-automation pull:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run download:*)",
+      "Bash(gh api:*)",
+      "mcp__claude_ai_Slack__slack_read_channel",
+      "mcp__claude_ai_Slack__slack_read_thread",
+      "mcp__claude_ai_Slack__slack_search_channels",
+      "mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql",
+      "mcp__claude_ai_Atlassian__getJiraIssue",
+      "mcp__browserstack__listBuildId",
+      "mcp__browserstack__getBuildId",
+      "mcp__browserstack__getFailureLogs",
+      "mcp__browserstack__fetchRCA",
+      "mcp__browserstack__fetchAutomationScreenshots",
+      "mcp__browserstack__fetchBuildInsights"
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+node_modules/
+data/raw/
+tmp-artifacts/
+
+# holds BrowserStack credentials — copy from .mcp.json.example and fill in locally
+.mcp.json
+
+# stray file Windows creates from a `> NUL` redirect
+NUL

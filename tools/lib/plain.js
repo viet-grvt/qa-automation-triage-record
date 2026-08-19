@@ -13,6 +13,11 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 
 export function prettyDate(iso) {
   if (!iso) return "unknown";
+  // The timestamps carry their own offset (+07), so the calendar date is the one already written
+  // in the string. Re-reading it through UTC shifts every run before 07:00 back a day, which made
+  // this morning's 04:18 regression run report as yesterday's.
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso));
+  if (m) return `${Number(m[3])} ${MONTHS[Number(m[2]) - 1]}`;
   const d = new Date(iso);
   return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
 }

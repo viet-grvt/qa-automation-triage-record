@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-19T01:50:26.099Z",
+  "updatedAt": "2026-08-19T10:37:08.553Z",
   "runs": {
     "web-prod": [
       {
@@ -725,6 +725,156 @@
         "suiteKey": "web-prod::web:smoke",
         "green": true,
         "infra": false
+      },
+      {
+        "channelKey": "web-prod",
+        "channelName": "qa-web-automation-prod",
+        "platform": "web",
+        "env": "prod",
+        "adhoc": false,
+        "ts": "1787105740.768499",
+        "iso": "2026-08-19T09:15:40+07:00",
+        "date": "2026-08-19",
+        "author": "qa-ui-bot-prod",
+        "headerLine": ":white_check_mark:WEB E2E Smoke Test [Firefox]",
+        "ok": true,
+        "passed": 20,
+        "failed": 0,
+        "failures": [],
+        "truncatedFailureList": false,
+        "jobUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32205169159/job/95926894610",
+        "runId": "32205169159",
+        "reportUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32205169159/artifacts/9349718122",
+        "threadReplies": 0,
+        "reactions": null,
+        "partial": false,
+        "suite": "web",
+        "testType": "smoke",
+        "browser": "firefox",
+        "variant": "firefox",
+        "suiteKey": "web-prod::web:smoke",
+        "green": true,
+        "infra": false
+      },
+      {
+        "channelKey": "web-prod",
+        "channelName": "qa-web-automation-prod",
+        "platform": "web",
+        "env": "prod",
+        "adhoc": false,
+        "ts": "1787110616.322859",
+        "iso": "2026-08-19T10:36:56+07:00",
+        "date": "2026-08-19",
+        "author": "qa-ui-bot-prod",
+        "headerLine": ":white_check_mark:WEB E2E Smoke Test [Brave]",
+        "ok": true,
+        "passed": 20,
+        "failed": 0,
+        "failures": [],
+        "truncatedFailureList": false,
+        "jobUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32208541199/job/95936420528",
+        "runId": "32208541199",
+        "reportUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32208541199/artifacts/9351305082",
+        "threadReplies": 0,
+        "reactions": null,
+        "partial": false,
+        "suite": "web",
+        "testType": "smoke",
+        "browser": "brave",
+        "variant": "brave",
+        "suiteKey": "web-prod::web:smoke",
+        "green": true,
+        "infra": false
+      },
+      {
+        "channelKey": "web-prod",
+        "channelName": "qa-web-automation-prod",
+        "platform": "web",
+        "env": "prod",
+        "adhoc": false,
+        "ts": "1787112660.612119",
+        "iso": "2026-08-19T11:11:00+07:00",
+        "date": "2026-08-19",
+        "author": "qa-ui-bot-prod",
+        "headerLine": ":white_check_mark:WEB E2E Smoke Test [Chrome]",
+        "ok": true,
+        "passed": 20,
+        "failed": 0,
+        "failures": [],
+        "truncatedFailureList": false,
+        "jobUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32211693850/job/95945510126",
+        "runId": "32211693850",
+        "reportUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32211693850/artifacts/9351954466",
+        "threadReplies": 0,
+        "reactions": null,
+        "partial": false,
+        "suite": "web",
+        "testType": "smoke",
+        "browser": "chrome",
+        "variant": "chrome",
+        "suiteKey": "web-prod::web:smoke",
+        "green": true,
+        "infra": false
+      },
+      {
+        "channelKey": "web-prod",
+        "channelName": "qa-web-automation-prod",
+        "platform": "web",
+        "env": "prod",
+        "adhoc": false,
+        "ts": "1787115708.005339",
+        "iso": "2026-08-19T12:01:48+07:00",
+        "date": "2026-08-19",
+        "author": "qa-ui-bot-prod",
+        "headerLine": ":white_check_mark:WEB E2E Smoke Test [Firefox]",
+        "ok": true,
+        "passed": 20,
+        "failed": 0,
+        "failures": [],
+        "truncatedFailureList": false,
+        "jobUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32214995602/job/95954725503",
+        "runId": "32214995602",
+        "reportUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32214995602/artifacts/9352933703",
+        "threadReplies": 0,
+        "reactions": null,
+        "partial": false,
+        "suite": "web",
+        "testType": "smoke",
+        "browser": "firefox",
+        "variant": "firefox",
+        "suiteKey": "web-prod::web:smoke",
+        "green": true,
+        "infra": false
+      },
+      {
+        "channelKey": "web-prod",
+        "channelName": "qa-web-automation-prod",
+        "platform": "web",
+        "env": "prod",
+        "adhoc": false,
+        "ts": "1787121750.235899",
+        "iso": "2026-08-19T13:42:30+07:00",
+        "date": "2026-08-19",
+        "author": "qa-ui-bot-prod",
+        "headerLine": ":white_check_mark:WEB E2E Smoke Test [Chrome]",
+        "ok": true,
+        "passed": 20,
+        "failed": 0,
+        "failures": [],
+        "truncatedFailureList": false,
+        "jobUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32222247475/job/95974802291",
+        "runId": "32222247475",
+        "reportUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32222247475/artifacts/9355066454",
+        "threadReplies": 0,
+        "reactions": null,
+        "partial": false,
+        "suite": "web",
+        "testType": "smoke",
+        "browser": "chrome",
+        "variant": "chrome",
+        "suiteKey": "web-prod::web:smoke",
+        "green": true,
+        "infra": false
       }
     ],
     "web-testnet": [
@@ -1285,6 +1435,36 @@
         "browser": "chrome",
         "variant": "chrome",
         "suiteKey": "web-testnet::web:smoke",
+        "green": true,
+        "infra": false
+      },
+      {
+        "channelKey": "web-testnet",
+        "channelName": "qa-web-automation-testnet",
+        "platform": "web",
+        "env": "testnet",
+        "adhoc": false,
+        "ts": "1787109595.580849",
+        "iso": "2026-08-19T10:19:55+07:00",
+        "date": "2026-08-19",
+        "author": "qa-ui-bot-testnet",
+        "headerLine": ":white_check_mark:WEB E2E Regression Test [Chrome]",
+        "ok": true,
+        "passed": 1,
+        "failed": 0,
+        "failures": [],
+        "truncatedFailureList": false,
+        "jobUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32211368643/job/95944580287",
+        "runId": "32211368643",
+        "reportUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32211368643/artifacts/9350973017",
+        "threadReplies": 0,
+        "reactions": null,
+        "partial": false,
+        "suite": "web",
+        "testType": "regression",
+        "browser": "chrome",
+        "variant": "chrome",
+        "suiteKey": "web-testnet::web:regression",
         "green": true,
         "infra": false
       }
@@ -2432,6 +2612,74 @@
         "suiteKey": "mobile-testnet::mobile:smoke",
         "green": true,
         "infra": false
+      },
+      {
+        "channelKey": "mobile-testnet",
+        "channelName": "qa-mobile-automation-testnet",
+        "platform": "mobile",
+        "env": "testnet",
+        "adhoc": false,
+        "ts": "1787106200.801949",
+        "iso": "2026-08-19T09:23:20+07:00",
+        "date": "2026-08-19",
+        "author": "",
+        "headerLine": ":white_check_mark: [MOBILE-E2E] [SMOKE] [ANDROID] - Metamask",
+        "ok": true,
+        "passed": 23,
+        "failed": 0,
+        "failures": [],
+        "truncatedFailureList": false,
+        "jobUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32205363565/job/95927455573",
+        "runId": "32205363565",
+        "reportUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32205363565/artifacts/9349856787",
+        "threadReplies": 0,
+        "reactions": null,
+        "partial": false,
+        "suite": "mobile",
+        "testType": "smoke",
+        "mobilePlatform": "android",
+        "wallet": "Metamask",
+        "result": "success",
+        "appVersion": "3.3.0 (172) - 8a9e683e71fd",
+        "device": "Google Pixel 6 · Android 12.0",
+        "variant": "android/Metamask",
+        "suiteKey": "mobile-testnet::mobile:smoke",
+        "green": true,
+        "infra": false
+      },
+      {
+        "channelKey": "mobile-testnet",
+        "channelName": "qa-mobile-automation-testnet",
+        "platform": "mobile",
+        "env": "testnet",
+        "adhoc": false,
+        "ts": "1787109387.354149",
+        "iso": "2026-08-19T10:16:27+07:00",
+        "date": "2026-08-19",
+        "author": "",
+        "headerLine": ":white_check_mark: [MOBILE-E2E] [SMOKE] [ANDROID] - OKX",
+        "ok": true,
+        "passed": 23,
+        "failed": 0,
+        "failures": [],
+        "truncatedFailureList": false,
+        "jobUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32208412030/job/95936012942",
+        "runId": "32208412030",
+        "reportUrl": "https://github.com/gravity-technologies/qa-automation/actions/runs/32208412030/artifacts/9350909070",
+        "threadReplies": 0,
+        "reactions": null,
+        "partial": false,
+        "suite": "mobile",
+        "testType": "smoke",
+        "mobilePlatform": "android",
+        "wallet": "OKX",
+        "result": "success",
+        "appVersion": "3.3.0 (172) - 8a9e683e71fd",
+        "device": "Google Pixel 6 · Android 12.0",
+        "variant": "android/OKX",
+        "suiteKey": "mobile-testnet::mobile:smoke",
+        "green": true,
+        "infra": false
       }
     ]
   },
@@ -2560,14 +2808,49 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "chrome"
+        },
+        {
+          "ts": "1787105740.768499",
+          "iso": "2026-08-19T09:15:40+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "firefox"
+        },
+        {
+          "ts": "1787110616.322859",
+          "iso": "2026-08-19T10:36:56+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "brave"
+        },
+        {
+          "ts": "1787112660.612119",
+          "iso": "2026-08-19T11:11:00+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "chrome"
+        },
+        {
+          "ts": "1787115708.005339",
+          "iso": "2026-08-19T12:01:48+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "firefox"
+        },
+        {
+          "ts": "1787121750.235899",
+          "iso": "2026-08-19T13:42:30+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "chrome"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 1,
       "failCount": 1,
-      "observed": 16,
+      "observed": 21,
       "failRate10": 0,
-      "lastSeen": "2026-08-19T07:43:54+07:00",
+      "lastSeen": "2026-08-19T13:42:30+07:00",
       "lastFail": "2026-08-18T05:50:43+07:00",
       "currentlyFailing": false,
       "label": "SCRIPT",
@@ -2599,7 +2882,11 @@
         "delayReason": null,
         "reviewDate": null,
         "coverageRisk": null
-      }
+      },
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-prod::web:smoke::verify the navigation header stays identical across repeated reloads": {
       "key": "web-prod::web:smoke::verify the navigation header stays identical across repeated reloads",
@@ -2725,14 +3012,49 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "chrome"
+        },
+        {
+          "ts": "1787105740.768499",
+          "iso": "2026-08-19T09:15:40+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "firefox"
+        },
+        {
+          "ts": "1787110616.322859",
+          "iso": "2026-08-19T10:36:56+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "brave"
+        },
+        {
+          "ts": "1787112660.612119",
+          "iso": "2026-08-19T11:11:00+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "chrome"
+        },
+        {
+          "ts": "1787115708.005339",
+          "iso": "2026-08-19T12:01:48+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "firefox"
+        },
+        {
+          "ts": "1787121750.235899",
+          "iso": "2026-08-19T13:42:30+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "chrome"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 1,
       "failCount": 1,
-      "observed": 16,
+      "observed": 21,
       "failRate10": 0,
-      "lastSeen": "2026-08-19T07:43:54+07:00",
+      "lastSeen": "2026-08-19T13:42:30+07:00",
       "lastFail": "2026-08-18T05:50:43+07:00",
       "currentlyFailing": false,
       "label": "SCRIPT",
@@ -2764,7 +3086,11 @@
         "delayReason": null,
         "reviewDate": null,
         "coverageRisk": null
-      }
+      },
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:smoke::verify trade-indicators data for all instruments is rendered as expected": {
       "key": "web-testnet::web:smoke::verify trade-indicators data for all instruments is rendered as expected",
@@ -2863,7 +3189,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify login from invest → returns to invest": {
       "key": "web-testnet::web:regression::verify login from invest → returns to invest",
@@ -2945,7 +3273,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify every page displays the selected language correctly": {
       "key": "web-testnet::web:regression::verify every page displays the selected language correctly",
@@ -3020,7 +3352,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify price of an oco order can be amended": {
       "key": "web-testnet::web:regression::verify price of an oco order can be amended",
@@ -3092,7 +3428,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify tp trigger type can be selected at max slider on a long position": {
       "key": "web-testnet::web:regression::verify tp trigger type can be selected at max slider on a long position",
@@ -3157,7 +3497,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify subsequent login with a new account → no onboarding screens": {
       "key": "web-testnet::web:regression::verify subsequent login with a new account → no onboarding screens",
@@ -3215,7 +3559,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify deposit progress is rejected when user cancels wallet connection": {
       "key": "web-testnet::web:regression::verify deposit progress is rejected when user cancels wallet connection",
@@ -3289,7 +3637,11 @@
         "delayReason": null,
         "reviewDate": null,
         "coverageRisk": null
-      }
+      },
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify deposit warnings show for insufficient balance, missing gas fee, and spending limit": {
       "key": "web-testnet::web:regression::verify deposit warnings show for insufficient balance, missing gas fee, and spending limit",
@@ -3340,7 +3692,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify long position: in-profit sl trigger price must be between entry and mark prices": {
       "key": "web-testnet::web:regression::verify long position: in-profit sl trigger price must be between entry and mark prices",
@@ -3419,7 +3775,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify limit sell order can be placed successfully": {
       "key": "web-testnet::web:regression::verify limit sell order can be placed successfully",
@@ -3470,7 +3828,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify login from trade → stays on trade": {
       "key": "web-testnet::web:regression::verify login from trade → stays on trade",
@@ -3514,7 +3876,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify isolated liquidation price is populated and bounded for every unit preference and slider position": {
       "key": "web-testnet::web:regression::verify isolated liquidation price is populated and bounded for every unit preference and slider position",
@@ -3558,7 +3924,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify cross liquidation price respects equity coverage across every unit preference and slider position": {
       "key": "web-testnet::web:regression::verify cross liquidation price respects equity coverage across every unit preference and slider position",
@@ -3602,7 +3972,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify unit-preference switching does not change the computed liquidation price": {
       "key": "web-testnet::web:regression::verify unit-preference switching does not change the computed liquidation price",
@@ -3646,7 +4020,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify margin-type toggle recalculates and isolated is tighter than cross": {
       "key": "web-testnet::web:regression::verify margin-type toggle recalculates and isolated is tighter than cross",
@@ -3690,7 +4068,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify liquidation price reacts to slider quantity per margin type and leaves no residual state": {
       "key": "web-testnet::web:regression::verify liquidation price reacts to slider quantity per margin type and leaves no residual state",
@@ -3734,7 +4116,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify liquidation price tightens monotonically as leverage increases": {
       "key": "web-testnet::web:regression::verify liquidation price tightens monotonically as leverage increases",
@@ -3778,7 +4164,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify the liquidation distance matches the maintenance-margin math": {
       "key": "web-testnet::web:regression::verify the liquidation distance matches the maintenance-margin math",
@@ -3822,7 +4212,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify invalid and boundary quantities never produce a garbage liquidation price": {
       "key": "web-testnet::web:regression::verify invalid and boundary quantities never produce a garbage liquidation price",
@@ -3866,7 +4260,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify rapid quantity changes settle on the same value as a direct set": {
       "key": "web-testnet::web:regression::verify rapid quantity changes settle on the same value as a direct set",
@@ -3910,7 +4308,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify liquidation price is recomputed per instrument when switching markets": {
       "key": "web-testnet::web:regression::verify liquidation price is recomputed per instrument when switching markets",
@@ -3954,7 +4356,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify market and limit-at-mark agree at the same quantity": {
       "key": "web-testnet::web:regression::verify market and limit-at-mark agree at the same quantity",
@@ -3998,7 +4404,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify the liquidation price sweep creates no orders and leaves no position state behind": {
       "key": "web-testnet::web:regression::verify the liquidation price sweep creates no orders and leaves no position state behind",
@@ -4042,7 +4452,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify user can burn vault shares and the burn appears in investment history": {
       "key": "web-testnet::web:regression::verify user can burn vault shares and the burn appears in investment history",
@@ -4086,7 +4500,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify a usdc withdrawal completes and deducts the funding account balance": {
       "key": "web-testnet::web:regression::verify a usdc withdrawal completes and deducts the funding account balance",
@@ -4134,7 +4552,9 @@
       ],
       "rca": null,
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify trade-indicators data for all instruments is rendered as expected": {
       "key": "web-testnet::web:regression::verify trade-indicators data for all instruments is rendered as expected",
@@ -4190,7 +4610,9 @@
       ],
       "rca": null,
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify all records under the recent trades tab are populated as expected": {
       "key": "web-testnet::web:regression::verify all records under the recent trades tab are populated as expected",
@@ -4252,7 +4674,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify order-book data is displayed as expected": {
       "key": "web-testnet::web:regression::verify order-book data is displayed as expected",
@@ -4314,7 +4738,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify trading chart candle-sticks are rendered as expected": {
       "key": "web-testnet::web:regression::verify trading chart candle-sticks are rendered as expected",
@@ -4376,7 +4802,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify order-book is not crossed (best_bid lower than best_ask)": {
       "key": "web-testnet::web:regression::verify order-book is not crossed (best_bid lower than best_ask)",
@@ -4438,7 +4866,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify editing a tp target trigger price persists after confirm": {
       "key": "web-testnet::web:regression::verify editing a tp target trigger price persists after confirm",
@@ -4484,9 +4914,25 @@
           "streakAtDecision": 1
         }
       ],
-      "rca": null,
+      "rca": {
+        "date": "2026-08-19",
+        "cause": "race-condition",
+        "detail": "splitTPSL.spec.ts:224 reads the TP/SL table once and asserts flat.some(s => s.includes(newTrigger)); the table updates asynchronously after Confirm, so a single read taken too early finds nothing. The retry then timed out reading the Positions table at basepage.ts:1333.",
+        "action": "fix",
+        "owner": "viet",
+        "file": null,
+        "pr": null,
+        "category": null,
+        "prevention": "Poll the table until it contains the new trigger price (expect.poll / toPass) instead of asserting on one snapshot, so a slow refresh is a wait rather than a failure. If it still fails once the wait is in, it is a product bug — re-classify it.",
+        "verify": null,
+        "delayReason": null,
+        "reviewDate": null,
+        "coverageRisk": null
+      },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify data resets when a row is deleted or the tab is switched": {
       "key": "web-testnet::web:regression::verify data resets when a row is deleted or the tab is switched",
@@ -4532,9 +4978,25 @@
           "streakAtDecision": 1
         }
       ],
-      "rca": null,
+      "rca": {
+        "date": "2026-08-19",
+        "cause": "race-condition",
+        "detail": "splitTPSLPage.ts:305 asserts the Confirm button is enabled the moment it is checked, and on retry splitTPSLPage.ts:110 gives the modal only isModalOpen(2000) to appear; both check before the sheet has settled.",
+        "action": "fix",
+        "owner": "viet",
+        "file": null,
+        "pr": null,
+        "category": null,
+        "prevention": "Wait for the Confirm button to become enabled rather than asserting it already is, and drop the fixed 2000ms modal window in favour of an explicit wait.",
+        "verify": null,
+        "delayReason": null,
+        "reviewDate": null,
+        "coverageRisk": null
+      },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify position tp/sl size matches the position when a trading login is active": {
       "key": "web-testnet::web:regression::verify position tp/sl size matches the position when a trading login is active",
@@ -4596,7 +5058,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify short position: tp trigger price must be less than mark price": {
       "key": "web-testnet::web:regression::verify short position: tp trigger price must be less than mark price",
@@ -4658,7 +5122,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify short position: in-profit sl trigger price must be between mark and entry prices": {
       "key": "web-testnet::web:regression::verify short position: in-profit sl trigger price must be between mark and entry prices",
@@ -4720,7 +5186,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify split tp for short position: trigger price must be less than mark price": {
       "key": "web-testnet::web:regression::verify split tp for short position: trigger price must be less than mark price",
@@ -4782,7 +5250,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify sl trigger type can be selected at max slider on a short position": {
       "key": "web-testnet::web:regression::verify sl trigger type can be selected at max slider on a short position",
@@ -4844,7 +5314,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify open limit order can be cancelled successfully": {
       "key": "web-testnet::web:regression::verify open limit order can be cancelled successfully",
@@ -4906,7 +5378,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-testnet::web:regression::verify theme toggle, icons, and rendering work on all public pages in both themes": {
       "key": "web-testnet::web:regression::verify theme toggle, icons, and rendering work on all public pages in both themes",
@@ -4968,7 +5442,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify button layout: overflow, overlap, truncation and height stability across all locales": {
       "key": "web-staging::web:smoke::verify button layout: overflow, overlap, truncation and height stability across all locales",
@@ -5166,21 +5642,23 @@
       ],
       "rca": {
         "date": "2026-08-19",
-        "cause": "brittle-locator",
-        "detail": "changeLanguage (commonPage.ts:48) opens the panel via //*[@aria-label='Language'] then looks for the locale under its following-sibling; on staging the panel never becomes visible, so all 3 attempts time out and the locale sweep never starts.",
+        "cause": "shared-state",
+        "detail": "Not the product: 'Switch app language to each supported locale' passed on this same staging run at 23:16, one minute before this test failed at 23:17. The panel's English option is present but hidden, so the app is left in a state by the preceding locale test that changeLanguage (commonPage.ts:48) does not reset before the next test tries to switch back.",
         "action": "fix",
         "owner": "viet",
         "file": null,
         "pr": null,
         "category": null,
-        "prevention": "Target the language control and its panel by test id rather than by aria-label plus sibling position, and assert the panel is open before selecting a locale.",
+        "prevention": "Reset the locale to English in an afterEach/beforeEach rather than relying on the next test to switch back, so one locale test cannot leave the next three red.",
         "verify": null,
         "delayReason": null,
         "reviewDate": null,
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify navigation layout: overflow, overlap and height stability across all locales": {
       "key": "web-staging::web:smoke::verify navigation layout: overflow, overlap and height stability across all locales",
@@ -5322,21 +5800,23 @@
       ],
       "rca": {
         "date": "2026-08-19",
-        "cause": "brittle-locator",
-        "detail": "changeLanguage (commonPage.ts:48) opens the panel via //*[@aria-label='Language'] then looks for the locale under its following-sibling; on staging the panel never becomes visible, so all 3 attempts time out and the locale sweep never starts.",
+        "cause": "shared-state",
+        "detail": "Not the product: 'Switch app language to each supported locale' passed on this same staging run at 23:16, one minute before this test failed at 23:17. The panel's English option is present but hidden, so the app is left in a state by the preceding locale test that changeLanguage (commonPage.ts:48) does not reset before the next test tries to switch back.",
         "action": "fix",
         "owner": "viet",
         "file": null,
         "pr": null,
         "category": null,
-        "prevention": "Target the language control and its panel by test id rather than by aria-label plus sibling position, and assert the panel is open before selecting a locale.",
+        "prevention": "Reset the locale to English in an afterEach/beforeEach rather than relying on the next test to switch back, so one locale test cannot leave the next three red.",
         "verify": null,
         "delayReason": null,
         "reviewDate": null,
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify each download card points to the correct external url": {
       "key": "web-staging::web:smoke::verify each download card points to the correct external url",
@@ -5475,7 +5955,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify a new sub-account can be created": {
       "key": "web-staging::web:smoke::verify a new sub-account can be created",
@@ -5577,7 +6061,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify trade-indicators data for all instruments is rendered as expected": {
       "key": "web-staging::web:smoke::verify trade-indicators data for all instruments is rendered as expected",
@@ -5679,7 +6167,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify user can remove margin from an isolated position": {
       "key": "web-staging::web:smoke::verify user can remove margin from an isolated position",
@@ -5758,7 +6248,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify encoding, translations, number format and horizontal scroll across all locales": {
       "key": "web-staging::web:smoke::verify encoding, translations, number format and horizontal scroll across all locales",
@@ -5816,21 +6308,23 @@
       ],
       "rca": {
         "date": "2026-08-19",
-        "cause": "brittle-locator",
-        "detail": "changeLanguage (commonPage.ts:48) opens the panel via //*[@aria-label='Language'] then looks for the locale under its following-sibling; on staging the panel never becomes visible, so all 3 attempts time out and the locale sweep never starts.",
+        "cause": "shared-state",
+        "detail": "Not the product: 'Switch app language to each supported locale' passed on this same staging run at 23:16, one minute before this test failed at 23:17. The panel's English option is present but hidden, so the app is left in a state by the preceding locale test that changeLanguage (commonPage.ts:48) does not reset before the next test tries to switch back.",
         "action": "fix",
         "owner": "viet",
         "file": null,
         "pr": null,
         "category": null,
-        "prevention": "Target the language control and its panel by test id rather than by aria-label plus sibling position, and assert the panel is open before selecting a locale.",
+        "prevention": "Reset the locale to English in an afterEach/beforeEach rather than relying on the next test to switch back, so one locale test cannot leave the next three red.",
         "verify": null,
         "delayReason": null,
         "reviewDate": null,
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify all records under the recent trades tab are populated as expected": {
       "key": "web-staging::web:smoke::verify all records under the recent trades tab are populated as expected",
@@ -5892,7 +6386,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify order-book data is displayed as expected": {
       "key": "web-staging::web:smoke::verify order-book data is displayed as expected",
@@ -5954,7 +6450,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify order-book is not crossed (best_bid lower than best_ask)": {
       "key": "web-staging::web:smoke::verify order-book is not crossed (best_bid lower than best_ask)",
@@ -6016,7 +6514,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify market buy/sell order can be placed successfully": {
       "key": "web-staging::web:smoke::verify market buy/sell order can be placed successfully",
@@ -6078,7 +6578,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify order placement succeeds when quantity is expressed in usdt notional": {
       "key": "web-staging::web:smoke::verify order placement succeeds when quantity is expressed in usdt notional",
@@ -6140,7 +6642,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify reduce_only type orders can be placed successfully": {
       "key": "web-staging::web:smoke::verify reduce_only type orders can be placed successfully",
@@ -6202,7 +6706,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify ioc type orders can be placed successfully": {
       "key": "web-staging::web:smoke::verify ioc type orders can be placed successfully",
@@ -6264,7 +6770,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify fok type orders can be placed successfully": {
       "key": "web-staging::web:smoke::verify fok type orders can be placed successfully",
@@ -6326,7 +6834,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify post_only type orders can be placed successfully": {
       "key": "web-staging::web:smoke::verify post_only type orders can be placed successfully",
@@ -6388,7 +6898,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify the top-level navigation header renders on every page": {
       "key": "web-staging::web:smoke::verify the top-level navigation header renders on every page",
@@ -6450,7 +6962,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-20"
+      "eta": "2026-08-20",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify market order can be placed using isolated margin mode": {
       "key": "web-staging::web:smoke::verify market order can be placed using isolated margin mode",
@@ -6512,7 +7026,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify limit order can be placed using isolated margin mode": {
       "key": "web-staging::web:smoke::verify limit order can be placed using isolated margin mode",
@@ -6574,7 +7090,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "web-staging::web:smoke::verify user can add margin to an isolated position": {
       "key": "web-staging::web:smoke::verify user can add margin to an isolated position",
@@ -6636,7 +7154,9 @@
         "coverageRisk": null
       },
       "owner": "viet",
-      "eta": "2026-08-19"
+      "eta": "2026-08-19",
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify market buy/sell order can be placed successfully": {
       "key": "mobile-testnet::mobile:smoke::verify market buy/sell order can be placed successfully",
@@ -6728,14 +7248,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -6744,7 +7278,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify order placement succeeds when quantity is expressed in usdt notional": {
       "key": "mobile-testnet::mobile:smoke::verify order placement succeeds when quantity is expressed in usdt notional",
@@ -6836,14 +7374,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -6852,7 +7404,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify post_only type orders can be placed successfully": {
       "key": "mobile-testnet::mobile:smoke::verify post_only type orders can be placed successfully",
@@ -6944,14 +7500,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -6960,7 +7530,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify fok type orders can be placed successfully": {
       "key": "mobile-testnet::mobile:smoke::verify fok type orders can be placed successfully",
@@ -7052,14 +7626,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -7068,7 +7656,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify ioc type orders can be placed successfully": {
       "key": "mobile-testnet::mobile:smoke::verify ioc type orders can be placed successfully",
@@ -7160,14 +7752,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -7176,7 +7782,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify reduce_only type orders can be placed successfully": {
       "key": "mobile-testnet::mobile:smoke::verify reduce_only type orders can be placed successfully",
@@ -7268,14 +7878,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -7284,7 +7908,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify limit order can be placed using isolated margin mode": {
       "key": "mobile-testnet::mobile:smoke::verify limit order can be placed using isolated margin mode",
@@ -7376,14 +8004,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -7392,7 +8034,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify market order can be placed using isolated margin mode": {
       "key": "mobile-testnet::mobile:smoke::verify market order can be placed using isolated margin mode",
@@ -7484,14 +8130,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -7500,7 +8160,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify user can add margin to a position": {
       "key": "mobile-testnet::mobile:smoke::verify user can add margin to a position",
@@ -7592,14 +8256,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -7608,7 +8286,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify user can remove margin from a position": {
       "key": "mobile-testnet::mobile:smoke::verify user can remove margin from a position",
@@ -7700,14 +8382,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -7716,7 +8412,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify first tp target row is added": {
       "key": "mobile-testnet::mobile:smoke::verify first tp target row is added",
@@ -7808,14 +8508,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -7824,7 +8538,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify an existing tp target trigger price can be edited and persists": {
       "key": "mobile-testnet::mobile:smoke::verify an existing tp target trigger price can be edited and persists",
@@ -7916,14 +8634,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -7932,7 +8664,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:smoke::verify first sl target row is added": {
       "key": "mobile-testnet::mobile:smoke::verify first sl target row is added",
@@ -8024,14 +8760,28 @@
           "date": "2026-08-19",
           "status": "pass",
           "variant": "android/OKX"
+        },
+        {
+          "ts": "1787106200.801949",
+          "iso": "2026-08-19T09:23:20+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/Metamask"
+        },
+        {
+          "ts": "1787109387.354149",
+          "iso": "2026-08-19T10:16:27+07:00",
+          "date": "2026-08-19",
+          "status": "pass",
+          "variant": "android/OKX"
         }
       ],
       "consecutiveFails": 0,
       "maxConsecutiveFails": 6,
       "failCount": 6,
-      "observed": 9,
-      "failRate10": 66.7,
-      "lastSeen": "2026-08-19T06:00:04+07:00",
+      "observed": 11,
+      "failRate10": 50,
+      "lastSeen": "2026-08-19T10:16:27+07:00",
       "lastFail": "2026-08-17T09:49:47+07:00",
       "currentlyFailing": false,
       "label": null,
@@ -8040,7 +8790,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:long-running::verify trade view stays stable and performant over a 30-minute session": {
       "key": "mobile-testnet::mobile:long-running::verify trade view stays stable and performant over a 30-minute session",
@@ -8091,7 +8845,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     },
     "mobile-testnet::mobile:long-running::verify trade view stays stable and performant over a 1-hour session": {
       "key": "mobile-testnet::mobile:long-running::verify trade view stays stable and performant over a 1-hour session",
@@ -8142,7 +8900,11 @@
       "ticket": null,
       "quarantined": false,
       "decisions": [],
-      "rca": null
+      "rca": null,
+      "owner": null,
+      "eta": null,
+      "appbug": null,
+      "fix": null
     }
   },
   "daily": {}

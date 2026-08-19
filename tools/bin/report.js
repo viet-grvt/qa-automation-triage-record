@@ -17,6 +17,7 @@ import {
   loadConfig,
   activeChannels,
   loadState,
+  saveState,
   loadTestIndex,
   paths,
   todayInTz,
@@ -25,6 +26,7 @@ import {
 } from "../lib/state.js";
 import { execFileSync } from "node:child_process";
 import { findOwner, recentCommits, suggestLabel } from "../lib/hints.js";
+import { stability, PATTERN_SHORT, LEANING_SHORT, suggestedLabel } from "../lib/verdict.js";
 import {
   prettyDate,
   prettyWhen,
@@ -44,6 +46,7 @@ import {
 } from "../lib/plain.js";
 
 const argv = process.argv.slice(2);
+const has = (n) => argv.includes(`--${n}`);
 const getArg = (n, d = null) => {
   const i = argv.indexOf(`--${n}`);
   return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith("--") ? argv[i + 1] : d;
@@ -162,6 +165,61 @@ const channels = cfg.channels
     };
   });
 
+// ---------------------------------------------------------------- suites and the review window
+// A Slack channel carries more than one suite: #qa-web-automation-testnet posts both the smoke run
+// and the regression run. Merging them hides the thing that matters — a green smoke run at 06:58
+// makes the channel look healthy while the 04:18 regression run failed 16 tests. Everything below
+// is therefore computed per suite (channel × smoke/regression), never per channel.
+//
+// The review window is the second half of it. A Slack pull returns whatever fits in `limit`, which
+// reaches back into previous days, so "today's report" would otherwise re-triage runs that were
+// already reviewed yesterday. Each suite carries a checkpoint — the last run that was signed off —
+// and the window is everything after it, up to the latest run.
+const checkpoints = state.checkpoints || {};
+const suiteId = (channelKey, testType) => `${channelKey}:${testType}`;
+
+const suites = [];
+for (const c of channels) {
+  const byType = new Map();
+  for (const r of c.runs) {
+    const tt = r.testType || "unknown";
+    if (!byType.has(tt)) byType.set(tt, []);
+    byType.get(tt).push(r);
+  }
+  // A channel that produced nothing still needs one row, otherwise "no data" reads as "all green".
+  if (!byType.size) byType.set(c.platform === "mobile" ? "e2e" : "smoke", []);
+  for (const [testType, runs] of byType) {
+    const id = suiteId(c.key, testType);
+    const cp = checkpoints[id] || null;
+    const newRuns = runs.filter((r) => !cp || Number(r.ts) > Number(cp.ts));
+    const win = runs.slice(-WINDOW);
+    const latest = runs.at(-1) || null;
+    suites.push({
+      id,
+      channel: c,
+      testType,
+      runs,
+      newRuns,
+      checkpoint: cp,
+      latest,
+      first: newRuns[0] || null,
+      stale: latest ? hoursSince(latest.iso) > T.staleRunHours : true,
+      greenPct: pct(win.filter((r) => r.green).length, win.length),
+      flakinessPct: pct(
+        win.reduce((s, r) => s + (r.failed || 0), 0),
+        win.reduce((s, r) => s + (r.passed || 0) + (r.failed || 0), 0),
+      ),
+    });
+  }
+}
+suites.sort((a, b) => channels.indexOf(a.channel) - channels.indexOf(b.channel) || a.testType.localeCompare(b.testType));
+
+/** The runs a test actually appeared in during this suite's review window. */
+function windowRuns(t) {
+  const s = suites.find((x) => x.id === suiteId(t.channelKey, t.testType));
+  return s ? s.newRuns : [];
+}
+
 // ---------------------------------------------------------------- mobile / iOS
 const mobile = channels.find((c) => c.platform === "mobile");
 const iosRuns = (mobile?.runs || []).filter((r) => r.mobilePlatform === "ios");
@@ -193,7 +251,14 @@ const rows = failing
       (w) =>
         normTitle(t.title).includes(normTitle(w.match)) && (!w.channel || w.channel === t.channelKey),
     );
-    return { t, ch, owner, commits, hint, watch };
+    // The first question of the review: flaky test, or the product is really broken?
+    const verdict = stability(t, { commits });
+    // Did this test actually fail inside the window under review, or is it a carry-over that has
+    // simply not been re-run since it was last looked at? Presenting the second as new work is
+    // what makes a morning report look busier than the night actually was.
+    const wr = windowRuns(t);
+    const failedInWindow = wr.some((r) => r.failures.some((f) => normTitle(f) === normTitle(t.title)));
+    return { t, ch, owner, commits, hint, watch, verdict, failedInWindow, suiteId: suiteId(t.channelKey, t.testType) };
   })
   .sort((a, b) => {
     const p = (r) => (r.ch?.critical ? 0 : 1);
@@ -208,7 +273,14 @@ const recovered = tests
     const fails24 = (t.history || []).filter(
       (h) => h.status === "fail" && hoursSince(h.iso) != null && hoursSince(h.iso) <= 24,
     );
-    return { t, fails24, ch: channels.find((c) => c.key === t.channelKey) };
+    const ch = channels.find((c) => c.key === t.channelKey);
+    const owner = findOwner(t, index);
+    return {
+      t,
+      fails24,
+      ch,
+      verdict: stability(t, { commits: owner ? recentCommits(cfg.repoPath, owner.file, 14) : [] }),
+    };
   })
   .filter((r) => r.fails24.length)
   .sort((a, b) => (a.ch?.critical ? 0 : 1) - (b.ch?.critical ? 0 : 1));
@@ -264,6 +336,61 @@ function rootCauseLine(t) {
   if (!src) return t.label ? "_not written yet_" : "_not triaged_";
   const first = String(src).replace(/\s+/g, " ").split(/(?<=\.)\s/)[0];
   return clip(first, 110);
+}
+
+const carriedOver = rows.filter((r) => !r.failedInWindow);
+
+const hm = (iso) => (iso ? `${prettyDate(iso)} ${iso.slice(11, 16)}` : "—");
+
+/** One line saying exactly which runs this report covers, so nobody re-triages last night's. */
+function reviewWindowLine() {
+  const withCp = suites.filter((s) => s.checkpoint);
+  const fresh = suites.reduce((n, s) => n + s.newRuns.length, 0);
+  if (!withCp.length) {
+    return `**everything stored** — no suite has been signed off yet, so there is no "last checked" point to start from. Run \`node tools/bin/report.js --mark-checked\` when you finish today, and tomorrow's report will start from here.`;
+  }
+  const from = withCp
+    .map((s) => s.checkpoint.iso)
+    .sort()
+    .at(0);
+  const to = suites
+    .map((s) => s.latest?.iso)
+    .filter(Boolean)
+    .sort()
+    .at(-1);
+  return `${fresh} run(s) since the last check — ${hm(from)} → ${hm(to)}. Anything older was already triaged and is not repeated here.`;
+}
+
+/** Per-suite: how many runs are new, and how far back the last sign-off was. */
+function suiteWindowCell(su) {
+  if (!su.runs.length) return "— no data";
+  if (!su.checkpoint) return `${su.newRuns.length} (never checked)`;
+  if (!su.newRuns.length) return `0 — nothing new since ${hm(su.checkpoint.iso)}`;
+  return `**${su.newRuns.length}** since ${hm(su.checkpoint.iso)}`;
+}
+
+/** The flaky-or-genuine cell for the classification table. */
+function verdictCell(v) {
+  return `${LEANING_SHORT[v.leaning]} · ${PATTERN_SHORT[v.pattern]}`;
+}
+
+/**
+ * The evidence behind that leaning, written for someone who has not opened the repo. This is the
+ * block that turns "the tool says flaky" into a decision the reader can check and disagree with.
+ */
+function verdictBlock(r) {
+  const v = r.verdict;
+  const out = [];
+  out.push("```");
+  out.push(`${r.t.title}`);
+  out.push(`Leaning     : ${LEANING_SHORT[v.leaning]} (${PATTERN_SHORT[v.pattern]})`);
+  out.push(`Reading     : ${v.plain}`);
+  out.push(`Evidence    : ${v.why.join("; ")}`);
+  out.push(`Next check  : ${v.nextCheck.join(" ")}`);
+  const sug = suggestedLabel(v);
+  if (sug) out.push(`Then record : node tools/bin/classify.js --test "${r.t.title.replace(/"/g, '\\"')}" --channel ${r.t.channelKey} --label ${sug} --owner <name> --eta <YYYY-MM-DD>`);
+  out.push("```");
+  return out;
 }
 
 function missingFields(t) {
@@ -366,15 +493,19 @@ w(``);
 // ---- 1.1 ------------------------------------------------------------------
 w(`## 1.1 Channel status`);
 w(``);
-w(`| Channel | Latest run | Pass/Total | Fully green? | Report |`);
-w(`|---|---|---|---|---|`);
-for (const c of channels) {
-  const r = c.latest;
+w(`_Reviewed: ${reviewWindowLine()}_`);
+w(``);
+w(`| Channel | Suite | Runs since last check | Latest run | Pass/Total | Fully green? | Report |`);
+w(`|---|---|---|---|---|---|---|`);
+for (const su of suites) {
+  const r = su.latest;
   const total = r ? (r.passed || 0) + (r.failed || 0) : 0;
   w(
-    `| ${c.name.replace(/^qa-/, "").toUpperCase()} | ${r ? `${r.iso.slice(5, 16).replace("T", " ")}` : "—"} | ${
-      r ? `${r.passed}/${total}` : "did not run"
-    } | ${c.stale ? "🕒 silent" : r?.green ? "✅" : "❌"} | ${r?.reportUrl ? `[report](${r.reportUrl})` : "—"} |`,
+    `| ${su.channel.name.replace(/^qa-/, "").toUpperCase()} | **${su.testType}** | ${suiteWindowCell(su)} | ${
+      r ? r.iso.slice(5, 16).replace("T", " ") : "—"
+    } | ${r ? `${r.passed}/${total}` : "did not run"} | ${su.stale ? "🕒 silent" : r?.green ? "✅" : "❌"} | ${
+      r?.reportUrl ? `[report](${r.reportUrl})` : "—"
+    } |`,
   );
 }
 // Always keep a separate iOS line: "iOS did not run" is exactly the fact QE-948 tracks, and it
@@ -382,7 +513,7 @@ for (const c of channels) {
 if (mobile) {
   const total = lastIos ? (lastIos.passed || 0) + (lastIos.failed || 0) : 0;
   w(
-    `| — of which iOS | ${lastIos ? lastIos.iso.slice(5, 16).replace("T", " ") : "—"} | ${
+    `| MOBILE-AUTOMATION-TESTNET | — of which iOS | — | ${lastIos ? lastIos.iso.slice(5, 16).replace("T", " ") : "—"} | ${
       lastIos ? `${lastIos.passed}/${total}` : "never run"
     } | ${!lastIos ? "❌ never" : hoursSince(lastIos.iso) > T.iosSilentAlertHours ? `🕒 ${Math.round(hoursSince(lastIos.iso) / 24)}d ago` : lastIos.green ? "✅" : "❌"} | ${lastIos?.reportUrl ? `[report](${lastIos.reportUrl})` : "—"} |`,
   );
@@ -404,15 +535,23 @@ w(``);
 if (smokeScriptFails.length) {
   w(
     `**Smoke accuracy: 🔴 BREACHED** — ${smokeScriptFails.length} script failure(s) on a smoke suite: ${smokeScriptFails
-      .map((r) => `_${r.t.title}_`)
-      .join(", ")}. This breaks the QE-935 100% accuracy target and has to be called out in Block 2, not buried here.`,
+      .slice(0, 4)
+      .map((r) => `_${clip(r.t.title, 60)}_`)
+      .join(", ")}${smokeScriptFails.length > 4 ? `, and ${smokeScriptFails.length - 4} more (all listed in 1.3)` : ""}. This breaks the QE-935 100% accuracy target and has to be called out in Block 2, not buried here.`,
   );
 } else {
   w(`**Smoke accuracy: ✅ PASS** — no script failure on any smoke suite.`);
 }
 w(``);
-for (const c of channels.filter((c) => c.stale && c.runs.length)) {
-  w(`> ⚠️ **#${c.name}** last ran ${prettyAge(c.latestAgeH)}. Check the schedule before reading anything into the tests.`);
+for (const su of suites.filter((x) => x.stale && x.runs.length)) {
+  w(
+    `> ⚠️ **#${su.channel.name} · ${su.testType}** last ran ${prettyAge(hoursSince(su.latest.iso))}. Check the schedule before reading anything into the tests.`,
+  );
+}
+if (carriedOver.length) {
+  w(
+    `> ℹ️ ${carriedOver.length} failure(s) below did not run in this window at all — they are carried over from an earlier check, not new tonight. They are marked _carried over_ in 1.2.`,
+  );
 }
 if (mobile && !lastIos) w(`> ⚠️ **iOS has never run.** QE-948 Phase 1 is not started.`);
 w(``);
@@ -430,24 +569,24 @@ if (!rows.length) {
     const c = channels.find((x) => x.key === key);
     w(`### #${c?.name || key} — ${list.length} failure${list.length === 1 ? "" : "s"}`);
     w(``);
-    w(`| # | Test | Suite/Env | Class | Root cause (one sentence) | Action | Ticket | Owner | ETA |`);
-    w(`|---|---|---|---|---|---|---|---|---|`);
+    w(`| # | Test | Suite/Env | Flaky or genuine? | Class | Root cause (one sentence) | Action | Ticket | Owner | ETA |`);
+    w(`|---|---|---|---|---|---|---|---|---|---|`);
     for (const r of list.filter((r) => r.t.label !== "ENV")) {
       const t = r.t;
       n++;
       const gaps = missingFields(t);
       w(
-        `| ${n} | ${clip(t.title, 70)} | ${t.testType}/${t.env} | ${t.label || "**?**"} | ${rootCauseLine(t)} | ${actionOf(t)} | ${t.ticket || "—"} | ${t.owner || "⚠️"} | ${t.eta || "⚠️"} |`,
+        `| ${n} | ${clip(t.title, 70)}${r.failedInWindow ? "" : " _(carried over)_"} | ${t.testType}/${t.env} | ${verdictCell(r.verdict)} | ${t.label || "**?**"} | ${rootCauseLine(t)} | ${actionOf(t)} | ${t.ticket || "—"} | ${t.owner || "⚠️"} | ${t.eta || "⚠️"} |`,
       );
       if (gaps.length) {
-        w(`| | ↳ _triage incomplete: missing ${gaps.join(", ")}_ | | | | | | | |`);
+        w(`| | ↳ _triage incomplete: missing ${gaps.join(", ")}_ | | | | | | | | |`);
       }
     }
     for (const cl of envClusters.get(key) || []) {
       n++;
       const first = cl.members[0].t;
       w(
-        `| ${n} | **ENV cluster** — ${cl.members.length} test${cl.members.length === 1 ? "" : "s"}${cl.theme ? ` around \`${cl.theme}\`` : cl.sharedNote ? ", one incident" : ""} (detail in 1.5) | ${first.testType}/${first.env} | ENV | ${rootCauseLine(first)} | Monitor (ENV) | ${first.ticket || "—"} | ${first.owner || "⚠️"} | ${first.eta || "⚠️"} |`,
+        `| ${n} | **ENV cluster** — ${cl.members.length} test${cl.members.length === 1 ? "" : "s"}${cl.theme ? ` around \`${cl.theme}\`` : cl.sharedNote ? ", one incident" : ""} (detail in 1.5) | ${first.testType}/${first.env} | — environment | ENV | ${rootCauseLine(first)} | Monitor (ENV) | ${first.ticket || "—"} | ${first.owner || "⚠️"} | ${first.eta || "⚠️"} |`,
       );
     }
     w(``);
@@ -456,6 +595,20 @@ if (!rows.length) {
     `_Action is one of: **Fix** · **Quarantine** · **Raise PRO** · **Monitor (ENV)**. A row without an owner and an ETA is not finished triage._`,
   );
   w(``);
+
+  // Step 1 of the team's review: for every failure with no verdict yet, say which way the run
+  // history points and what to open to settle it. Without this the "Class" column is a guess.
+  const needVerdict = rows.filter((r) => !r.t.label);
+  if (needVerdict.length) {
+    w(`### Flaky test, or a real product issue? — the ${needVerdict.length} with no verdict yet`);
+    w(``);
+    w(
+      `A test that passes and fails on the same build is unreliable — that is ours to fix. A test that fails every single time is telling you something changed. Neither is decided here: this is the evidence, and what to open next.`,
+    );
+    w(``);
+    for (const r of needVerdict) for (const line of verdictBlock(r)) w(line);
+    w(``);
+  }
 }
 
 // ---- 1.3 ------------------------------------------------------------------
@@ -599,7 +752,10 @@ w(`## 1.6 Numbers for the daily log`);
 w(``);
 w("```");
 w(
-  `Fully-green: ${channels.map((c) => `${c.env === "mixed" ? "MANUAL" : c.env.toUpperCase()} ${c.green24Pct ?? c.greenPct ?? "—"}%`).join(" · ")}`,
+  `Fully-green: ${suites
+    .filter((x) => x.runs.length)
+    .map((x) => `${x.channel.platform === "mobile" ? "MOBILE-" : ""}${x.channel.env === "mixed" ? "MANUAL" : x.channel.env.toUpperCase()}/${x.testType} ${x.greenPct ?? "—"}%`)
+    .join(" · ")}`,
 );
 const webCh = channels.filter((c) => c.platform === "web");
 const mobCh = channels.filter((c) => c.platform === "mobile");
@@ -801,11 +957,23 @@ if (!appBugs.length) {
     s(`Impact      : ${a.impact || "<who is affected, which flow is blocked, is it live>"}`);
     s(`Evidence    : ${a.evidence || lastFailRun?.reportUrl || "<screenshot / video / log>"}`);
     s(`Repro       : ${a.repro || "<steps, or: only seen in the automation run>"}`);
-    s(`Found by    : automated ${t.testType} run${lastFailRun?.runId ? ` #${lastFailRun.runId}` : ""}`);
-    s(`Next step   : ${t.owner ? `${t.owner} will ` : ""}${t.ticket ? "track the ticket" : "raise the ticket once confirmed"} — need from ${a.team || "your team"}: confirm and assign`);
+    s(`Found by    : automated ${t.testType} run${lastFailRun?.runId ? ` #${lastFailRun.runId}` : ""} on ${prettyDate(t.lastFail || t.lastSeen)}`);
+    s(`Next steps  : 1. ${a.team || "<team>"} confirms it is a real defect (asking for a yes/no, not a fix today)`);
+    s(`              2. ${t.ticket ? `${t.ticket} is assigned an owner and a priority` : "we raise the PRO ticket once confirmed"}`);
+    s(`              3. QA re-runs the test after the fix and reports back in this thread — ${t.owner || "<qa owner>"}, by ${t.eta || "<date>"}`);
     s("```");
-    // Not turned into a post: dev-team channels are outside the automation channels this tool
-    // posts into. Hand this block to the team yourself, or paste it into the run thread.
+    // This is the "communicate it publicly" half of the review. It goes into the run's own thread
+    // in the automation channel: public, dev-visible, and sitting next to the evidence.
+    posts.push({
+      file: `2.2-${(t.ticket || `bug-${posts.length}`).replace(/[^\w-]/g, "")}.md`,
+      section: "2.2",
+      channelKey: t.channelKey,
+      threadTs: lastFailRun?.ts || null,
+      destination: `#${r.ch?.name || t.channelKey} — thread of the failing run, @-mention ${a.team ? `the ${a.team} team` : "the owning team"}`,
+      what: `Bug report: ${clip(t.title, 60)}`,
+      blocked: !t.ticket || !a.team || !a.impact || !a.evidence,
+      body: S.slice(bugStart, S.lastIndexOf("```")).join("\n"),
+    });
     s(``);
   }
 }
@@ -947,26 +1115,104 @@ if (!jira?.issues?.length) {
 s(``);
 fs.writeFileSync(path.join(outDir, "standup.md"), S.join("\n") + "\n");
 
+// ---------------------------------------------------------------- task drafts
+// "If it is a genuine issue, create a task." A product bug with no ticket is a conversation that
+// evaporates — this writes the ticket body so raising it is one confirmation, not ten minutes of
+// retyping. Anything still in angle brackets is a gap the person triaging has to fill first.
+const tasksDir = path.join(outDir, "tasks");
+fs.rmSync(tasksDir, { recursive: true, force: true });
+const needTicket = appBugs.filter((r) => !r.t.ticket);
+if (needTicket.length) {
+  fs.mkdirSync(tasksDir, { recursive: true });
+  for (const [i, r] of needTicket.entries()) {
+    const t = r.t;
+    const a = t.appbug || {};
+    const lastFailRun = (r.ch?.runs || [])
+      .filter((x) => x.failures.some((f) => normTitle(f) === normTitle(t.title)))
+      .at(-1);
+    const gaps = [];
+    if (!a.impact) gaps.push("impact");
+    if (!a.evidence && !lastFailRun?.reportUrl) gaps.push("evidence");
+    if (!a.team) gaps.push("team");
+    if (!a.repro) gaps.push("how to reproduce");
+    const body = [
+      `<!-- Jira draft · project ${cfg.jira?.bugProject || "PRO"} · type Bug -->`,
+      `<!-- Do not create this until the gaps below are filled. -->`,
+      ``,
+      `# ${clip(t.title, 90)}`,
+      ``,
+      `**Project**: ${cfg.jira?.bugProject || "PRO"}  ·  **Type**: Bug  ·  **Team**: ${a.team || "⚠️ not set"}  ·  **Severity**: ${a.severity || "⚠️ not set"}`,
+      ``,
+      `## What happens`,
+      ``,
+      a.symptom || t.note || "⚠️ not written — describe what a person sees, not what the assertion says.",
+      ``,
+      `## Where`,
+      ``,
+      `${t.platform === "mobile" ? "Mobile app" : "Web"} · ${String(t.env).toUpperCase()}${lastFailRun?.browser ? ` · ${lastFailRun.browser}` : ""}${lastFailRun?.appVersion ? ` · ${lastFailRun.appVersion}` : ""}`,
+      ``,
+      `## Impact`,
+      ``,
+      a.impact || "⚠️ not stated — who is affected, which flow is blocked, is it already live?",
+      ``,
+      `## How to reproduce`,
+      ``,
+      a.repro || "⚠️ not stated — steps by hand, or say explicitly that it was only seen in the automated run.",
+      ``,
+      `## Evidence`,
+      ``,
+      `- Automated ${t.testType} run${lastFailRun?.runId ? ` #${lastFailRun.runId}` : ""}, failing ${t.consecutiveFails} run(s) in a row since ${prettyDate(t.firstSeen)}`,
+      lastFailRun?.reportUrl ? `- [Playwright report](${lastFailRun.reportUrl})` : null,
+      lastFailRun?.jobUrl ? `- [CI job](${lastFailRun.jobUrl})` : null,
+      a.evidence ? `- ${a.evidence}` : null,
+      ``,
+      `## Next steps`,
+      ``,
+      `1. ${a.team || "<team>"} confirms whether this is a real defect.`,
+      `2. Ticket is assigned an owner and a priority.`,
+      `3. QA re-runs the test after the fix — ${t.owner || "⚠️ no QA owner"}, by ${t.eta || "⚠️ no ETA"}.`,
+      ``,
+      `---`,
+      ``,
+      gaps.length
+        ? `⚠️ **Fill these before raising it**: ${gaps.join(", ")}.\n\n\`\`\`\nnode tools/bin/classify.js --test "${t.title.replace(/"/g, '\\"')}" --channel ${t.channelKey} --label APP-BUG --team <team> --impact "..." --evidence <url> --repro "..."\n\`\`\``
+        : `Ready to raise. After creating it, record the key:\n\n\`\`\`\nnode tools/bin/classify.js --test "${t.title.replace(/"/g, '\\"')}" --channel ${t.channelKey} --label APP-BUG --ticket <KEY>\n\`\`\``,
+      ``,
+    ]
+      .filter((x) => x !== null)
+      .join("\n");
+    fs.writeFileSync(path.join(tasksDir, `task-${String(i + 1).padStart(2, "0")}-${t.channelKey}.md`), body);
+  }
+}
+
 // ---------------------------------------------------------------- postable messages
 // The triage record is cut per channel, not posted whole. It goes into the thread of a run in
 // that channel, where the audience only cares about that channel — pasting staging's failures
 // into the prod thread is noise, and it leaks a channel's state to people not watching it.
 // Each record is rendered from scratch against that channel's rows so nothing from another
 // channel can survive in it.
-function channelRecord(c) {
+function suiteRecord(su) {
+  const c = su.channel;
   const R = [];
   const p = (x = "") => R.push(x);
-  const list = byChannel.get(c.key) || [];
+  // Scoped to this suite, not the whole channel: the smoke run and the regression run are separate
+  // jobs posted as separate Slack messages, so each gets its own record in its own thread.
+  const list = (byChannel.get(c.key) || []).filter((r) => r.t.testType === su.testType);
   const cCounts = { ENV: 0, "APP-BUG": 0, SCRIPT: 0 };
   for (const r of list) if (r.t.label) cCounts[r.t.label]++;
   const cUnlabelled = list.filter((r) => !r.t.label).length;
-  const cSmokeFails = list.filter((r) => r.t.label === "SCRIPT" && r.t.testType === "smoke");
-  const clusters = envClusters.get(c.key) || [];
+  const cSmokeFails = su.testType === "smoke" ? list.filter((r) => r.t.label === "SCRIPT") : [];
+  const clusters = (envClusters.get(c.key) || [])
+    .map((cl) => ({ ...cl, members: cl.members.filter((m) => m.t.testType === su.testType) }))
+    .filter((cl) => cl.members.length);
   const isMobile = c.platform === "mobile";
+  const isIos = isMobile && su.testType === "smoke";
 
-  p(`# TRIAGE RECORD — #${c.name} — ${dmy}`);
+  p(`# TRIAGE RECORD — #${c.name} · ${su.testType.toUpperCase()} — ${dmy}`);
   p(``);
-  p(`_This record covers #${c.name} only. Other channels are triaged in their own threads._`);
+  p(
+    `_This record covers the **${su.testType}** suite in #${c.name} only. The other suites and channels are triaged in their own threads._`,
+  );
   if (!isToday) {
     p(``);
     p(`> 🕰️ Rebuilt for **${date}** from stored history; anything after that date is excluded.`);
@@ -974,29 +1220,31 @@ function channelRecord(c) {
   p(``);
 
   // ---- 1.1
-  p(`## 1.1 Channel status`);
+  p(`## 1.1 Suite status`);
   p(``);
-  const r0 = c.latest;
+  p(`_Reviewed: ${su.checkpoint ? `${su.newRuns.length} run(s) since ${hm(su.checkpoint.iso)}` : "every run stored — this suite has not been signed off before"}._`);
+  p(``);
+  const r0 = su.latest;
   const tot0 = r0 ? (r0.passed || 0) + (r0.failed || 0) : 0;
-  p(`| Channel | Latest run | Pass/Total | Fully green? | Report |`);
-  p(`|---|---|---|---|---|`);
+  p(`| Channel | Suite | Latest run | Pass/Total | Fully green? | Report |`);
+  p(`|---|---|---|---|---|---|`);
   p(
-    `| ${c.name.replace(/^qa-/, "").toUpperCase()} | ${r0 ? r0.iso.slice(5, 16).replace("T", " ") : "—"} | ${
+    `| ${c.name.replace(/^qa-/, "").toUpperCase()} | **${su.testType}** | ${r0 ? r0.iso.slice(5, 16).replace("T", " ") : "—"} | ${
       r0 ? `${r0.passed}/${tot0}` : "did not run"
-    } | ${c.stale ? "🕒 silent" : r0?.green ? "✅" : "❌"} | ${r0?.reportUrl ? `[report](${r0.reportUrl})` : "—"} |`,
+    } | ${su.stale ? "🕒 silent" : r0?.green ? "✅" : "❌"} | ${r0?.reportUrl ? `[report](${r0.reportUrl})` : "—"} |`,
   );
-  if (isMobile && lastIos !== undefined) {
+  if (isIos) {
     const totIos = lastIos ? (lastIos.passed || 0) + (lastIos.failed || 0) : 0;
     p(
-      `| — of which iOS | ${lastIos ? lastIos.iso.slice(5, 16).replace("T", " ") : "—"} | ${
+      `| ${c.name.replace(/^qa-/, "").toUpperCase()} | — of which iOS | ${lastIos ? lastIos.iso.slice(5, 16).replace("T", " ") : "—"} | ${
         lastIos ? `${lastIos.passed}/${totIos}` : "never run"
       } | ${!lastIos ? "❌ never" : hoursSince(lastIos.iso) > T.iosSilentAlertHours ? `🕒 ${Math.round(hoursSince(lastIos.iso) / 24)}d ago` : lastIos.green ? "✅" : "❌"} | ${lastIos?.reportUrl ? `[report](${lastIos.reportUrl})` : "—"} |`,
     );
   }
   p(``);
-  if (!(c.runs || []).length) {
+  if (!su.runs.length) {
     p(
-      `> ⚠️ **No runs stored for this channel.** The row above is empty, not green — Slack was never read for it on this date.`,
+      `> ⚠️ **No runs stored for this suite.** The row above is empty, not green — Slack was never read for it on this date.`,
     );
     p(``);
   }
@@ -1004,13 +1252,15 @@ function channelRecord(c) {
     `**Total failures: ${list.length}** → ENV ${cCounts.ENV} · APP-BUG ${cCounts["APP-BUG"]} · SCRIPT ${cCounts.SCRIPT}${cUnlabelled ? ` · not yet classified ${cUnlabelled}` : ""}`,
   );
   p(``);
-  p(
-    cSmokeFails.length
-      ? `**Smoke accuracy: 🔴 BREACHED** — ${cSmokeFails.length} script failure(s) on a smoke suite: ${cSmokeFails.map((r) => `_${r.t.title}_`).join(", ")}.`
-      : `**Smoke accuracy: ✅ PASS** — no script failure on a smoke suite in this channel.`,
-  );
-  p(``);
-  if (isMobile && !lastIos) {
+  if (su.testType === "smoke") {
+    p(
+      cSmokeFails.length
+        ? `**Smoke accuracy: 🔴 BREACHED** — ${cSmokeFails.length} script failure(s) on this smoke suite: ${cSmokeFails.slice(0, 4).map((r) => `_${clip(r.t.title, 60)}_`).join(", ")}${cSmokeFails.length > 4 ? `, and ${cSmokeFails.length - 4} more (all in 1.3)` : ""}.`
+        : `**Smoke accuracy: ✅ PASS** — no script failure on this smoke suite.`,
+    );
+    p(``);
+  }
+  if (isIos && !lastIos) {
     p(`> ⚠️ **iOS has never run.** QE-948 Phase 1 is not started.`);
     p(``);
   }
@@ -1023,22 +1273,22 @@ function channelRecord(c) {
     p(``);
   } else {
     let n = 0;
-    p(`| # | Test | Suite/Env | Class | Root cause (one sentence) | Action | Ticket | Owner | ETA |`);
-    p(`|---|---|---|---|---|---|---|---|---|`);
+    p(`| # | Test | Suite/Env | Flaky or genuine? | Class | Root cause (one sentence) | Action | Ticket | Owner | ETA |`);
+    p(`|---|---|---|---|---|---|---|---|---|---|`);
     for (const r of list.filter((x) => x.t.label !== "ENV")) {
       const t = r.t;
       n++;
       p(
-        `| ${n} | ${clip(t.title, 70)} | ${t.testType}/${t.env} | ${t.label || "**?**"} | ${rootCauseLine(t)} | ${actionOf(t)} | ${t.ticket || "—"} | ${t.owner || "⚠️"} | ${t.eta || "⚠️"} |`,
+        `| ${n} | ${clip(t.title, 70)}${r.failedInWindow ? "" : " _(carried over)_"} | ${t.testType}/${t.env} | ${verdictCell(r.verdict)} | ${t.label || "**?**"} | ${rootCauseLine(t)} | ${actionOf(t)} | ${t.ticket || "—"} | ${t.owner || "⚠️"} | ${t.eta || "⚠️"} |`,
       );
       const gaps = missingFields(t);
-      if (gaps.length) p(`| | ↳ _triage incomplete: missing ${gaps.join(", ")}_ | | | | | | | |`);
+      if (gaps.length) p(`| | ↳ _triage incomplete: missing ${gaps.join(", ")}_ | | | | | | | | |`);
     }
     for (const cl of clusters) {
       n++;
       const first = cl.members[0].t;
       p(
-        `| ${n} | **ENV cluster** — ${cl.members.length} test${cl.members.length === 1 ? "" : "s"}${cl.theme ? ` around \`${cl.theme}\`` : cl.sharedNote ? ", one incident" : ""} (detail in 1.5) | ${first.testType}/${first.env} | ENV | ${rootCauseLine(first)} | Monitor (ENV) | ${first.ticket || "—"} | ${first.owner || "⚠️"} | ${first.eta || "⚠️"} |`,
+        `| ${n} | **ENV cluster** — ${cl.members.length} test${cl.members.length === 1 ? "" : "s"}${cl.theme ? ` around \`${cl.theme}\`` : cl.sharedNote ? ", one incident" : ""} (detail in 1.5) | ${first.testType}/${first.env} | — environment | ENV | ${rootCauseLine(first)} | Monitor (ENV) | ${first.ticket || "—"} | ${first.owner || "⚠️"} | ${first.eta || "⚠️"} |`,
       );
     }
     p(``);
@@ -1046,6 +1296,17 @@ function channelRecord(c) {
       `_Action is one of: **Fix** · **Quarantine** · **Raise PRO** · **Monitor (ENV)**. A row without an owner and an ETA is not finished triage._`,
     );
     p(``);
+    const needVerdict = list.filter((r) => !r.t.label);
+    if (needVerdict.length) {
+      p(`### Flaky test, or a real product issue? — the ${needVerdict.length} with no verdict yet`);
+      p(``);
+      p(
+        `A test that passes and fails on the same build is unreliable — that is ours to fix. A test that fails every single time is telling you something changed.`,
+      );
+      p(``);
+      for (const r of needVerdict) for (const line of verdictBlock(r)) p(line);
+      p(``);
+    }
   }
 
   // ---- 1.3
@@ -1149,11 +1410,13 @@ function channelRecord(c) {
   p(`## 1.6 Numbers for the daily log`);
   p(``);
   p("```");
-  p(`Fully-green: ${c.green24Pct ?? c.greenPct ?? "—"}%`);
-  p(`Flakiness rolling ${T.rollingWindow} runs: ${flak([c])}   (target <${T.flakinessTargetPct}%)`);
+  // Per suite, not per channel: mixing a green 45-test smoke run into the regression suite's
+  // flakiness is how a red suite ends up reporting a healthy percentage.
+  p(`Fully-green: ${su.greenPct ?? "—"}% of the last ${Math.min(su.runs.length, WINDOW)} ${su.testType} runs`);
+  p(`Flakiness rolling ${T.rollingWindow} runs: ${flak([{ runs: su.runs }])}   (target <${T.flakinessTargetPct}%)`);
   p(`Failures classified: ENV ${cCounts.ENV} / APP ${cCounts["APP-BUG"]} / SCRIPT ${cCounts.SCRIPT}`);
   p(`Failures with no verdict: ${cUnlabelled}${cUnlabelled ? "   ⚠️ must be 0" : "   ✅"}`);
-  p(`Smoke accuracy: ${cSmokeFails.length ? "BREACHED" : "PASS"}`);
+  p(`Smoke accuracy: ${su.testType === "smoke" ? (cSmokeFails.length ? "BREACHED" : "PASS") : "n/a — this is not a smoke suite"}`);
   p("```");
   p(``);
   const rec = recovered.filter((r) => r.t.channelKey === c.key);
@@ -1173,19 +1436,31 @@ function channelRecord(c) {
   return R.join("\n").trimEnd();
 }
 
-// One post per channel that was actually read. A channel with nothing stored was never checked,
-// so there is no record to post for it.
-for (const c of [...channels].reverse()) {
-  if (!(c.runs || []).length) continue;
-  const failing = (c.runs || []).filter((r) => !r.green).at(-1);
+// One post per suite, because one suite is one CI job is one Slack message is one thread. Posting
+// the regression record into the smoke run's thread would put it under a green message, which is
+// exactly where nobody looks. A suite with nothing stored was never checked, so it gets no post.
+const cleanSuites = [];
+for (const su of [...suites].reverse()) {
+  if (!su.runs.length) continue;
+  // A suite with nothing to report gets no message. Posting "no failures" under an already-green
+  // run is noise, and noise is what stops people reading the threads that do matter.
+  if (!(byChannel.get(su.channel.key) || []).some((r) => r.t.testType === su.testType)) {
+    cleanSuites.push(`#${su.channel.name} · ${su.testType}`);
+    continue;
+  }
+  // Prefer a failing run inside the window under review — that is the message people are looking
+  // at this morning. Fall back to the latest run of the suite.
+  const failing = (su.newRuns.length ? su.newRuns : su.runs).filter((r) => !r.green).at(-1);
+  const target = failing || su.latest;
   posts.unshift({
-    file: `1-triage-${c.key}.md`,
+    file: `1-triage-${su.channel.key}-${su.testType}.md`,
     section: "1.1–1.6",
-    channelKey: c.key,
-    destination: `#${c.name} — ${failing ? `thread of the ${failing.iso.slice(11, 16)} run` : "thread of the latest run"}`,
-    threadTs: failing?.ts || c.latest?.ts || null,
-    what: `Triage record — #${c.name}`,
-    body: channelRecord(c),
+    channelKey: su.channel.key,
+    suiteId: su.id,
+    destination: `#${su.channel.name} — thread of the ${su.testType} run at ${target ? target.iso.slice(11, 16) : "?"}${failing ? "" : " (latest — none failed)"}`,
+    threadTs: target?.ts || null,
+    what: `Triage record — #${su.channel.name} · ${su.testType}`,
+    body: suiteRecord(su),
   });
 }
 
@@ -1199,8 +1474,12 @@ idx.push(``);
 idx.push(`One file below is one message for one thread. Review, then post. Nothing is sent automatically.`);
 idx.push(``);
 idx.push(
-  `The triage record is cut **one file per channel**. Each file contains only that channel's failures — post it into that channel's thread and nowhere else. There is no whole-day record to post; \`triage.md\` is your own working copy.`,
+  `The triage record is cut **one file per suite** — smoke and regression are separate CI jobs posted as separate Slack messages, so each goes into its own run thread. Each file contains only that suite's failures. There is no whole-day record to post; \`triage.md\` is your own working copy.`,
 );
+if (cleanSuites.length) {
+  idx.push(``);
+  idx.push(`No record written for ${cleanSuites.reverse().join(", ")} — nothing failed there.`);
+}
 idx.push(``);
 idx.push(`| Section | Message | Goes to | Status |`);
 idx.push(`|---|---|---|---|`);
@@ -1211,7 +1490,7 @@ for (const post of posts) {
     path.join(postsDir, post.file),
     [
       `<!-- Section ${post.section} · post to: ${post.destination} -->`,
-      ...(post.channelKey ? [`<!-- channel: ${post.channelKey}${post.threadTs ? ` · thread_ts: ${post.threadTs}` : " · no failing run found — pick the thread by hand"} -->`] : []),
+      ...(post.channelKey ? [`<!-- channel: ${post.channelKey}${post.suiteId ? ` · suite: ${post.suiteId.split(":")[1]}` : ""}${post.threadTs ? ` · thread_ts: ${post.threadTs}` : " · no failing run found — pick the thread by hand"} -->`] : []),
       `<!-- Everything below the rule is the message body. Do not paste this header. -->`,
       ``,
       `---`,
@@ -1229,9 +1508,15 @@ if (posts.some((p) => p.blocked)) {
   idx.push(``);
 }
 idx.push(
-  "Sections 2.2 (dev message) and 2.4 (escalation) are deliberately not posted — they stay in the report for you to hand over yourself.",
+  "Section 2.4 (escalation) is deliberately not turned into a message — it stays in the report for you to raise yourself.",
 );
 idx.push(``);
+if (needTicket.length) {
+  idx.push(
+    `📋 ${needTicket.length} product bug(s) have no ticket yet. Drafts are in [tasks/](tasks/) — fill the gaps, create them in ${cfg.jira?.bugProject || "PRO"}, then record the key with \`classify.js --ticket\`.`,
+  );
+  idx.push(``);
+}
 if (P.standup?.confirmed === false) {
   idx.push(
     `⚠️ The standup destination (${P.standup.target}) is not confirmed yet. Confirm it in \`config/channels.json\` and set \`"confirmed": true\` before the first send.`,
@@ -1263,7 +1548,7 @@ fs.writeFileSync(
 );
 
 console.log(`Reports for ${date}:`);
-for (const f of ["triage.md", "standup.md", "log-row.md"]) {
+for (const f of ["triage.md", "standup.md", "log-row.md", "posts.md"]) {
   console.log(`  ${path.relative(paths.root, path.join(outDir, f)).replace(/\\/g, "/")}`);
 }
 console.log(
@@ -1271,3 +1556,40 @@ console.log(
     (mobile ? `, iOS ${lastIos ? `${hoursSince(lastIos.iso)}h ago` : "NEVER RAN"}` : "") +
     `.`,
 );
+if (needTicket.length) {
+  console.log(`  reports/${date}/tasks/  — ${needTicket.length} ticket draft(s) for product bugs with no ticket`);
+}
+// The morning question the report cannot answer on its own: what did we decide yesterday, and did
+// it actually get fixed? track.js owns that, so point at it rather than duplicating it here.
+const leaning = { flaky: 0, genuine: 0, unclear: 0 };
+for (const r of rows) leaning[r.verdict.leaning]++;
+console.log(
+  `First read: ${leaning.flaky} lean flaky (our test), ${leaning.genuine} lean genuine (the product), ${leaning.unclear} need a look.`,
+);
+console.log(`Then run: node tools/bin/track.js --overdue   # fixes decided earlier that are still not done`);
+
+// ---------------------------------------------------------------- sign off the window
+// Advancing the checkpoint is deliberate, never automatic: it is the moment someone says "I have
+// looked at these runs". If report.js moved it on its own, a report nobody read would silently
+// mark the night's failures as reviewed.
+if (has("mark-checked")) {
+  state.checkpoints = state.checkpoints || {};
+  let moved = 0;
+  for (const su of suites) {
+    if (!su.latest) continue;
+    const cur = state.checkpoints[su.id];
+    if (cur && Number(cur.ts) >= Number(su.latest.ts)) continue;
+    state.checkpoints[su.id] = { ts: su.latest.ts, iso: su.latest.iso, at: new Date().toISOString() };
+    moved++;
+  }
+  saveState(state);
+  console.log(
+    moved
+      ? `\n✔ Signed off ${moved} suite(s). Tomorrow's report starts after these runs.`
+      : `\nNothing to sign off — every suite was already checked up to its latest run.`,
+  );
+} else if (suites.some((su) => su.newRuns.length)) {
+  console.log(
+    `When you have finished triaging: node tools/bin/report.js --mark-checked   # so tomorrow starts from here`,
+  );
+}

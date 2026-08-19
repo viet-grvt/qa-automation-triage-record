@@ -232,6 +232,12 @@ function rebuildTestStats(state) {
         rec.quarantined = old.quarantined ?? false;
         rec.decisions = old.decisions ?? [];
         rec.rca = old.rca ?? null;
+        // Owner, ETA, the bug fields and the fix tracker are judgement too — dropping them here
+        // would silently blank the "who / by when" columns on the next morning's ingest.
+        rec.owner = old.owner ?? null;
+        rec.eta = old.eta ?? null;
+        rec.appbug = old.appbug ?? null;
+        rec.fix = old.fix ?? null;
       } else {
         rec.label = null;
         rec.labelDate = null;
@@ -240,6 +246,10 @@ function rebuildTestStats(state) {
         rec.quarantined = false;
         rec.decisions = [];
         rec.rca = null;
+        rec.owner = null;
+        rec.eta = null;
+        rec.appbug = null;
+        rec.fix = null;
       }
       next[rec.key] = rec;
     }
@@ -271,5 +281,36 @@ if (asJson) {
   console.log(
     `  → ${Object.keys(state.tests).length} tests with failure history, ${failing} currently red.`,
   );
+
+  // A Slack pull reaches back as far as `limit` allows, which is usually into previous days. Say
+  // per suite how much of what was just ingested is actually new since the last sign-off, so the
+  // morning review covers the overnight runs and not last week's, and so a gap is visible: if the
+  // oldest message pulled is still newer than the checkpoint, runs in between were never seen.
+  const cps = state.checkpoints || {};
+  const bySuite = new Map();
+  for (const runs of Object.values(state.runs)) {
+    for (const r of runs) {
+      const id = `${r.channelKey}:${r.testType}`;
+      if (!bySuite.has(id)) bySuite.set(id, []);
+      bySuite.get(id).push(r);
+    }
+  }
+  const lines = [];
+  for (const [id, runs] of [...bySuite].sort()) {
+    runs.sort((a, b) => Number(a.ts) - Number(b.ts));
+    const cp = cps[id];
+    const fresh = runs.filter((r) => !cp || Number(r.ts) > Number(cp.ts));
+    if (!fresh.length) continue;
+    lines.push(
+      `     ${id.padEnd(34)} ${String(fresh.length).padStart(2)} run(s) to review` +
+        (cp ? ` since ${cp.iso.slice(0, 16).replace("T", " ")}` : `  (never signed off — everything stored counts as new)`),
+    );
+  }
+  if (lines.length) {
+    console.log(`  → to review:`);
+    for (const l of lines) console.log(l);
+  } else {
+    console.log(`  → nothing new since the last sign-off.`);
+  }
   for (const w of summary.warnings) console.log(`  ! ${w}`);
 }

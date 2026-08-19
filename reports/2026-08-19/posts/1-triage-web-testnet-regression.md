@@ -1,46 +1,44 @@
-<!-- Section 1.1–1.6 · post to: #qa-web-automation-testnet — thread of the 04:18 run -->
-<!-- channel: web-testnet · thread_ts: 1787087907.017519 -->
+<!-- Section 1.1–1.6 · post to: #qa-web-automation-testnet — thread of the regression run at 04:18 -->
+<!-- channel: web-testnet · suite: regression · thread_ts: 1787087907.017519 -->
 <!-- Everything below the rule is the message body. Do not paste this header. -->
 
 ---
 
-# TRIAGE RECORD — #qa-web-automation-testnet — 19/08/2026
+# TRIAGE RECORD — #qa-web-automation-testnet · REGRESSION — 19/08/2026
 
-_This record covers #qa-web-automation-testnet only. Other channels are triaged in their own threads._
+_This record covers the **regression** suite in #qa-web-automation-testnet only. The other suites and channels are triaged in their own threads._
 
-## 1.1 Channel status
+## 1.1 Suite status
 
-| Channel | Latest run | Pass/Total | Fully green? | Report |
-|---|---|---|---|---|
-| WEB-AUTOMATION-TESTNET | 08-19 06:58 | 45/45 | ✅ | [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32191202927/artifacts/9346932741) |
+_Reviewed: every run stored — this suite has not been signed off before._
+
+| Channel | Suite | Latest run | Pass/Total | Fully green? | Report |
+|---|---|---|---|---|---|
+| WEB-AUTOMATION-TESTNET | **regression** | 08-19 10:19 | 1/1 | ✅ | [report](https://github.com/gravity-technologies/qa-automation/actions/runs/32211368643/artifacts/9350973017) |
 
 **Total failures: 16** → ENV 1 · APP-BUG 0 · SCRIPT 15
 
-**Smoke accuracy: ✅ PASS** — no script failure on a smoke suite in this channel.
-
 ## 1.2 Classification — one row per failing test
 
-| # | Test | Suite/Env | Class | Root cause (one sentence) | Action | Ticket | Owner | ETA |
-|---|---|---|---|---|---|---|---|---|
-| 1 | Verify long position: in-profit SL trigger price must be between… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
-| 2 | Verify Trade-Indicators data for all instruments is rendered as… | regression/testnet | SCRIPT | The all-instrument sweep ran 345s and was still going when the regression job hit its time budget; it is the… | Fix | QE-969 | viet | 2026-08-19 |
-| | ↳ _triage incomplete: missing root cause_ | | | | | | | |
-| 3 | Verify all records under the Recent Trades tab are populated as… | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
-| 4 | Verify Order-Book data is displayed as expected | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
-| 5 | Verify trading chart candle-sticks are rendered as expected | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
-| 6 | Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK) | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
-| 7 | Verify editing a TP target trigger price persists after Confirm | regression/testnet | SCRIPT | splitTPSLPage.ts:305 asserts the edited trigger price persisted and gets false — the value read back after… | Fix | — | viet | 2026-08-20 |
-| | ↳ _triage incomplete: missing root cause_ | | | | | | | |
-| 8 | Verify data resets when a row is deleted or the tab is switched | regression/testnet | SCRIPT | splitTPSLPage.ts:305 asserts the edited trigger price persisted and gets false — the value read back after… | Fix | — | viet | 2026-08-20 |
-| | ↳ _triage incomplete: missing root cause_ | | | | | | | |
-| 9 | Verify Position TP/SL size matches the position when a trading login… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
-| 10 | Verify short position: TP trigger price must be less than mark price | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
-| 11 | Verify short position: in-profit SL trigger price must be between… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
-| 12 | Verify Split TP for Short position: trigger price must be less than… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
-| 13 | Verify SL trigger type can be selected at MAX slider on a Short… | regression/testnet | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
-| 14 | Verify open limit order can be cancelled successfully | regression/testnet | SCRIPT | The Order price field is targeted as //label[div='Order price']/input, which never became visible within 30s,… | Fix | — | viet | 2026-08-20 |
-| 15 | Verify theme toggle, icons, and rendering work on all public pages in… | regression/testnet | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
-| 16 | **ENV cluster** — 1 test, one incident (detail in 1.5) | regression/testnet | ENV | approveMetamask aborted: the MetaMask extension window never opened (no chrome-extension page appeared in… | Monitor (ENV) | — | viet | 2026-08-20 |
+| # | Test | Suite/Env | Flaky or genuine? | Class | Root cause (one sentence) | Action | Ticket | Owner | ETA |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | Verify long position: in-profit SL trigger price must be between… | regression/testnet | 🔁 likely our test · flaky pattern | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 2 | Verify Trade-Indicators data for all instruments is rendered as… | regression/testnet | ❔ needs a look · too early to say | SCRIPT | The all-instrument sweep ran 345s and was still going when the regression job hit its time budget; it is the… | Fix | QE-969 | viet | 2026-08-19 |
+| | ↳ _triage incomplete: missing root cause_ | | | | | | | | |
+| 3 | Verify all records under the Recent Trades tab are populated as… | regression/testnet | ❔ needs a look · too early to say | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 4 | Verify Order-Book data is displayed as expected | regression/testnet | ❔ needs a look · too early to say | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 5 | Verify trading chart candle-sticks are rendered as expected | regression/testnet | ❔ needs a look · too early to say | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 6 | Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK) | regression/testnet | ❔ needs a look · too early to say | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 7 | Verify editing a TP target trigger price persists after Confirm | regression/testnet | ❔ needs a look · too early to say | SCRIPT | splitTPSL.spec.ts:224 reads the TP/SL table once and asserts flat.some(s => s.includes(newTrigger)); the… | Fix | — | viet | 2026-08-20 |
+| 8 | Verify data resets when a row is deleted or the tab is switched | regression/testnet | ❔ needs a look · too early to say | SCRIPT | splitTPSLPage.ts:305 asserts the Confirm button is enabled the moment it is checked, and on retry… | Fix | — | viet | 2026-08-20 |
+| 9 | Verify Position TP/SL size matches the position when a trading login… | regression/testnet | ❔ needs a look · too early to say | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 10 | Verify short position: TP trigger price must be less than mark price | regression/testnet | ❔ needs a look · too early to say | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 11 | Verify short position: in-profit SL trigger price must be between… | regression/testnet | ❔ needs a look · too early to say | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 12 | Verify Split TP for Short position: trigger price must be less than… | regression/testnet | ❔ needs a look · too early to say | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 13 | Verify SL trigger type can be selected at MAX slider on a Short… | regression/testnet | ❔ needs a look · too early to say | SCRIPT | clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length;… | Fix | — | viet | 2026-08-20 |
+| 14 | Verify open limit order can be cancelled successfully | regression/testnet | ❔ needs a look · too early to say | SCRIPT | The Order price field is targeted as //label[div='Order price']/input, which never became visible within 30s,… | Fix | — | viet | 2026-08-20 |
+| 15 | Verify theme toggle, icons, and rendering work on all public pages in… | regression/testnet | ❔ needs a look · too early to say | SCRIPT | Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time… | Fix | — | viet | 2026-08-20 |
+| 16 | **ENV cluster** — 1 test, one incident (detail in 1.5) | regression/testnet | — environment | ENV | approveMetamask aborted: the MetaMask extension window never opened (no chrome-extension page appeared in… | Monitor (ENV) | — | viet | 2026-08-20 |
 
 _Action is one of: **Fix** · **Quarantine** · **Raise PRO** · **Monitor (ENV)**. A row without an owner and an ETA is not finished triage._
 
@@ -51,7 +49,7 @@ _Action is one of: **Fix** · **Quarantine** · **Raise PRO** · **Monitor (ENV)
 ```
 [SCRIPT-01] Verify long position: in-profit SL trigger price must be between entry and mark prices
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 17 Aug
+Failures    : 1 consecutive run since 18 Aug
 Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
 Category    : brittle-locator (auto)
 PR          : ⚠️ not linked
@@ -63,7 +61,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-02] Verify Trade-Indicators data for all instruments is rendered as expected
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : ⚠️ not recorded — run /script-rca
 Category    : ⚠️ not set
 PR          : ⚠️ not linked
@@ -75,7 +73,7 @@ Owner       : viet    ETA: 2026-08-19
 ```
 [SCRIPT-03] Verify all records under the Recent Trades tab are populated as expected
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
 Category    : other (auto)
 PR          : ⚠️ not linked
@@ -87,7 +85,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-04] Verify Order-Book data is displayed as expected
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
 Category    : other (auto)
 PR          : ⚠️ not linked
@@ -99,7 +97,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-05] Verify trading chart candle-sticks are rendered as expected
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
 Category    : other (auto)
 PR          : ⚠️ not linked
@@ -111,7 +109,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-06] Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK)
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
 Category    : other (auto)
 PR          : ⚠️ not linked
@@ -123,31 +121,31 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-07] Verify editing a TP target trigger price persists after Confirm
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
-Root cause  : ⚠️ not recorded — run /script-rca
-Category    : ⚠️ not set
+Failures    : 1 consecutive run since 19 Aug
+Root cause  : splitTPSL.spec.ts:224 reads the TP/SL table once and asserts flat.some(s => s.includes(newTrigger)); the table updates asynchronously after Confirm, so a single read taken too early finds nothing. The retry then timed out reading the Positions table at basepage.ts:1333.
+Category    : race-condition (auto)
 PR          : ⚠️ not linked
 Verify      : ⚠️ not verified — rerun it and record the result
-Prevention  : ⚠️ MISSING — without this the same class of failure returns
+Prevention  : Poll the table until it contains the new trigger price (expect.poll / toPass) instead of asserting on one snapshot, so a slow refresh is a wait rather than a failure. If it still fails once the wait is in, it is a product bug — re-classify it.
 Owner       : viet    ETA: 2026-08-20
 ```
 
 ```
 [SCRIPT-08] Verify data resets when a row is deleted or the tab is switched
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
-Root cause  : ⚠️ not recorded — run /script-rca
-Category    : ⚠️ not set
+Failures    : 1 consecutive run since 19 Aug
+Root cause  : splitTPSLPage.ts:305 asserts the Confirm button is enabled the moment it is checked, and on retry splitTPSLPage.ts:110 gives the modal only isModalOpen(2000) to appear; both check before the sheet has settled.
+Category    : race-condition (auto)
 PR          : ⚠️ not linked
 Verify      : ⚠️ not verified — rerun it and record the result
-Prevention  : ⚠️ MISSING — without this the same class of failure returns
+Prevention  : Wait for the Confirm button to become enabled rather than asserting it already is, and drop the fixed 2000ms modal window in favour of an explicit wait.
 Owner       : viet    ETA: 2026-08-20
 ```
 
 ```
 [SCRIPT-09] Verify Position TP/SL size matches the position when a trading login is active
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
 Category    : brittle-locator (auto)
 PR          : ⚠️ not linked
@@ -159,7 +157,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-10] Verify short position: TP trigger price must be less than mark price
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
 Category    : brittle-locator (auto)
 PR          : ⚠️ not linked
@@ -171,7 +169,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-11] Verify short position: in-profit SL trigger price must be between mark and entry prices
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
 Category    : brittle-locator (auto)
 PR          : ⚠️ not linked
@@ -183,7 +181,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-12] Verify Split TP for Short position: trigger price must be less than mark price
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
 Category    : brittle-locator (auto)
 PR          : ⚠️ not linked
@@ -195,7 +193,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-13] Verify SL trigger type can be selected at MAX slider on a Short position
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : clickIconInTable (perpetualpage.ts:1179) resolves the column with header.indexOf(column)+1 || header.length; when the header label does not match it silently falls back to the LAST column, so the Close/icon button is looked for in div[12] (div[10] on retry) and waitFor times out at 10s.
 Category    : brittle-locator (auto)
 PR          : ⚠️ not linked
@@ -207,7 +205,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-14] Verify open limit order can be cancelled successfully
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : The Order price field is targeted as //label[div='Order price']/input, which never became visible within 30s, so the limit buy was never placed and there was nothing left to cancel.
 Category    : brittle-locator (auto)
 PR          : ⚠️ not linked
@@ -219,7 +217,7 @@ Owner       : viet    ETA: 2026-08-20
 ```
 [SCRIPT-15] Verify theme toggle, icons, and rendering work on all public pages in both themes
 Env/Suite   : TESTNET / regression
-Failures    : 1 consecutive run since 18 Aug
+Failures    : 1 consecutive run since 19 Aug
 Root cause  : Never ran on its own: the Trade-Indicators instrument sweep consumed 345s and the regression job hit its time budget, so the reporter marked everything queued behind it red.
 Category    : other (auto)
 PR          : ⚠️ not linked
@@ -246,18 +244,17 @@ _ENV failures are never fixed by changing the test._
 ## 1.6 Numbers for the daily log
 
 ```
-Fully-green: 57.1%
-Flakiness rolling 10 runs: 5.3%   (target <3%)
+Fully-green: 30% of the last 10 regression runs
+Flakiness rolling 10 runs: 5.9%   (target <3%)
 Failures classified: ENV 1 / APP 0 / SCRIPT 15
 Failures with no verdict: 0   ✅
-Smoke accuracy: PASS
+Smoke accuracy: n/a — this is not a smoke suite
 ```
 
 ### Failed earlier, green again now
 
 Not in the table above because the latest run passed. They still need a verdict — a test that recovers on its own is flaky or platform-specific.
 
-- **Verify Trade-Indicators data for all instruments is rendered as expected** — testnet/smoke, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32098545871/job/95594507960)
 - **Verify login from Trade → stays on Trade** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
 - **Verify ISOLATED liquidation price is populated and bounded for every unit…** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)
 - **Verify CROSS liquidation price respects equity coverage across every unit…** — testnet/regression, failed 1× in 24h · [run](https://github.com/gravity-technologies/qa-automation/actions/runs/32164228559/job/95799942664)

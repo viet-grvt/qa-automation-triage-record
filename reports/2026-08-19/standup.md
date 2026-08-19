@@ -7,14 +7,14 @@ Paste as-is. Anyone who wants detail opens the Block 1 record.
 ```
 🧪 QA Automation Daily — 19/08
 
-Green runs: PROD ✅ 15/15 · TESTNET ⚠️ 4/7 · STAGING 🔴 0/5 · TESTNET ✅ 4/4 · iOS ❌ not run
+Green runs: PROD ✅ 17/17 · TESTNET ⚠️ 4/6 · STAGING 🔴 0/4 · TESTNET ✅ 6/6 · iOS ❌ not run
 Fails: 34 → ENV 1 · APP 0 · SCRIPT 33
 Smoke accuracy: 🔴 breached — script failure on smoke: Verify button layout: overflow, overlap,…, Verify encoding, translations, number format…, Verify navigation layout: overflow, overlap…, Verify Trade-Indicators data for all…, Verify user can remove margin from an…, Verify all records under the Recent Trades…, Verify Order-Book data is displayed as…, Verify Order-Book is not crossed (BEST_BID…, Verify MARKET BUY/SELL order can be placed…, Verify order placement succeeds when…, Verify REDUCE_ONLY type orders can be placed…, Verify IOC type orders can be placed…, Verify FOK type orders can be placed…, Verify POST_ONLY type orders can be placed…, Verify the top-level navigation header…, Verify MARKET order can be placed using…, Verify LIMIT order can be placed using…, Verify user can add margin to an Isolated…
 
 🔧 Scripts fixed today
-• Verify button layout: overflow, overlap,… — brittle-locator — changeLanguage (commonPage.ts:48) opens… — PR ? — verify ?
-• Verify encoding, translations, number format… — brittle-locator — changeLanguage (commonPage.ts:48) opens… — PR ? — verify ?
-• Verify navigation layout: overflow, overlap… — brittle-locator — changeLanguage (commonPage.ts:48) opens… — PR ? — verify ?
+• Verify button layout: overflow, overlap,… — shared-state — Not the product: 'Switch app language… — PR ? — verify ?
+• Verify encoding, translations, number format… — shared-state — Not the product: 'Switch app language… — PR ? — verify ?
+• Verify navigation layout: overflow, overlap… — shared-state — Not the product: 'Switch app language… — PR ? — verify ?
 • Verify Trade-Indicators data for all… — brittle-locator — instrumentSelector (perpetualpage.ts:80)… — PR https://grvt.atlassian.net/browse/QE-969 — verify ?
 • Verify user can remove margin from an… — brittle-locator — instrumentSelector (perpetualpage.ts:80)… — PR ? — verify ?
 • Verify all records under the Recent Trades… — brittle-locator — instrumentSelector (perpetualpage.ts:80)… — PR ? — verify ?
@@ -35,6 +35,8 @@ Smoke accuracy: 🔴 breached — script failure on smoke: Verify button layout:
 • Verify Order-Book data is displayed as… — other — Never ran on its own: the… — PR ? — verify ?
 • Verify trading chart candle-sticks are… — other — Never ran on its own: the… — PR ? — verify ?
 • Verify Order-Book is not crossed (BEST_BID… — other — Never ran on its own: the… — PR ? — verify ?
+• Verify editing a TP target trigger price… — race-condition — splitTPSL.spec.ts:224 reads the TP/SL… — PR ? — verify ?
+• Verify data resets when a row is deleted or… — race-condition — splitTPSLPage.ts:305 asserts the… — PR ? — verify ?
 • Verify Position TP/SL size matches the… — brittle-locator — clickIconInTable (perpetualpage.ts:1179)… — PR ? — verify ?
 • Verify short position: TP trigger price must… — brittle-locator — clickIconInTable (perpetualpage.ts:1179)… — PR ? — verify ?
 • Verify short position: in-profit SL trigger… — brittle-locator — clickIconInTable (perpetualpage.ts:1179)… — PR ? — verify ?
@@ -70,7 +72,7 @@ To record one, create `data/gap-analysis.json`:
 
 Raise these with Raj + team lead yourself — this tool does not send them:
 
-- #qa-web-automation-staging has not had a single fully-green run in 3 days (13 runs, all red).
+- #qa-web-automation-staging has not had a single fully-green run in 3 days (10 runs, all red).
 - "Verify button layout: overflow, overlap,…" has failed 16 runs in a row with no ticket and no quarantine decision.
 
 ## My tickets

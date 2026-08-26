@@ -19,6 +19,11 @@ In Claude Code, from `c:\Gravity\qa-checking`:
 Manual invocation:
 
 ```bash
+node tools/bin/daily.js             # phase 1 — ingest, report, what needs a decision
+node tools/bin/daily.js --finish    # phase 2 — root cause, rebuild, what is ready to post
+node tools/bin/daily.js --close     # phase 3 — sign off, check coverage
+
+# the individual steps, if you need one on its own
 node tools/bin/index-tests.js       # build the "test title → file:line" index from qa-automation
 node tools/bin/ingest.js            # parse the Slack dumps in data/raw/<today>/
 node tools/bin/report.js            # write reports/<today>/{triage,standup,log-row}.md

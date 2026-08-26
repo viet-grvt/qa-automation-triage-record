@@ -5,363 +5,327 @@ description: Run Block 1 (morning triage) and Block 2 (standup) of the QE-964 QA
 
 # Daily triage — Block 1 + Block 2
 
-Goal: cut Block 1 (~45 min) and Block 2 (~15 min) down to a few minutes of reading and deciding.
+Scripts do the mechanical work (parsing, streaks, percentages, file mapping, drafts). **You do the
+judgement** (read logs, classify, write tickets). **The user approves anything that leaves this
+machine.**
 
-The scripts handle the mechanical work (parsing, streaks, percentages, file mapping, drafts).
-**You handle the judgement** (reading logs, classifying, writing tickets). The user makes the
-final call on anything that leaves this machine.
+Working dir: `c:\Gravity\qa-checking`. Test repo: `c:\Gravity\qa-automation` (read-only).
 
-Working directory: `c:\Gravity\qa-checking`. Test repo: `c:\Gravity\qa-automation` (read-only).
+## The whole morning
+
+```bash
+node tools/bin/daily.js            # phase 1 — ingest, report, and what needs a decision
+#   ↓ classify each failure (Step 4), the only part that needs judgement
+node tools/bin/daily.js --finish   # phase 2 — root cause, rebuild, list what is ready to post
+#   ↓ post the approved replies, record each reply ts
+node tools/bin/daily.js --close    # phase 3 — sign off, check coverage
+```
+
+Three commands, three stops. The stops are where a person is required: deciding a category,
+approving a message, confirming the day is done. Everything between them is mechanical.
+
+Two dependencies used to break silently and are now inside a phase: **classification must happen
+before `/script-rca`** (which only looks at tests already labelled SCRIPT), and **`report.js` must
+run again afterwards** or the files in `posts/` still show the old state.
+
+## What QE-964 actually measures
+
+**Every red run gets a classification reply in its own Slack thread within 1 business day.** Not
+every test, not every day — every *red run*. Green runs get nothing: there is no failure to
+classify. The acceptance criteria are 3 consecutive weeks of that with zero stragglers at each
+weekly checkpoint, verified from the Slack thread timestamps.
+
+Each failure in the reply gets one of three categories, and each category owes something:
+
+| Category | Owes |
+|---|---|
+| **ENV** — the environment broke | the environment condition, in one line |
+| **APP-BUG** — the product is wrong | a PRO ticket, linked |
+| **SCRIPT** — our test is wrong | a fix-or-quarantine decision |
+
+A reply is held back until every failure has a category and every category has what it owes.
+Posting one with blanks is worse than posting nothing — it looks triaged.
+
+**It is a *daily* habit, so there is a message every working day** — one per channel **and** per
+suite, never merged. Smoke and regression are separate CI jobs in the same channel and get separate
+messages. A suite that ran clean still gets a short "checked, all green" note: from outside the
+channel, "all green" and "nobody looked" are indistinguishable. Weekends produce nothing.
+
+```bash
+node tools/bin/triage-log.js              # every red run and where it stands against the clock
+node tools/bin/triage-log.js --today      # today's coverage, channel × suite — including gaps
+node tools/bin/triage-log.js --overdue    # what has missed, or is about to
+node tools/bin/triage-log.js --weeks 3    # the acceptance-criteria checkpoint
+```
+
+## Two rules that shape everything
+
+**Smoke and regression are separate.** One Slack channel posts both. A green smoke run does not
+make the channel healthy when the regression run failed 16 tests. Every number — latest run,
+fully-green %, flakiness, smoke accuracy — is per suite (channel × smoke/regression), and a red run
+in one suite never gets answered in the other suite's thread.
+
+**Only runs since the last sign-off are triaged.** A Slack pull reaches back days. Each suite
+carries a checkpoint; the window is everything after it. Older runs stay in the history for
+streaks but are not re-triaged. A failure still red but not re-run in the window is marked
+_carried over_, not presented as new.
 
 ## Arguments
 
-`/daily-triage` takes optional arguments; pass them straight through to `ingest.js` and `report.js`.
-
 | Argument | Effect |
 |---|---|
-| `--channels <key[,key]>` | Read only these channels, ignoring the `enabled` flags in the config. Keys: `manual-automation`, `web-prod`, `web-testnet`, `web-staging`, `mobile-testnet` |
-| `--date <YYYY-MM-DD>` | Read the dumps from `data/raw/<date>/` and write to `reports/<date>/`. For a past date the whole report is evaluated **as of 23:59 on that date** — later runs are excluded and streaks are recomputed against that cut-off |
-| `--window <n>` | How many runs per channel the health table covers (default 20) |
+| `--channels <key[,key]>` | Override the config. Keys: `web-prod`, `web-testnet`, `web-staging`, `mobile-testnet`, `manual-automation` |
+| `--date <YYYY-MM-DD>` | Read `data/raw/<date>/`, write `reports/<date>/`, evaluate **as of 23:59 that day** |
+| `--window <n>` | Runs per suite in the health table (default 20) |
 
-Examples:
-
-- `/daily-triage --channels web-staging` — one channel, today.
-- `/daily-triage --channels manual-automation --date 2026-08-17` — one channel, one specific day.
-- `/daily-triage --date 2026-08-15 --window 40` — a wider historical view.
-
-With no arguments it uses the channels marked `"enabled": true` and today's date.
-
-**A past date only reports on data already ingested.** Slack cannot be re-read for an arbitrary
-day through this tool, so if `data/raw/<date>/` does not exist, either ingest was never run that
-day or the dumps were deleted. In that case say so instead of producing an empty report — or pull
-the history now (raise the Slack `limit` so it reaches back that far), write it to
-`data/raw/<date>/`, and ingest it. State accumulates, so back-filling is safe.
+Pass the same arguments to `ingest.js` and `report.js`. With none, the four daily channels and
+today. A past date reports only on data already ingested — if `data/raw/<date>/` is missing, say so
+rather than producing an empty report, or pull that history now and ingest it (state accumulates,
+back-filling is safe).
 
 ---
 
-## Step 0 — Prep (only when needed)
+## Step 0 — Prep (only when the repo moved)
 
 ```bash
-cd c:/Gravity/qa-checking
-git -C c:/Gravity/qa-automation pull    # file mapping is only as good as the local checkout
-node tools/bin/index-tests.js           # re-run after every pull
+git -C c:/Gravity/qa-automation pull
+node tools/bin/index-tests.js
 ```
 
-## Step 1 — Pull the Slack data
+## Step 1 — Pull Slack
 
-Channels are configured in `config/channels.json`. Only entries with `"enabled": true` are read.
+Four channels daily. `#qa-manual-automation` only when asked for by name — it takes ad-hoc
+`workflow_dispatch` runs, so its streaks are not a baseline.
 
-**The four automation channels run every day. `#qa-manual-automation` is optional** — it is only
-read when the user asks for it by name (`--channels manual-automation`), because it receives
-ad-hoc `workflow_dispatch` runs whose environment and suite size vary per run.
+| key | channel_id | channel |
+|---|---|---|
+| web-prod | C083HQRCGR3 | #qa-web-automation-prod |
+| web-testnet | C07KPL4CUAC | #qa-web-automation-testnet |
+| web-staging | C07QWGUE2G6 | #qa-web-automation-staging |
+| mobile-testnet | C0ANDUMDZU2 | #qa-mobile-automation-testnet |
+| manual-automation | C0BJ6L6E44A | #qa-manual-automation _(on request)_ |
 
-| key | channel_id | channel | |
-|---|---|---|---|
-| web-prod | C083HQRCGR3 | #qa-web-automation-prod | daily |
-| web-testnet | C07KPL4CUAC | #qa-web-automation-testnet | daily |
-| web-staging | C07QWGUE2G6 | #qa-web-automation-staging | daily |
-| mobile-testnet | C0ANDUMDZU2 | #qa-mobile-automation-testnet | daily |
-| manual-automation | C0BJ6L6E44A | #qa-manual-automation | on request only |
+`mcp__claude_ai_Slack__slack_read_channel`, `limit: 12`, `response_format: "detailed"` (required —
+concise drops the timestamps). Write `messages` **verbatim** to `data/raw/<date>/<key>.txt`; the
+parser needs the `✘` lines, the `=== Message from ... ===` headers and the `Message TS:` lines. No
+new messages: still write the file, it gets flagged SILENT.
 
-For each enabled channel call `mcp__claude_ai_Slack__slack_read_channel` with `limit: 12` and
-`response_format: "detailed"` (required — the concise format drops the message timestamps).
+## Step 2 — Jira snapshot
 
-**A pull reaches back into previous days — that is fine, and it is not what gets reported.** Every
-suite carries a checkpoint (the last run signed off), and the review window is everything after it.
-Older runs stay in the history for streaks but are not re-triaged. `ingest.js` prints the window it
-found:
+`mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql`, cloudId `56c14758-cc74-4db5-9e9f-40da67731510`,
+jql `key in (QE-935, QE-948, QE-949, QE-965, QE-966) OR (project = QE AND assignee = currentUser() AND statusCategory != Done)`,
+fields `["summary","status","duedate","created","priority"]`.
 
-```
-  → to review:
-     web-testnet:regression              1 run(s) to review since 2026-08-18 14:10
-     web-testnet:smoke                   2 run(s) to review since 2026-08-18 20:47
-```
+Write `data/jira-snapshot.json` as `{fetchedAt, issues:[{key, summary, status, duedate, created, daysSinceCreated, priority}]}`.
+Compute `daysSinceCreated` yourself — anything over 2 days in "To Do" gets flagged.
 
-If a suite reports more runs to review than the pull could have contained, the window has a gap —
-raise `limit` and pull again before triaging, otherwise runs in between were never looked at.
-
-Write the `messages` field **verbatim** to `data/raw/<YYYY-MM-DD>/<key>.txt`. Keep the `✘`
-characters, the `=== Message from ... ===` lines and the `Message TS:` lines — the parser depends
-on them. Turning `\/` back into `/` is fine either way.
-
-If a channel has no new messages, still write the file; the tool flags it as SILENT.
-
-## Step 2 — Jira snapshot (for Block 2)
-
-Call `mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql`:
-- `cloudId`: `56c14758-cc74-4db5-9e9f-40da67731510`
-- `jql`: `key in (QE-935, QE-948, QE-949, QE-965, QE-966) OR (project = QE AND assignee = currentUser() AND statusCategory != Done)`
-- `fields`: `["summary","status","duedate","created","priority"]`
-
-Write `data/jira-snapshot.json`:
-
-```json
-{
-  "fetchedAt": "2026-08-18T09:00:00+07:00",
-  "issues": [
-    { "key": "QE-948", "summary": "...", "status": "To Do", "duedate": "2026-09-15",
-      "created": "2026-08-14", "daysSinceCreated": 4, "priority": "High" }
-  ]
-}
-```
-
-Compute `daysSinceCreated` yourself — the checklist warns on anything sitting in "To Do" for more
-than 2 days.
-
-## Step 3 — Run the tools
+## Step 3 — Phase 1: ingest and report
 
 ```bash
-cd c:/Gravity/qa-checking
-node tools/bin/ingest.js [--channels ...] [--date ...]   # parse and update streaks; verdicts are preserved
-node tools/bin/report.js [--channels ...] [--date ...] [--window ...]
+node tools/bin/daily.js [--channels ...] [--date ...]
 ```
 
-**When the triage is finished, sign the window off:**
+One command: ingest → report → yesterday's unanswered red runs → fixes still open → **what needs a
+decision**. It stops there, at the judgement. `--date` is only for rebuilding a past day from data
+already ingested; leave it off for today.
 
-```bash
-node tools/bin/report.js --mark-checked
-```
+The last section is the one that matters. It lists every failure with no category **across the red
+runs still waiting for a reply** — not just today's, because an unanswered reply from Saturday is
+still blocked by its own uncategorised failures.
 
-That records "these runs have been looked at" per suite, so tomorrow starts from there instead of
-re-reading tonight's. Run it only after the user has actually reviewed the report — signing off a
-report nobody read silently marks the night's failures as handled. Never run it as part of the same
-breath as generating the report.
-
-Pass the same `--channels` / `--date` to both commands, and use the same values the user gave you.
-
-Read `reports/<date>/triage.md`. It follows the agreed Block 1 report format:
+`reports/<date>/triage.md` is your working copy:
 
 | Section | Contents |
 |---|---|
-| **1.1** | Suite status table (**one row per channel × suite**), the review window, total failures split by class, smoke-accuracy verdict |
-| **1.2** | Classification table **grouped per channel** — one row per test, except ENV which collapses to one row per cluster |
-| **1.3** | SCRIPT detail block per failure, **Prevention mandatory**; quarantined ones use the quarantine variant |
-| **1.4** | APP-BUG detail block — symptom, evidence, reproduce, impact, PRO ticket, team |
-| **1.5** | ENV clusters — grouped, never one line per test |
-| **1.6** | The numbers for the daily log |
+| 1.1 | Suite status (one row per channel × suite), review window, failure split, smoke-accuracy verdict |
+| 1.2 | Classification per channel — one row per test, ENV collapsed to one row per cluster, plus a **Flaky or genuine?** column and evidence blocks for anything unclassified |
+| 1.3 | SCRIPT detail, **Prevention mandatory** |
+| 1.4 | APP-BUG detail |
+| 1.5 | ENV clusters |
+| 1.6 | Numbers for the daily log |
 
-Rules the format enforces, which the report flags for you:
+What the report enforces, and will flag at you:
 
-- **Action** is one of exactly four values: `Fix` · `Quarantine` · `Raise PRO` · `Monitor (ENV)`.
-- **Every row needs an owner and an ETA.** Without them the row shows `⚠️` and "triage incomplete" —
-  that is unfinished triage, and you should say so rather than move past it.
-- **A SCRIPT failure on a smoke suite breaks smoke accuracy.** 1.1 prints `BREACHED`, and it has to
-  be named in the standup post rather than buried in the table.
-- **A quarantine with no ticket and no review date is a deleted test.**
-- **A fix with no prevention step is a fix that comes back.**
-- **Smoke and regression are never merged.** `#qa-web-automation-testnet` posts both; a green
-  smoke run at 06:58 does not make the channel healthy when the 04:18 regression run failed 16
-  tests. Every number in the report — latest run, fully-green %, flakiness, smoke accuracy — is
-  computed per suite, and each suite gets its own record and its own thread.
-- **A failure marked _carried over_ did not run in this window.** It is still red, but it is not
-  new tonight; do not present it as if it were.
+- `Action` is exactly one of: Fix · Quarantine · Raise PRO · Monitor (ENV).
+- Every row needs an owner and an ETA. Without them it is unfinished triage — say so.
+- A SCRIPT failure on a smoke suite prints **BREACHED** and must be named in the standup.
+- A quarantine with no ticket and no review date is a deleted test.
+- A fix with no prevention step is a fix that comes back.
 
-## How to talk about it
+If a suite shows more runs to review than the Slack pull could have held, the window has a gap —
+raise `limit`, pull again, re-ingest.
 
-The reader may be manual QA or a lead who has never opened this repo.
+## Step 4 — Flaky test, or a real product issue?
 
-- Say what a failure means before saying what it is called. "Our test grabs the button by its
-  position, so a layout change broke it" lands; "brittle-locator" does not.
-- Gloss a label the first time it appears: ENV means the environment broke, APP-BUG means the
-  product is genuinely wrong, SCRIPT means our own test is at fault.
-- Give numbers only when they change the decision.
-- When the evidence is thin, say so in those words rather than hedging with percentages.
+The first question for every failure. 1.2 gives the leaning and the evidence; **you decide**.
 
-## Step 4 — For each failure: flaky test, or a real product issue?
-
-This is the question the team asks first, and everything else follows from it. Section 1.2 now
-carries a **Flaky or genuine?** column, and every failure with no verdict yet gets an evidence
-block under the table. The tool states which way the history points; **you decide**.
-
-What the patterns mean:
-
-| Pattern | What the history shows | Usually means |
+| Pattern | History | Usually |
 |---|---|---|
-| `flaky pattern` | passed and failed repeatedly over the same period | **our test.** The product does not change between two runs ten minutes apart |
-| `fails every run` | red on every run since it started, never passing | **something really changed** — the product, the environment, or an assumption in the test |
-| `one browser only` | fails on one browser/device, passes on the others | genuinely ambiguous: a browser-specific defect and a locator that only matches elsewhere look identical |
-| `first failure` | clean until now, failed once | not a pattern yet — but this is also how a regression starts |
-| `too early to say` | fewer than 3 runs on record | say exactly that. Do not classify on one data point |
+| flaky pattern | passed and failed over the same period | **our test** — the product does not change between two runs ten minutes apart |
+| fails every run | red every run, never passing | **something really changed** |
+| one browser only | fails on one browser, passes elsewhere | ambiguous: a browser-specific defect and a locator that only matches elsewhere look identical |
+| first failure | clean until now, failed once | not a pattern — but this is how a regression starts |
+| too early to say | under 3 runs | say exactly that; do not classify on one data point |
 
-A `fails every run` failure with a commit to the test file just before it started is **ours**, not
-the product's — the tool names the commit. Read that diff before anything else.
+`fails every run` **plus a commit to the test file just before the streak started** is ours, not the
+product's. The tool names the commit — read that diff first.
 
-Then work through every row in section 1.2, plus the "failed earlier, green again now" list
-under 1.6.
+Gather evidence before deciding:
 
-1. Read the leaning, the evidence and the recent commits the tool surfaced.
-2. Gather evidence before deciding:
-   - **Run log (fastest route):** `gh run view <runId> --log-failed -R gravity-technologies/qa-automation`
-     — the exact command is printed under each failure. `gh run view <runId>` alone shows the job
-     summary; `gh run download <runId>` pulls the artifacts.
-   - **Web:** open the test at the `file:line` the tool reports. Then open the page object it
-     imports — that is where most script defects actually live.
-   - **Mobile:** use the BrowserStack MCP — `listBuildId` → `getBuildId` → `getFailureLogs` /
-     `fetchRCA` for real device logs instead of guesswork.
-   - **Suspected product bug on web:** use the Playwright MCP to open the page on that environment
-     and reproduce by hand. Only call something `APP-BUG` once you have reproduced it or the log
-     states it plainly.
-3. Apply the decision rules:
+- **Log:** `gh run view <runId> --log-failed -R gravity-technologies/qa-automation` (printed under each failure).
+- **Web:** open the test at the reported `file:line`, then the page object it imports — that is where most script defects live.
+- **Mobile:** BrowserStack MCP — `listBuildId` → `getBuildId` → `getFailureLogs` / `fetchRCA`.
+- **Suspected product bug:** reproduce by hand with the Playwright MCP. Only call it `APP-BUG` once you have reproduced it or the log states it plainly.
 
-   | Label | When | Required action |
-   |---|---|---|
-   | `ENV` | infrastructure or environment failure: zero passes, timeout, RPC/wallet/network error | Do **not** touch the script. Note the proposal to add an env-health precondition |
-   | `APP-BUG` | a product defect you can reproduce | Raise a PRO ticket **now** and draft the public-channel post (impact + next step) |
-   | `SCRIPT` | the test is wrong, flaky or obsolete | Decide fix-today vs quarantine-with-ticket, then run `/script-rca` to record the root cause **and the suggested fix**. `SCRIPT` on a smoke suite breaks the QE-935 100% accuracy goal and must be fixed today |
+| Label | When | Then |
+|---|---|---|
+| `ENV` | infra failure: zero passes, timeout, RPC/wallet/network error | Do **not** touch the script |
+| `APP-BUG` | a product defect you can reproduce | Step 6 |
+| `SCRIPT` | the test is wrong, flaky or obsolete | Step 5 |
 
-   **Never label something `SCRIPT` just because it is inconvenient.** If you cannot say why the
-   test is wrong, it is not yet a script defect — it is unclassified, and saying so is the honest
-   answer. A failure written off as flaky is how a real bug reaches users.
-
-4. Record it (the command is pre-filled in triage.md — you only fill in the label):
+**Never label something SCRIPT because it is inconvenient.** If you cannot say why the test is
+wrong, it is unclassified — saying so is the honest answer. A failure written off as flaky is how a
+real bug reaches users.
 
 ```bash
 node tools/bin/classify.js --test "<title>" --channel <key> --label <ENV|APP-BUG|SCRIPT> \
-  --note "<root cause in one sentence>" --owner <name> --eta <YYYY-MM-DD> [--ticket PRO-xxxx] [--quarantine]
+  --note "<one sentence>" --owner <name> --eta <YYYY-MM-DD> [--ticket PRO-xxxx] [--quarantine]
 
-# APP-BUG additionally needs the fields the dev-channel message is built from:
+# APP-BUG also needs the fields the bug message is built from:
 node tools/bin/classify.js --test "..." --label APP-BUG --ticket PRO-1234 --owner viet --eta 2026-08-20 \
   --team fe --severity High --impact "signup blocked for invited users" \
   --evidence <url> --repro "1. ... 2. ..." [--prod-leak]
 ```
 
-Ask the user for the owner and ETA if they have not said — do not invent them.
-`node tools/bin/classify.js --incomplete` lists every row still missing something.
+Ask for owner and ETA — never invent them. `--incomplete` lists what is still missing; `--pending`
+what is still unlabelled. Anything red 5+ runs with no ticket and no quarantine **must not roll
+over to tomorrow**.
 
-5. Anything red for 5+ consecutive runs with no ticket and no quarantine **must not roll over to
-   tomorrow**. Either raise a ticket or quarantine it. Say so plainly if the user has not decided.
+## Step 5 — Flaky: root cause it, then track the fix
 
-Run `node tools/bin/classify.js --pending` to confirm nothing is left unowned.
+A label with no root cause is a nicer way of ignoring it.
 
-## Step 5 — If it is a flaky test: root cause it and track the fix
-
-Labelling something `SCRIPT` is not the end of it. The team's rule is *identify the root cause and
-track the fix*, and a label with no root cause is just a nicer way of ignoring it.
-
-1. Run `/script-rca` — it finds the cause and proposes the actual code change.
-2. Record it, including the prevention step:
-   `node tools/bin/script-rca.js --record --test "..." --cause <...> --action fix --prevention "..."`
-3. Put it on the tracker as work progresses:
+1. `/script-rca` — finds the cause and proposes the code change.
+2. `node tools/bin/script-rca.js --record --test "..." --cause <...> --action fix --prevention "..."`
+3. Track it until it is really fixed:
 
 ```bash
-node tools/bin/track.js                                   # everything still open
-node tools/bin/track.js --overdue                         # past its ETA, or gone quiet
+node tools/bin/track.js --overdue                         # past ETA, unowned, merged-but-still-red
 node tools/bin/track.js --test "..." --channel <key> --status in-review --pr <url>
 node tools/bin/track.js --test "..." --channel <key> --verify --run <runId>
 ```
 
-`--verify` **refuses to close anything that is still red.** A merged PR is not a fix; a green run
-is. If someone asks you to mark it done while the test still fails, say that plainly.
+`--verify` **refuses to close anything still red** — a merged PR is not a fix, a green run is. Say
+that plainly if asked to mark it done anyway.
 
-**Run `node tools/bin/track.js --overdue` every morning**, before looking at today's failures.
-Yesterday's unfixed decision matters more than today's new one, and it is the thing that silently
-rots — a test labelled on Monday and still red on Friday is a fix nobody did.
+**Run `--overdue` every morning before looking at today's failures.** Yesterday's unfixed decision
+matters more than today's new one, and it is what rots silently.
 
-## Step 6 — If it is a genuine issue: raise a task, then say so publicly
+## Step 6 — Genuine: raise a task, then say so publicly
 
-Two separate obligations. Both are required; doing only the first is how bugs sit unnoticed.
+Both, always. Doing only the first is how bugs sit unnoticed.
 
-**Raise the task.** `report.js` writes a ready-to-create draft to `reports/<date>/tasks/` for every
-`APP-BUG` with no ticket — summary, impact, reproduction, evidence links, next steps. Fill the gaps
-it marks, then, **only after the user confirms**, create it with
-`mcp__claude_ai_Atlassian__createJiraIssue` (project `PRO`, type `Bug`). Record the key straight
-away: `classify.js ... --ticket <new key>` — otherwise tomorrow's report re-drafts the same ticket.
+**Task.** `reports/<date>/tasks/` holds a draft per APP-BUG with no ticket. Fill the gaps it marks,
+then — **only after the user confirms** — `mcp__claude_ai_Atlassian__createJiraIssue` (project
+`PRO`, type `Bug`). Record the key immediately with `classify.js --ticket <KEY>`, or tomorrow's
+report drafts it again.
 
-**Then communicate it.** `posts/2.2-*.md` is the message, one per bug, and it goes into the thread
-of the failing run in that automation channel, @-mentioning the owning team. It must carry:
+**Message.** `posts/2.2-*.md`, one per bug, into the failing run's thread with the owning team
+@-mentioned. It must carry: what a person sees (not what the assertion says), **the impact** (who
+is affected, which flow, is it live), **the next steps** (who confirms, who owns it, when QA
+re-checks), and the evidence link. Missing ticket / team / impact / evidence → marked ⚠️ incomplete
+and not sent. Never merge two bugs into one message.
 
-- what a person sees (not what the assertion says),
-- **the impact** — who is affected, which flow is blocked, whether it is already live,
-- **the next steps** — who confirms, who owns the ticket, when QA re-checks,
-- the evidence link.
+## Step 7 — Phase 2: root cause and rebuild
 
-A message missing the ticket, team, impact or evidence is marked ⚠️ incomplete and must not be
-sent. Never merge two bugs into one message; each needs its own thread to be answered in.
+```bash
+node tools/bin/daily.js --finish [--channels ...] [--date ...]
+```
 
-## Step 7 — Block 2
+Runs `/script-rca` over everything now labelled SCRIPT, rebuilds the report and every message, and
+prints what is ready to post versus what is held back and why. **Run it only after Step 4–6** — it
+is the step that turns decisions into messages, and it is worthless before the decisions exist.
 
-1. Re-run `node tools/bin/report.js` so the standup reflects the labels you just applied.
-2. `reports/<date>/standup.md` follows the agreed Block 2 format:
-   - **2.1** the daily standup post for the QA channel (paste as-is, ~10 lines, numbers first)
-   - **2.2** one message per bug, posted into that channel's run thread with the owning team @-mentioned — never several bugs in one post
-   - **2.3** gap analysis for bugs manual regression found that automation missed (QE-965)
-   - **2.4** what meets the escalation bar and goes to Raj directly instead of waiting (not posted)
-3. Hand over the row in `reports/<date>/log-row.md` for the checklist log table.
-4. If any failure is labelled `SCRIPT`, run `/script-rca` next.
+`reports/<date>/standup.md` then holds: **2.1** standup post · **2.2** one message per bug ·
+**2.3** gap analysis (QE-965) · **2.4** escalation. Hand over `log-row.md` for the checklist log.
 
 ## Step 8 — Report back, then post
 
-`reports/<date>/posts.md` lists every message that is meant to leave this machine, one file per
-message under `posts/`, each stamped with its destination. Nothing is ever sent automatically.
-
-**Report to the user using the format's own section numbers. Do not invent headings.** No
-"Where the day landed", no "Two things you should know" — the user reviews section by section and
-then posts section by section, so the reply has to line up with the file and with the threads.
-
-Reply in this shape, one line per section, skipping nothing:
+**Use the format's own section numbers. Do not invent headings.** No "Where the day landed", no
+"Two things you should know" — the user reviews section by section and posts section by section.
 
 ```
-1.1 Suites      — <per channel × suite: green/total · smoke accuracy verdict>
+1.1 Suites      — <per channel × suite: pass/total · green? · smoke accuracy>
                   <review window: n runs since <when>>
 1.2 Classified  — <n rows: ENV a / APP-BUG b / SCRIPT c · m incomplete>
                   <x lean flaky · y lean genuine · z need a look>
-1.3 SCRIPT      — <n blocks · what is missing, e.g. prevention on 2 of 3>
+1.3 SCRIPT      — <n blocks · what is missing>
 1.4 APP-BUG     — <n blocks, or "none">
 1.5 ENV         — <n clusters covering m tests>
 1.6 Numbers     — <flakiness · failures with no verdict>
 2.1 Standup     — ready / blocked on <what>
-2.2 Dev message — <n ready to post, m incomplete and why>
+2.2 Dev message — <n ready, m incomplete and why>
 2.3 Gap         — <recorded / nothing to record>
 2.4 Escalate    — <what crossed the bar, or "nothing"> · not posted, raise it yourself
-Tracker         — <n fixes open, m overdue> (node tools/bin/track.js --overdue)
-Tasks           — <n ticket drafts waiting in reports/<date>/tasks/, or "none">
+Red-run SLA     — <n overdue past 1 business day · m still inside the window>
+Coverage today  — <n suites all-green · m answered · k with no run at all>
+Tracker         — <n fixes open, m overdue>
+Tasks           — <n ticket drafts waiting, or "none">
 ```
 
-Then list what is ready to post, with its destination, and stop. Ask which ones to send.
+Then list what is ready to post with its destination, and **stop**. Ask which to send.
 
-When the user approves:
+On approval:
 
-- Use `slack_send_message_draft` by default; `slack_send_message` only when they say "send it".
-- Post the body of the file exactly, minus the `<!-- -->` header lines.
-- **1.1–1.6 is cut one record per suite** — `posts/1-triage-<channel-key>-<suite>.md`. Smoke and
-  regression are separate CI jobs posted as separate Slack messages, so each record goes into its
-  own run thread. Each file contains only that suite's failures. **Never post `triage.md`** — that
-  is the whole-day working copy for the person running triage, not a message.
-  - When the user names a channel ("post the triage record to WEB-AUTOMATION-STAGING"), send that
-    channel's files only. If the channel has more than one suite with failures, say so and send one
-    message per suite — do not merge them, and do not attach other channels' files.
-  - A suite where nothing failed gets no record. `posts.md` names those explicitly rather than
-    leaving you to wonder whether it was skipped or forgotten.
-  - Reply into the thread of the run the record describes: `slack_send_message` with the
-    `thread_ts` in the file's second header comment, so the record sits with its evidence. If the
-    header says no failing run was found, ask which message to reply to rather than guessing.
-- **2.1** goes to the QA channel as a new message.
-- **2.2** goes into the thread of the failing run in that automation channel, with the owning team
-  @-mentioned — public, next to the evidence, one message per bug. If the user wants it in a
-  dev-team channel instead, they have to name that channel; do not pick one.
-- **2.4 is never posted.** Escalation is a conversation the user has themselves; it stays in the
-  report. Report what it contains, then leave it alone.
-- **Only these five channels are ever written to**: `#qa-web-automation-prod`,
-  `#qa-web-automation-testnet`, `#qa-web-automation-staging`, `#qa-mobile-automation-testnet`, and
-  `#qa-manual-automation` (only when the user asks for it with `--channels manual-automation`).
-  Anywhere else needs an explicit instruction naming the channel.
-- Check `config/channels.json` → `posting`: any destination with `"confirmed": false` has not been
-  verified. Ask before the first send, then set it to `true`.
-- A message marked ⚠️ incomplete is missing a ticket, team, impact or evidence. Say what is
-  missing and do not send it — an incomplete bug report does not get picked up.
+- `slack_send_message_draft` by default; `slack_send_message` only on "send it".
+- Post the body exactly, minus the `<!-- -->` headers.
+- **One reply per red run** — `posts/thread-<channel>-<suite>-<date>-<HHMM>.md`, posted into that
+  run's own thread with the `thread_ts` in its header. Never merge two runs into one reply.
+  **Never post `triage.md` or anything in `records/`.**
+- **One daily note per clean suite** — `posts/daily-<channel>-<suite>-<date>.md`, into the thread of
+  that suite's last run of the day. If the suite did not run at all, it goes to the channel as a new
+  message saying so — silence is a finding, not a pass. Ad-hoc suites that do not run most days are
+  skipped rather than flagged.
+- **2.2 is one message per *ticket*, not per failing test.** Seven tests knocked out by PRO-8937 is
+  one thing for the FE team to act on; seven near-identical messages get muted, and muting is how
+  the next real one is missed.
+  - Named one channel? Send that channel's replies only.
+  - No `thread_ts` in the header means no run was found: ask which message to reply to.
+- **Log every reply the moment it is sent**, with the ts Slack returns:
+
+  ```bash
+  node tools/bin/triage-log.js --record --run <runId> --reply-ts <ts>
+  ```
+
+  The ts is the evidence the acceptance criteria are checked against. A reply that is not logged
+  cannot be counted, so this is not bookkeeping — it is the deliverable.
+- **2.1** to the QA channel as a new message.
+- **2.2** into the failing run's thread, team @-mentioned. A dev-team channel only if the user names
+  one — do not pick.
+- **2.4 is never posted.** It stays in the report for the user to raise.
+- **Only these five channels are ever written to.** Anywhere else needs an explicit instruction.
+- Any destination marked `"confirmed": false` in `config/channels.json` needs a go-ahead first.
+
+## Step 9 — Phase 3: sign off
+
+```bash
+node tools/bin/daily.js --close [--channels ...]
+```
+
+Signs off the review window so tomorrow starts from here, then prints today's coverage and whatever
+is still open. **Only after the replies have actually been posted and logged** — signing off a
+report nobody read marks the night's failures as handled.
+
+Anything still listed as overdue is a red run with no reply past its deadline. Name them; that is
+what breaks the weekly checkpoint, and it is invisible in the triage report otherwise.
 
 ## Rules
 
-- **Do not invent.** If you have not opened the log or report, say "not enough evidence" rather
-  than labelling something to fill the table.
-- **Nothing leaves the machine without confirmation.** Creating tickets, posting to Slack and
-  changing Jira status all need the user's go-ahead first.
-- **Say when the data is thin.** Streaks are computed over the runs stored in `data/state.json`.
-  On day one the window is short, so "12 consecutive failures" may in reality be longer. Pull more
-  history by raising the Slack `limit` and re-ingesting — state accumulates, it is never overwritten.
-- **`#qa-manual-automation` is ad-hoc.** It receives manual `workflow_dispatch` runs, so environment
-  and suite size change from run to run. Treat its streak and flakiness numbers as indicative, and
-  never quote them as a baseline.
-- **A PROD failure is always priority one**, even when it recovered on its own — the PROD baseline
-  is 100% green.
-- The tool only reads `qa-automation`; it never edits it. Fixing tests is Block 3 work.
+- **Do not invent.** Not opened the log? Say "not enough evidence" instead of labelling to fill the table.
+- **Nothing leaves the machine without confirmation** — tickets, Slack posts, Jira transitions.
+- **Say when the data is thin.** Streaks cover only what is in `data/state.json`; on day one the
+  window is short, so "12 consecutive failures" may really be longer.
+- **Write for someone who has never opened this repo.** "Our test grabs the button by its position,
+  so a layout change broke it" lands; "brittle-locator" does not. Gloss each label the first time:
+  ENV = the environment broke, APP-BUG = the product is wrong, SCRIPT = our test is at fault.
+  Numbers only when they change the decision.

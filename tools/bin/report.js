@@ -27,6 +27,7 @@ import {
 import { execFileSync } from "node:child_process";
 import { findOwner, recentCommits, suggestLabel } from "../lib/hints.js";
 import { stability, PATTERN_SHORT, LEANING_SHORT, suggestedLabel } from "../lib/verdict.js";
+import { dueDate, slaStatus, runKey, isBusinessDay } from "../lib/sla.js";
 import {
   prettyDate,
   prettyWhen,
@@ -45,6 +46,7 @@ import {
   clip,
 } from "../lib/plain.js";
 
+const NL = String.fromCharCode(10);
 const argv = process.argv.slice(2);
 const has = (n) => argv.includes(`--${n}`);
 const getArg = (n, d = null) => {
@@ -154,7 +156,9 @@ const channels = cfg.channels
       last24,
       latest,
       latestAgeH: latest ? hoursSince(latest.iso) : null,
-      stale: latest ? hoursSince(latest.iso) > T.staleRunHours : true,
+      // On a historical report the clock is pinned to 23:59 of that day, so measuring staleness in
+      // hours would mark every suite silent. What matters there is simply: did it run that day?
+      stale: latest ? (isToday ? hoursSince(latest.iso) > T.staleRunHours : latest.iso.slice(0, 10) !== date) : true,
       greenPct: pct(green, win.length),
       green24Pct: pct(last24.filter((r) => r.green).length, last24.length),
       flakinessPct: pct(failedCases, executed),
@@ -203,7 +207,7 @@ for (const c of channels) {
       checkpoint: cp,
       latest,
       first: newRuns[0] || null,
-      stale: latest ? hoursSince(latest.iso) > T.staleRunHours : true,
+      stale: latest ? (isToday ? hoursSince(latest.iso) > T.staleRunHours : latest.iso.slice(0, 10) !== date) : true,
       greenPct: pct(win.filter((r) => r.green).length, win.length),
       flakinessPct: pct(
         win.reduce((s, r) => s + (r.failed || 0), 0),
@@ -547,6 +551,24 @@ for (const su of suites.filter((x) => x.stale && x.runs.length)) {
   w(
     `> ⚠️ **#${su.channel.name} · ${su.testType}** last ran ${prettyAge(hoursSince(su.latest.iso))}. Check the schedule before reading anything into the tests.`,
   );
+}
+// QE-964's actual acceptance criterion: every red run answered in its thread within 1 business
+// day. Tests can all be classified and this can still be failing, so it is stated separately.
+{
+  const log = state.triageLog || {};
+  const allRed = Object.values(state.runs || {}).flat().filter((r) => !r.green && activeKeys.has(r.channelKey));
+  const st = allRed.map((r) => slaStatus(r, log[runKey(r)], cfg.timezone, date));
+  const od = st.filter((x) => x.status === "overdue").length;
+  const open = st.filter((x) => x.status === "due").length;
+  if (od) {
+    w(
+      `> ❌ **${od} red run(s) past the 1-business-day triage deadline** — that breaks the QE-964 criteria for this week. \`node tools/bin/triage-log.js --overdue\` lists them.`,
+    );
+  } else if (open) {
+    w(`> ⏳ ${open} red run(s) still inside the 1-business-day window.`);
+  } else if (allRed.length) {
+    w(`> ✅ Every red run on record has a classification reply within 1 business day.`);
+  }
 }
 if (carriedOver.length) {
   w(
@@ -939,7 +961,18 @@ if (!appBugs.length) {
   s(`_No product bug to report today._`);
   s(``);
 } else {
+  // One message per bug, and a bug is a ticket — not a failing test. Seven tests knocked out by
+  // PRO-8937 is one thing for the FE team to act on; seven near-identical messages is spam that
+  // gets muted, and muting is how the next real one gets missed.
+  const byTicket = new Map();
   for (const r of appBugs) {
+    const k = r.t.ticket || `untracked:${normTitle(r.t.title)}`;
+    if (!byTicket.has(k)) byTicket.set(k, []);
+    byTicket.get(k).push(r);
+  }
+  for (const [, group] of byTicket) {
+    const r = group[0];
+    const siblings = group.slice(1);
     const t = r.t;
     const a = t.appbug || {};
     const lastFailRun = (r.ch?.runs || [])
@@ -957,7 +990,10 @@ if (!appBugs.length) {
     s(`Impact      : ${a.impact || "<who is affected, which flow is blocked, is it live>"}`);
     s(`Evidence    : ${a.evidence || lastFailRun?.reportUrl || "<screenshot / video / log>"}`);
     s(`Repro       : ${a.repro || "<steps, or: only seen in the automation run>"}`);
-    s(`Found by    : automated ${t.testType} run${lastFailRun?.runId ? ` #${lastFailRun.runId}` : ""} on ${prettyDate(t.lastFail || t.lastSeen)}`);
+    s(
+      `Found by    : automated ${t.testType} run${lastFailRun?.runId ? ` #${lastFailRun.runId}` : ""} on ${prettyDate(t.lastFail || t.lastSeen)}${siblings.length ? ` — and ${siblings.length} more test(s) blocked by the same bug` : ""}`,
+    );
+    for (const sib of siblings) s(`              · ${clip(sib.t.title, 80)}`);
     s(`Next steps  : 1. ${a.team || "<team>"} confirms it is a real defect (asking for a yes/no, not a fix today)`);
     s(`              2. ${t.ticket ? `${t.ticket} is assigned an owner and a priority` : "we raise the PRO ticket once confirmed"}`);
     s(`              3. QA re-runs the test after the fix and reports back in this thread — ${t.owner || "<qa owner>"}, by ${t.eta || "<date>"}`);
@@ -970,7 +1006,7 @@ if (!appBugs.length) {
       channelKey: t.channelKey,
       threadTs: lastFailRun?.ts || null,
       destination: `#${r.ch?.name || t.channelKey} — thread of the failing run, @-mention ${a.team ? `the ${a.team} team` : "the owning team"}`,
-      what: `Bug report: ${clip(t.title, 60)}`,
+      what: `Bug report: ${t.ticket || "no ticket"} — ${clip(a.symptom || t.title, 55)}${group.length > 1 ? ` (+${group.length - 1} tests)` : ""}`,
       blocked: !t.ticket || !a.team || !a.impact || !a.evidence,
       body: S.slice(bugStart, S.lastIndexOf("```")).join("\n"),
     });
@@ -1248,6 +1284,25 @@ function suiteRecord(su) {
     );
     p(``);
   }
+  // Every run in the window, passes included. A record that lists only failures cannot be checked
+  // against the Slack message it sits under, and hides how much of the suite actually ran.
+  const wr = su.newRuns.length ? su.newRuns : su.runs.slice(-1);
+  if (wr.length) {
+    p(`| Run | Passed | Failed | Result |`);
+    p(`|---|---|---|---|`);
+    for (const r of wr) {
+      const tot = (r.passed || 0) + (r.failed || 0);
+      p(
+        `| ${r.iso.slice(5, 16).replace("T", " ")}${r.variant ? ` · ${r.variant}` : ""} | ${r.passed ?? "—"} | ${r.failed ?? "—"} | ${
+          r.partial ? "⏱️ timed out" : r.infra ? "🔧 infra" : r.green ? "✅ all passed" : "❌"
+        } |`,
+      );
+    }
+    const totP = wr.reduce((n, r) => n + (r.passed || 0), 0);
+    const totF = wr.reduce((n, r) => n + (r.failed || 0), 0);
+    if (wr.length > 1) p(`| **${wr.length} runs** | **${totP}** | **${totF}** | |`);
+    p(``);
+  }
   p(
     `**Total failures: ${list.length}** → ENV ${cCounts.ENV} · APP-BUG ${cCounts["APP-BUG"]} · SCRIPT ${cCounts.SCRIPT}${cUnlabelled ? ` · not yet classified ${cUnlabelled}` : ""}`,
   );
@@ -1269,7 +1324,7 @@ function suiteRecord(su) {
   p(`## 1.2 Classification — one row per failing test`);
   p(``);
   if (!list.length) {
-    p(`No failures in this channel today.`);
+    p(`No failures in this suite in the window under review.`);
     p(``);
   } else {
     let n = 0;
@@ -1314,7 +1369,7 @@ function suiteRecord(su) {
   p(`## 1.3 SCRIPT detail`);
   p(``);
   if (!scripts.length) {
-    p(`No script failures in this channel today.`);
+    p(`No script failures in this suite.`);
     p(``);
   } else {
     p(`> This is what separates "fixed it" from "understood why it broke". **Prevention is mandatory.**`);
@@ -1353,7 +1408,7 @@ function suiteRecord(su) {
   p(`## 1.4 APP-BUG detail`);
   p(``);
   if (!bugs.length) {
-    p(`No product bugs found in this channel today.`);
+    p(`No product bugs found in this suite.`);
     p(``);
   } else {
     let i = 0;
@@ -1384,7 +1439,7 @@ function suiteRecord(su) {
   p(`## 1.5 ENV — grouped, not one line per test`);
   p(``);
   if (!clusters.length) {
-    p(`No environment failures in this channel today.`);
+    p(`No environment failures in this suite.`);
     p(``);
   } else {
     for (const cl of clusters) {
@@ -1439,29 +1494,204 @@ function suiteRecord(su) {
 // One post per suite, because one suite is one CI job is one Slack message is one thread. Posting
 // the regression record into the smoke run's thread would put it under a green message, which is
 // exactly where nobody looks. A suite with nothing stored was never checked, so it gets no post.
-const cleanSuites = [];
-for (const su of [...suites].reverse()) {
+// ---------------------------------------------------------------- red-run thread replies
+// QE-964 measures one thing: every red run gets a classification reply in its own Slack thread
+// within one business day. So the unit of posting is the red run, not the suite and not the day.
+// A green run has no failing message and nothing to classify — it gets no reply. The full
+// per-suite record still exists in records/ for whoever runs the triage; it is not a message.
+const recordsDir = path.join(outDir, "records");
+fs.rmSync(recordsDir, { recursive: true, force: true });
+fs.mkdirSync(recordsDir, { recursive: true });
+for (const su of suites) {
   if (!su.runs.length) continue;
-  // A suite with nothing to report gets no message. Posting "no failures" under an already-green
-  // run is noise, and noise is what stops people reading the threads that do matter.
-  if (!(byChannel.get(su.channel.key) || []).some((r) => r.t.testType === su.testType)) {
-    cleanSuites.push(`#${su.channel.name} · ${su.testType}`);
-    continue;
+  fs.writeFileSync(path.join(recordsDir, `${su.channel.key}-${su.testType}.md`), `${suiteRecord(su)}\n`);
+}
+
+/** Look a failing title up in the state, so the reply carries the verdict that was recorded. */
+function testFor(run, title) {
+  const n = normTitle(title);
+  return tests.find(
+    (t) => t.channelKey === run.channelKey && t.testType === run.testType && normTitle(t.title) === n,
+  );
+}
+
+/** The short classification reply the ticket asks for: category + one-line reason + link. */
+function threadReply(run) {
+  const R = [];
+  const p = (x = "") => R.push(x);
+  const total = (run.passed || 0) + (run.failed || 0);
+  const head = run.headerLine.replace(/^:[a-z_]+:/, "").trim();
+
+  const groups = { ENV: [], "APP-BUG": [], SCRIPT: [], unclassified: [] };
+  for (const title of run.failures) {
+    const t = testFor(run, title);
+    groups[t?.label || "unclassified"].push({ title, t });
   }
-  // Prefer a failing run inside the window under review — that is the message people are looking
-  // at this morning. Fall back to the latest run of the suite.
-  const failing = (su.newRuns.length ? su.newRuns : su.runs).filter((r) => !r.green).at(-1);
-  const target = failing || su.latest;
+
+  p(`🔴 *Triage — ${head}* · ${prettyDate(run.iso)} ${run.iso.slice(11, 16)}`);
+  p(`${run.failed} failed / ${run.passed} passed of ${total}${run.truncatedFailureList ? "  (Slack truncated the failure list)" : ""}`);
+  p(``);
+
+  // A run can be red without naming a single test: it timed out, or the job died before it got
+  // going. That is an environment problem with the run itself, and saying "0 failures" here would
+  // read as a clean result under a red message.
+  if (!run.failures.length) {
+    p(
+      `*ENV* — the run itself did not complete${run.partial ? " (timed out)" : run.infra ? " (nothing passed — infrastructure)" : ""}, so no individual test was reported.`,
+    );
+    p(`Env condition: ⚠️ not recorded — what was wrong with the environment or the runner?`);
+    p(``);
+    p(`<${run.reportUrl || run.jobUrl}|Test report>${run.runId ? ` · run ${run.runId}` : ""}`);
+    return R.join(NL).trimEnd();
+  }
+
+  for (const [cat, list] of Object.entries(groups)) {
+    if (!list.length) continue;
+    p(
+      cat === "unclassified"
+        ? `*NOT YET CLASSIFIED (${list.length})* — triage is not finished until this is empty`
+        : `*${cat}* (${list.length}) — ${LABELS[cat]?.short || cat}`,
+    );
+    // Tests knocked out by the same cause are one item to act on, not eight. Grouping them on the
+    // shared explanation keeps the reply readable without hiding a single name.
+    const seen = new Map();
+    for (const item of list) {
+      const t = item.t;
+      const raw = t?.rca?.detail || t?.note || "";
+      const k = String(raw).replace(/\s+/g, " ").trim();
+      if (!seen.has(k)) seen.set(k, []);
+      seen.get(k).push(item);
+    }
+    for (const [, members] of seen) {
+      if (members.length > 1) {
+        const t = members[0].t;
+        const reason = t?.rca?.detail || t?.note || null;
+        p(`• *${members.length} tests, same cause*${reason ? ` — ${clip(String(reason).replace(/\s+/g, " "), 300)}` : ""}`);
+        for (const m of members) p(`    ◦ ${clip(m.title, 88)}`);
+        if (cat === "SCRIPT") {
+          const act = t?.quarantined || t?.rca?.action === "quarantine" ? "quarantine" : t?.rca?.action || null;
+          p(`    → ${act ? `${act}${t?.eta ? ` by ${t.eta}` : ""}${t?.ticket ? ` · ${t.ticket}` : ""}` : "⚠️ no fix-or-quarantine decision"}`);
+        } else if (cat === "APP-BUG") {
+          p(`    → ${t?.ticket ? (cfg.jira?.site ? `<${cfg.jira.site}/browse/${t.ticket}|${t.ticket}>` : t.ticket) : "⚠️ no PRO ticket raised"}`);
+        }
+        continue;
+      }
+      for (const { title, t } of members) {
+      const reason = t?.rca?.detail || t?.note || null;
+      const one = reason ? clip(String(reason).replace(/\s+/g, " ").split(/(?<=\.)\s/)[0], 130) : null;
+      // Each category owes a different thing, and the reply is where a missing one shows.
+      let decision = "";
+      if (cat === "SCRIPT") {
+        const act = t?.quarantined || t?.rca?.action === "quarantine" ? "quarantine" : t?.rca?.action || null;
+        decision = act
+          ? ` → ${act === "quarantine" ? `quarantined until ${t?.rca?.reviewDate || "⚠️ no review date"}${t?.ticket ? ` · ${t.ticket}` : " · ⚠️ no ticket"}` : `${act}${t?.eta ? ` by ${t.eta}` : ""}${t?.ticket ? ` · ${t.ticket}` : ""}`}`
+          : " → ⚠️ no fix-or-quarantine decision";
+      } else if (cat === "APP-BUG") {
+        decision = t?.ticket
+          ? ` → ${cfg.jira?.site ? `<${cfg.jira.site}/browse/${t.ticket}|${t.ticket}>` : t.ticket}`
+          : " → ⚠️ no PRO ticket raised";
+      } else if (cat === "ENV") {
+        decision = one ? "" : " → ⚠️ env condition not recorded";
+      }
+      p(`• ${clip(title, 90)}${one ? ` — ${one}` : ""}${decision}`);
+      }
+    }
+    p(``);
+  }
+
+  p(`Owner: ${[...new Set(run.failures.map((f) => testFor(run, f)?.owner).filter(Boolean))].join(", ") || "⚠️ unassigned"}`);
+  p(`<${run.reportUrl || run.jobUrl}|Test report>${run.runId ? ` · run ${run.runId}` : ""}`);
+  return R.join(NL).trimEnd();
+}
+
+// Only runs inside the review window: an older red run either already has its reply or is listed
+// as overdue by triage-log.js, and re-drafting it here would produce a duplicate thread reply.
+const redRuns = [];
+for (const su of suites) for (const r of su.newRuns) if (!r.green) redRuns.push({ run: r, su });
+redRuns.sort((a, b) => Number(b.run.ts) - Number(a.run.ts));
+
+for (const { run, su } of [...redRuns].reverse()) {
+  const noTests = !run.failures.length;
+  const unclassified = run.failures.filter((f) => !testFor(run, f)?.label).length;
+  const missingDecision = run.failures.filter((f) => {
+    const t = testFor(run, f);
+    if (!t?.label) return false;
+    if (t.label === "SCRIPT") return !(t.quarantined || t.rca?.action);
+    if (t.label === "APP-BUG") return !t.ticket;
+    if (t.label === "ENV") return !(t.note || t.rca?.detail);
+    return false;
+  }).length;
   posts.unshift({
-    file: `1-triage-${su.channel.key}-${su.testType}.md`,
-    section: "1.1–1.6",
+    // Date in the filename: two runs of the same suite at the same clock time on different days
+    // would otherwise overwrite each other, and the one that survived would look like the only one.
+    file: `thread-${su.channel.key}-${su.testType}-${run.iso.slice(0, 10)}-${run.iso.slice(11, 16).replace(":", "")}.md`,
+    section: "thread reply",
     channelKey: su.channel.key,
     suiteId: su.id,
-    destination: `#${su.channel.name} — thread of the ${su.testType} run at ${target ? target.iso.slice(11, 16) : "?"}${failing ? "" : " (latest — none failed)"}`,
-    threadTs: target?.ts || null,
-    what: `Triage record — #${su.channel.name} · ${su.testType}`,
-    body: suiteRecord(su),
+    destination: `#${su.channel.name} — thread of the ${su.testType} run at ${run.iso.slice(11, 16)}`,
+    threadTs: run.ts,
+    runId: run.runId || null,
+    due: dueDate(run.iso, cfg.timezone),
+    what: `Red run reply — ${su.testType} ${prettyDate(run.iso)} ${run.iso.slice(11, 16)} (${run.failures.length ? `${run.failed} failed` : "run did not complete"})`,
+    blocked: noTests || unclassified > 0 || missingDecision > 0,
+    blockedWhy: [
+      noTests ? "the run named no tests — record the environment condition first" : null,
+      unclassified ? `${unclassified} failure(s) with no category` : null,
+      missingDecision ? `${missingDecision} classified failure(s) missing the decision their category requires` : null,
+    ]
+      .filter(Boolean)
+      .join("; "),
+    body: threadReply(run),
   });
+}
+
+// "Daily failure triage" means every working day, not only the days something went red. A suite
+// that ran clean still gets a short message: it is the difference between "checked, all green" and
+// "nobody looked", and from outside the channel those look identical. Weekends produce nothing.
+if (isBusinessDay(date)) {
+  for (const su of [...suites].reverse()) {
+    const dayRuns = su.runs.filter((r) => r.iso.slice(0, 10) === date);
+    if (dayRuns.some((r) => !r.green)) continue; // its red runs already have their own replies
+    const last = dayRuns.at(-1) || null;
+    // Only suites that genuinely run most days are expected daily. Flagging "no run today" for an
+    // ad-hoc suite like mobile `manual` would be a false alarm every morning, and a false alarm
+    // every morning is how the real silence gets ignored.
+    if (!last) {
+      const days = new Set(
+        su.runs.filter((r) => r.iso.slice(0, 10) <= date && r.iso.slice(0, 10) > shiftDate(date, -7)).map((r) => r.iso.slice(0, 10)),
+      );
+      if (days.size < 3) continue;
+    }
+    const passed = dayRuns.reduce((n, r) => n + (r.passed || 0), 0);
+    const B = [];
+    B.push(
+      `${last ? "✅" : "⚠️"} *Daily triage — ${su.channel.name} · ${su.testType}* · ${prettyDate(`${date}T12:00:00+07:00`)}`,
+    );
+    B.push(
+      last
+        ? `${dayRuns.length} run(s) today, all green — ${passed} test(s) passed, nothing to classify.`
+        : `⚠️ No ${su.testType} run today. Nothing was produced to triage — check the schedule, this is not a pass.`,
+    );
+    if (last) B.push(`Latest: ${last.iso.slice(11, 16)} · <${last.reportUrl || last.jobUrl}|Test report>`);
+    posts.push({
+      file: `daily-${su.channel.key}-${su.testType}-${date}.md`,
+      section: "daily",
+      channelKey: su.channel.key,
+      suiteId: su.id,
+      threadTs: last?.ts || null,
+      destination: last
+        ? `#${su.channel.name} — thread of the ${su.testType} run at ${last.iso.slice(11, 16)}`
+        : `#${su.channel.name} — new message (no run today, so there is no thread)`,
+      what: `Daily triage — ${su.channel.name} · ${su.testType} (${last ? "all green" : "no run"})`,
+      body: B.join(NL),
+    });
+  }
+}
+
+function shiftDate(d, n) {
+  const x = new Date(`${d}T12:00:00Z`);
+  x.setUTCDate(x.getUTCDate() + n);
+  return x.toISOString().slice(0, 10);
 }
 
 const postsDir = path.join(outDir, "posts");
@@ -1474,18 +1704,21 @@ idx.push(``);
 idx.push(`One file below is one message for one thread. Review, then post. Nothing is sent automatically.`);
 idx.push(``);
 idx.push(
-  `The triage record is cut **one file per suite** — smoke and regression are separate CI jobs posted as separate Slack messages, so each goes into its own run thread. Each file contains only that suite's failures. There is no whole-day record to post; \`triage.md\` is your own working copy.`,
+  `**One file = one red run = one thread reply.** Green runs get nothing: there is no failure to classify. Each reply carries the category, a one-line reason and the ticket link for every failure in that run, and is due within **1 business day** of the run being posted (QE-964).`,
 );
-if (cleanSuites.length) {
-  idx.push(``);
-  idx.push(`No record written for ${cleanSuites.reverse().join(", ")} — nothing failed there.`);
-}
 idx.push(``);
-idx.push(`| Section | Message | Goes to | Status |`);
-idx.push(`|---|---|---|---|`);
+idx.push(
+  `The long per-suite record lives in [records/](records/) — reference for whoever runs the triage, not a message. \`triage.md\` is the whole-day working copy.`,
+);
+
+idx.push(``);
+idx.push(`| Section | Message | Goes to | Triage due | Status |`);
+idx.push(`|---|---|---|---|---|`);
 for (const post of posts) {
-  const status = post.blocked ? "⚠️ incomplete — fill the gaps first" : "ready";
-  idx.push(`| ${post.section} | [${post.what}](posts/${post.file}) | ${post.destination} | ${status} |`);
+  const status = post.blocked ? `⚠️ ${post.blockedWhy || "incomplete"}` : "ready";
+  idx.push(
+    `| ${post.section} | [${post.what}](posts/${post.file}) | ${post.destination} | ${post.due ? `due ${post.due}` : "—"} | ${status} |`,
+  );
   fs.writeFileSync(
     path.join(postsDir, post.file),
     [
@@ -1503,7 +1736,7 @@ for (const post of posts) {
 idx.push(``);
 if (posts.some((p) => p.blocked)) {
   idx.push(
-    "⚠️ Messages marked incomplete are missing a ticket, a team, an impact line or evidence. One of those sent as-is wastes the reader's time and will not get picked up — fill the gaps with `classify.js` first.",
+    "⚠️ A reply is held back until every failure in that run has a category, and each category has what it owes: SCRIPT a fix-or-quarantine decision, APP-BUG a PRO ticket, ENV the environment condition. Posting a reply with blanks in it is worse than posting nothing — it looks triaged.",
   );
   idx.push(``);
 }

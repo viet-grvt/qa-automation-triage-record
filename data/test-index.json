@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-19T10:30:17.719Z",
+  "generatedAt": "2026-08-25T02:56:34.506Z",
   "repo": "c:/Gravity/qa-automation",
   "counts": {
-    "web": 1086,
-    "mobile": 129
+    "web": 1123,
+    "mobile": 137
   },
   "entries": [
     {
@@ -338,7 +338,7 @@
       "title": "Sign up from Invest",
       "norm": "sign up from invest",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 71,
+      "line": 69,
       "suite": "web",
       "kind": "literal"
     },
@@ -410,7 +410,7 @@
       "title": "Sign up from Invest",
       "norm": "sign up from invest",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 161,
+      "line": 157,
       "suite": "web",
       "kind": "literal"
     },
@@ -418,7 +418,7 @@
       "title": "Wait before logging in again",
       "norm": "wait before logging in again",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 168,
+      "line": 165,
       "suite": "web",
       "kind": "literal"
     },
@@ -426,7 +426,7 @@
       "title": "Log in again with the same account",
       "norm": "log in again with the same account",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 173,
+      "line": 172,
       "suite": "web",
       "kind": "literal"
     },
@@ -458,7 +458,7 @@
       "title": "Verify login from Invest → returns to Invest",
       "norm": "verify login from invest → returns to invest",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 211,
+      "line": 213,
       "suite": "web",
       "kind": "literal"
     },
@@ -466,7 +466,7 @@
       "title": "Log in from Invest",
       "norm": "log in from invest",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 214,
+      "line": 216,
       "suite": "web",
       "kind": "test"
     },
@@ -474,7 +474,7 @@
       "title": "Verify login from Competitions → returns to Competitions",
       "norm": "verify login from competitions → returns to competitions",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 231,
+      "line": 235,
       "suite": "web",
       "kind": "literal"
     },
@@ -482,7 +482,7 @@
       "title": "Log in from Competitions",
       "norm": "log in from competitions",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 234,
+      "line": 238,
       "suite": "web",
       "kind": "test"
     },
@@ -490,7 +490,7 @@
       "title": "Verify login from other page (Funding) → account overview",
       "norm": "verify login from other page (funding) → account overview",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 251,
+      "line": 257,
       "suite": "web",
       "kind": "literal"
     },
@@ -498,7 +498,7 @@
       "title": "Log in from Funding",
       "norm": "log in from funding",
       "file": "ui_tests/tests/auth/redirectionAfterAuth.spec.ts",
-      "line": 254,
+      "line": 260,
       "suite": "web",
       "kind": "test"
     },
@@ -2026,7 +2026,7 @@
       "title": "Market data — public pages",
       "norm": "market data — public pages",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 38,
+      "line": 41,
       "suite": "web",
       "kind": "test"
     },
@@ -2034,7 +2034,7 @@
       "title": "Open the BTC-USDT perpetual page",
       "norm": "open the btc-usdt perpetual page",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 53,
+      "line": 56,
       "suite": "web",
       "kind": "literal"
     },
@@ -2042,7 +2042,7 @@
       "title": "Verify Trade-Indicators data for all instruments is rendered as expected",
       "norm": "verify trade-indicators data for all instruments is rendered as expected",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 59,
+      "line": 62,
       "suite": "web",
       "kind": "literal"
     },
@@ -2050,7 +2050,7 @@
       "title": "Open the Perpetuals page",
       "norm": "open the perpetuals page",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 70,
+      "line": 73,
       "suite": "web",
       "kind": "literal"
     },
@@ -2058,7 +2058,7 @@
       "title": "Report the Trade-Indicators summary",
       "norm": "report the trade-indicators summary",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 123,
+      "line": 126,
       "suite": "web",
       "kind": "literal"
     },
@@ -2066,7 +2066,7 @@
       "title": "Verify all records under the Recent Trades tab are populated as expected",
       "norm": "verify all records under the recent trades tab are populated as expected",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 139,
+      "line": 142,
       "suite": "web",
       "kind": "literal"
     },
@@ -2074,7 +2074,7 @@
       "title": "Open a random instrument",
       "norm": "open a random instrument",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 149,
+      "line": 152,
       "suite": "web",
       "kind": "literal"
     },
@@ -2082,7 +2082,7 @@
       "title": "Verify the Recent Trades records",
       "norm": "verify the recent trades records",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 154,
+      "line": 157,
       "suite": "web",
       "kind": "literal"
     },
@@ -2090,7 +2090,7 @@
       "title": "Verify Order-Book data is displayed as expected",
       "norm": "verify order-book data is displayed as expected",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 163,
+      "line": 166,
       "suite": "web",
       "kind": "literal"
     },
@@ -2098,7 +2098,7 @@
       "title": "Open a random instrument",
       "norm": "open a random instrument",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 166,
+      "line": 169,
       "suite": "web",
       "kind": "literal"
     },
@@ -2106,7 +2106,7 @@
       "title": "Verify the order-book asks and bids",
       "norm": "verify the order-book asks and bids",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 171,
+      "line": 174,
       "suite": "web",
       "kind": "literal"
     },
@@ -2114,7 +2114,7 @@
       "title": "Verify the last and mark prices",
       "norm": "verify the last and mark prices",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 176,
+      "line": 179,
       "suite": "web",
       "kind": "literal"
     },
@@ -2122,7 +2122,7 @@
       "title": "Verify the buy/sell percentages",
       "norm": "verify the buy/sell percentages",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 181,
+      "line": 184,
       "suite": "web",
       "kind": "literal"
     },
@@ -2130,7 +2130,7 @@
       "title": "Verify trading chart candle-sticks are rendered as expected",
       "norm": "verify trading chart candle-sticks are rendered as expected",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 189,
+      "line": 192,
       "suite": "web",
       "kind": "literal"
     },
@@ -2138,7 +2138,7 @@
       "title": "Open the Perpetuals page",
       "norm": "open the perpetuals page",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 194,
+      "line": 197,
       "suite": "web",
       "kind": "literal"
     },
@@ -2146,7 +2146,7 @@
       "title": "Verify the candle-sticks render",
       "norm": "verify the candle-sticks render",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 198,
+      "line": 201,
       "suite": "web",
       "kind": "literal"
     },
@@ -2154,7 +2154,7 @@
       "title": "Verify Order-Book is not crossed (BEST_BID lower than BEST_ASK)",
       "norm": "verify order-book is not crossed (best_bid lower than best_ask)",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 205,
+      "line": 208,
       "suite": "web",
       "kind": "literal"
     },
@@ -2162,7 +2162,7 @@
       "title": "Open a random instrument",
       "norm": "open a random instrument",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 215,
+      "line": 218,
       "suite": "web",
       "kind": "literal"
     },
@@ -2170,7 +2170,7 @@
       "title": "Verify the order-book is not crossed",
       "norm": "verify the order-book is not crossed",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 220,
+      "line": 223,
       "suite": "web",
       "kind": "literal"
     },
@@ -2178,7 +2178,7 @@
       "title": "Sub-account creation — daily Privy account",
       "norm": "sub-account creation — daily privy account",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 227,
+      "line": 230,
       "suite": "web",
       "kind": "test"
     },
@@ -2186,7 +2186,7 @@
       "title": "Verify a new Sub-Account can be created",
       "norm": "verify a new sub-account can be created",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 233,
+      "line": 236,
       "suite": "web",
       "kind": "literal"
     },
@@ -2194,7 +2194,7 @@
       "title": "Log in to today's Privy account",
       "norm": "log in to todays privy account",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 238,
+      "line": 241,
       "suite": "web",
       "kind": "test"
     },
@@ -2202,7 +2202,7 @@
       "title": "Count the trading accounts",
       "norm": "count the trading accounts",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 240,
+      "line": 243,
       "suite": "web",
       "kind": "test"
     },
@@ -2210,7 +2210,7 @@
       "title": "Create a new sub-account",
       "norm": "create a new sub-account",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 242,
+      "line": 245,
       "suite": "web",
       "kind": "test"
     },
@@ -2218,7 +2218,7 @@
       "title": "Check the new sub-account is listed",
       "norm": "check the new sub-account is listed",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 245,
+      "line": 248,
       "suite": "web",
       "kind": "test"
     },
@@ -2226,7 +2226,7 @@
       "title": "Account, orders and transfers — authed",
       "norm": "account, orders and transfers — authed",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 254,
+      "line": 257,
       "suite": "web",
       "kind": "test"
     },
@@ -2234,7 +2234,7 @@
       "title": "Log in with MetaMask",
       "norm": "log in with metamask",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 273,
+      "line": 276,
       "suite": "web",
       "kind": "test"
     },
@@ -2242,7 +2242,7 @@
       "title": "Verify active Trading-Login session expires after logout",
       "norm": "verify active trading-login session expires after logout",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 283,
+      "line": 286,
       "suite": "web",
       "kind": "literal"
     },
@@ -2250,7 +2250,7 @@
       "title": "Re-authenticate and reopen the Perpetuals page",
       "norm": "re-authenticate and reopen the perpetuals page",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 293,
+      "line": 296,
       "suite": "web",
       "kind": "test"
     },
@@ -2258,7 +2258,7 @@
       "title": "Verify the trading-login session state",
       "norm": "verify the trading-login session state",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 304,
+      "line": 305,
       "suite": "web",
       "kind": "test"
     },
@@ -2266,7 +2266,7 @@
       "title": "Verify a new MetaMask user can create a Funding Account and a Trading Account",
       "norm": "verify a new metamask user can create a funding account and a trading account",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 311,
+      "line": 312,
       "suite": "web",
       "kind": "literal"
     },
@@ -2274,7 +2274,7 @@
       "title": "Verify the wallet, funding and trading accounts exist",
       "norm": "verify the wallet, funding and trading accounts exist",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 326,
+      "line": 327,
       "suite": "web",
       "kind": "test"
     },
@@ -2282,7 +2282,7 @@
       "title": "Verify Funding Account balance is updated after free USDT minting",
       "norm": "verify funding account balance is updated after free usdt minting",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 333,
+      "line": 334,
       "suite": "web",
       "kind": "literal"
     },
@@ -2290,7 +2290,7 @@
       "title": "Open the Deposit page",
       "norm": "open the deposit page",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 336,
+      "line": 337,
       "suite": "web",
       "kind": "test"
     },
@@ -2298,7 +2298,7 @@
       "title": "Mint free USDT into the funding account",
       "norm": "mint free usdt into the funding account",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 340,
+      "line": 341,
       "suite": "web",
       "kind": "test"
     },
@@ -2306,7 +2306,7 @@
       "title": "Verify MARKET BUY/SELL order can be placed successfully",
       "norm": "verify market buy/sell order can be placed successfully",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 352,
+      "line": 353,
       "suite": "web",
       "kind": "literal"
     },
@@ -2314,7 +2314,7 @@
       "title": "Place a MARKET ${side} order on ${inst}",
       "norm": "place a market ${side} order on ${inst}",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 367,
+      "line": 368,
       "suite": "web",
       "kind": "test"
     },
@@ -2322,7 +2322,7 @@
       "title": "Verify order placement succeeds when quantity is expressed in USDT Notional",
       "norm": "verify order placement succeeds when quantity is expressed in usdt notional",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 378,
+      "line": 379,
       "suite": "web",
       "kind": "literal"
     },
@@ -2330,7 +2330,7 @@
       "title": "Place a MARKET ${side} order on ${inst} sized in USDT notional",
       "norm": "place a market ${side} order on ${inst} sized in usdt notional",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 393,
+      "line": 394,
       "suite": "web",
       "kind": "test"
     },
@@ -2338,7 +2338,7 @@
       "title": "Verify REDUCE_ONLY type orders can be placed successfully",
       "norm": "verify reduce_only type orders can be placed successfully",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 405,
+      "line": 406,
       "suite": "web",
       "kind": "literal"
     },
@@ -2346,7 +2346,7 @@
       "title": "Open a position to reduce",
       "norm": "open a position to reduce",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 413,
+      "line": 414,
       "suite": "web",
       "kind": "test"
     },
@@ -2354,7 +2354,7 @@
       "title": "Place a REDUCE_ONLY MARKET order",
       "norm": "place a reduce_only market order",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 418,
+      "line": 419,
       "suite": "web",
       "kind": "test"
     },
@@ -2362,7 +2362,7 @@
       "title": "Open the Order History tab",
       "norm": "open the order history tab",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 436,
+      "line": 437,
       "suite": "web",
       "kind": "test"
     },
@@ -2370,7 +2370,7 @@
       "title": "Verify IOC type orders can be placed successfully",
       "norm": "verify ioc type orders can be placed successfully",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 443,
+      "line": 444,
       "suite": "web",
       "kind": "literal"
     },
@@ -2378,7 +2378,7 @@
       "title": "Place a LIMIT BUY IOC order on ${inst}",
       "norm": "place a limit buy ioc order on ${inst}",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 450,
+      "line": 451,
       "suite": "web",
       "kind": "test"
     },
@@ -2386,7 +2386,7 @@
       "title": "Open the Order History tab",
       "norm": "open the order history tab",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 471,
+      "line": 472,
       "suite": "web",
       "kind": "test"
     },
@@ -2394,7 +2394,7 @@
       "title": "Verify FOK type orders can be placed successfully",
       "norm": "verify fok type orders can be placed successfully",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 478,
+      "line": 479,
       "suite": "web",
       "kind": "literal"
     },
@@ -2402,7 +2402,7 @@
       "title": "Place a LIMIT SELL FOK order on ${inst}",
       "norm": "place a limit sell fok order on ${inst}",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 485,
+      "line": 486,
       "suite": "web",
       "kind": "test"
     },
@@ -2410,7 +2410,7 @@
       "title": "Open the Order History tab",
       "norm": "open the order history tab",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 506,
+      "line": 507,
       "suite": "web",
       "kind": "test"
     },
@@ -2418,7 +2418,7 @@
       "title": "Verify POST_ONLY type orders can be placed successfully",
       "norm": "verify post_only type orders can be placed successfully",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 513,
+      "line": 514,
       "suite": "web",
       "kind": "literal"
     },
@@ -2426,7 +2426,7 @@
       "title": "Place a LIMIT BUY POST_ONLY order on ${instrument}",
       "norm": "place a limit buy post_only order on ${instrument}",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 520,
+      "line": 521,
       "suite": "web",
       "kind": "test"
     },
@@ -2434,7 +2434,7 @@
       "title": "Open the Open Orders tab",
       "norm": "open the open orders tab",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 543,
+      "line": 544,
       "suite": "web",
       "kind": "test"
     },
@@ -2442,7 +2442,7 @@
       "title": "Verify all active positions can be closed with the Close all positions button",
       "norm": "verify all active positions can be closed with the close all positions button",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 550,
+      "line": 551,
       "suite": "web",
       "kind": "literal"
     },
@@ -2450,7 +2450,7 @@
       "title": "Close every active position",
       "norm": "close every active position",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 560,
+      "line": 561,
       "suite": "web",
       "kind": "test"
     },
@@ -2458,7 +2458,7 @@
       "title": "Verify INTERNAL USDT transfer from Funding Account to Trading Account is successful",
       "norm": "verify internal usdt transfer from funding account to trading account is successful",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 567,
+      "line": 568,
       "suite": "web",
       "kind": "literal"
     },
@@ -2466,7 +2466,7 @@
       "title": "Transfer USDT from the funding account to a trading account",
       "norm": "transfer usdt from the funding account to a trading account",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 576,
+      "line": 577,
       "suite": "web",
       "kind": "test"
     },
@@ -2474,7 +2474,7 @@
       "title": "Verify EXTERNAL USDT transfer from Funding Account to Funding Account is successful",
       "norm": "verify external usdt transfer from funding account to funding account is successful",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 583,
+      "line": 584,
       "suite": "web",
       "kind": "literal"
     },
@@ -2482,7 +2482,7 @@
       "title": "Transfer USDT externally between funding accounts",
       "norm": "transfer usdt externally between funding accounts",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 592,
+      "line": 593,
       "suite": "web",
       "kind": "test"
     },
@@ -2490,7 +2490,7 @@
       "title": "Verify INTERNAL USDC transfer from Funding Account to Trading Account is successful",
       "norm": "verify internal usdc transfer from funding account to trading account is successful",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 599,
+      "line": 600,
       "suite": "web",
       "kind": "literal"
     },
@@ -2498,7 +2498,7 @@
       "title": "Transfer USDC from the funding account to a trading account",
       "norm": "transfer usdc from the funding account to a trading account",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 609,
+      "line": 610,
       "suite": "web",
       "kind": "test"
     },
@@ -2506,7 +2506,7 @@
       "title": "Verify EXTERNAL USDC transfer from Funding Account to Funding Account is successful",
       "norm": "verify external usdc transfer from funding account to funding account is successful",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 616,
+      "line": 617,
       "suite": "web",
       "kind": "literal"
     },
@@ -2514,7 +2514,7 @@
       "title": "Transfer USDC externally between funding accounts",
       "norm": "transfer usdc externally between funding accounts",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 625,
+      "line": 626,
       "suite": "web",
       "kind": "test"
     },
@@ -2522,7 +2522,7 @@
       "title": "Verify INTERNAL GRVT transfer from Funding Account to Trading Account is successful",
       "norm": "verify internal grvt transfer from funding account to trading account is successful",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 661,
+      "line": 662,
       "suite": "web",
       "kind": "literal"
     },
@@ -2530,7 +2530,7 @@
       "title": "Transfer GRVT from the funding account to a trading account",
       "norm": "transfer grvt from the funding account to a trading account",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 671,
+      "line": 672,
       "suite": "web",
       "kind": "test"
     },
@@ -2538,7 +2538,7 @@
       "title": "Verify INTERNAL transfer is rejected when the amount exceeds the available balance",
       "norm": "verify internal transfer is rejected when the amount exceeds the available balance",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 693,
+      "line": 694,
       "suite": "web",
       "kind": "literal"
     },
@@ -2546,7 +2546,7 @@
       "title": "Open the internal transfer form",
       "norm": "open the internal transfer form",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 705,
+      "line": 706,
       "suite": "web",
       "kind": "test"
     },
@@ -2554,7 +2554,7 @@
       "title": "Verify an over-balance amount is rejected",
       "norm": "verify an over-balance amount is rejected",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 714,
+      "line": 715,
       "suite": "web",
       "kind": "test"
     },
@@ -2562,7 +2562,7 @@
       "title": "Verify INTERNAL transfer is rejected for zero, empty, and non-numeric amounts",
       "norm": "verify internal transfer is rejected for zero, empty, and non-numeric amounts",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 723,
+      "line": 724,
       "suite": "web",
       "kind": "literal"
     },
@@ -2570,7 +2570,7 @@
       "title": "Open the internal transfer form",
       "norm": "open the internal transfer form",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 735,
+      "line": 736,
       "suite": "web",
       "kind": "test"
     },
@@ -2578,7 +2578,7 @@
       "title": "Verify the amount \"${bad}\" is rejected",
       "norm": "verify the amount ${bad} is rejected",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 745,
+      "line": 746,
       "suite": "web",
       "kind": "test"
     },
@@ -2586,7 +2586,7 @@
       "title": "Verify INTERNAL transfer is blocked when source and destination are the same",
       "norm": "verify internal transfer is blocked when source and destination are the same",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 756,
+      "line": 757,
       "suite": "web",
       "kind": "literal"
     },
@@ -2594,7 +2594,7 @@
       "title": "Open the Deposit page",
       "norm": "open the deposit page",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 767,
+      "line": 768,
       "suite": "web",
       "kind": "test"
     },
@@ -2602,7 +2602,7 @@
       "title": "Verify a same-account transfer is blocked",
       "norm": "verify a same-account transfer is blocked",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 771,
+      "line": 772,
       "suite": "web",
       "kind": "test"
     },
@@ -2610,7 +2610,7 @@
       "title": "Verify EXTERNAL transfer is rejected when the amount exceeds the available balance",
       "norm": "verify external transfer is rejected when the amount exceeds the available balance",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 780,
+      "line": 781,
       "suite": "web",
       "kind": "literal"
     },
@@ -2618,7 +2618,7 @@
       "title": "Open the external transfer form",
       "norm": "open the external transfer form",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 789,
+      "line": 790,
       "suite": "web",
       "kind": "test"
     },
@@ -2626,7 +2626,7 @@
       "title": "Verify an over-balance amount is rejected",
       "norm": "verify an over-balance amount is rejected",
       "file": "ui_tests/tests/e2e_tests.spec.ts",
-      "line": 794,
+      "line": 795,
       "suite": "web",
       "kind": "test"
     },
@@ -2634,7 +2634,7 @@
       "title": "//*[text()='Enter Invite Code']",
       "norm": "//*[text()=enter invite code]",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 26,
+      "line": 28,
       "suite": "web",
       "kind": "literal"
     },
@@ -2642,15 +2642,15 @@
       "title": "//*[@role='dialog']//*[text()='Enter Invite Code']",
       "norm": "//*[@role=dialog]//*[text()=enter invite code]",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 63,
+      "line": 69,
       "suite": "web",
       "kind": "literal"
     },
     {
-      "title": "Prepare an authenticated account",
-      "norm": "prepare an authenticated account",
+      "title": "Log in with MetaMask",
+      "norm": "log in with metamask",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 70,
+      "line": 76,
       "suite": "web",
       "kind": "test"
     },
@@ -2658,7 +2658,7 @@
       "title": "Open the ${tab} history page",
       "norm": "open the ${tab} history page",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 93,
+      "line": 100,
       "suite": "web",
       "kind": "test"
     },
@@ -2666,23 +2666,23 @@
       "title": "Export the ${tab} history as ${format}",
       "norm": "export the ${tab} history as ${format}",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 97,
-      "suite": "web",
-      "kind": "test"
-    },
-    {
-      "title": "Verify the export finishes and offers email delivery",
-      "norm": "verify the export finishes and offers email delivery",
-      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 102,
-      "suite": "web",
-      "kind": "test"
-    },
-    {
-      "title": "[exportTransactionHistory] final status:",
-      "norm": "[exporttransactionhistory] final status:",
-      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
       "line": 104,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify the exported ${format} downloads as a real file",
+      "norm": "verify the exported ${format} downloads as a real file",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 109,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "export did not complete",
+      "norm": "export did not complete",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 112,
       "suite": "web",
       "kind": "literal"
     },
@@ -2690,7 +2690,7 @@
       "title": "Deposit - Verify transaction history is exported as CSV",
       "norm": "deposit - verify transaction history is exported as csv",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 112,
+      "line": 121,
       "suite": "web",
       "kind": "literal"
     },
@@ -2698,7 +2698,7 @@
       "title": "Deposit - Verify transaction history is exported as PDF",
       "norm": "deposit - verify transaction history is exported as pdf",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 120,
+      "line": 129,
       "suite": "web",
       "kind": "literal"
     },
@@ -2706,7 +2706,7 @@
       "title": "Withdrawal - Verify transaction history is exported as CSV",
       "norm": "withdrawal - verify transaction history is exported as csv",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 128,
+      "line": 137,
       "suite": "web",
       "kind": "literal"
     },
@@ -2714,7 +2714,7 @@
       "title": "Withdrawal - Verify transaction history is exported as PDF",
       "norm": "withdrawal - verify transaction history is exported as pdf",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 136,
+      "line": 145,
       "suite": "web",
       "kind": "literal"
     },
@@ -2722,7 +2722,7 @@
       "title": "Transfer - Verify transaction history is exported as CSV",
       "norm": "transfer - verify transaction history is exported as csv",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 144,
+      "line": 153,
       "suite": "web",
       "kind": "literal"
     },
@@ -2730,7 +2730,7 @@
       "title": "Transfer - Verify transaction history is exported as PDF",
       "norm": "transfer - verify transaction history is exported as pdf",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 154,
+      "line": 163,
       "suite": "web",
       "kind": "literal"
     },
@@ -2738,7 +2738,7 @@
       "title": "Seed a BTC market order so history is non-empty",
       "norm": "seed a btc market order so history is non-empty",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 166,
+      "line": 175,
       "suite": "web",
       "kind": "test"
     },
@@ -2746,7 +2746,7 @@
       "title": "[exportHistory.seedOrderHistory] UI order seed failed; continuing.",
       "norm": "[exporthistory.seedorderhistory] ui order seed failed; continuing",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 178,
+      "line": 187,
       "suite": "web",
       "kind": "literal"
     },
@@ -2754,7 +2754,7 @@
       "title": "Open the Order history full list",
       "norm": "open the order history full list",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 191,
+      "line": 197,
       "suite": "web",
       "kind": "test"
     },
@@ -2762,23 +2762,31 @@
       "title": "Export the order history as ${format}",
       "norm": "export the order history as ${format}",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 196,
+      "line": 202,
       "suite": "web",
       "kind": "test"
     },
     {
-      "title": "Verify the export completes and offers email delivery",
-      "norm": "verify the export completes and offers email delivery",
+      "title": "Verify the exported ${format} downloads as a real file",
+      "norm": "verify the exported ${format} downloads as a real file",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 201,
+      "line": 207,
       "suite": "web",
       "kind": "test"
+    },
+    {
+      "title": "export did not complete",
+      "norm": "export did not complete",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 210,
+      "suite": "web",
+      "kind": "literal"
     },
     {
       "title": "Open the Trade history full list",
       "norm": "open the trade history full list",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 216,
+      "line": 221,
       "suite": "web",
       "kind": "test"
     },
@@ -2786,23 +2794,31 @@
       "title": "Export the trade history as ${format}",
       "norm": "export the trade history as ${format}",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 221,
-      "suite": "web",
-      "kind": "test"
-    },
-    {
-      "title": "Verify the export completes and offers email delivery",
-      "norm": "verify the export completes and offers email delivery",
-      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
       "line": 226,
       "suite": "web",
       "kind": "test"
     },
     {
+      "title": "Verify the exported ${format} downloads as a real file",
+      "norm": "verify the exported ${format} downloads as a real file",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 231,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "export did not complete",
+      "norm": "export did not complete",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 234,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
       "title": "Order - Verify order history is exported as CSV",
       "norm": "order - verify order history is exported as csv",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 236,
+      "line": 243,
       "suite": "web",
       "kind": "literal"
     },
@@ -2810,7 +2826,7 @@
       "title": "Order - Verify order history is exported as PDF",
       "norm": "order - verify order history is exported as pdf",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 244,
+      "line": 251,
       "suite": "web",
       "kind": "literal"
     },
@@ -2818,7 +2834,7 @@
       "title": "Trade - Verify trade history is exported as CSV",
       "norm": "trade - verify trade history is exported as csv",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 252,
+      "line": 259,
       "suite": "web",
       "kind": "literal"
     },
@@ -2826,7 +2842,7 @@
       "title": "Trade - Verify trade history is exported as PDF",
       "norm": "trade - verify trade history is exported as pdf",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 260,
+      "line": 267,
       "suite": "web",
       "kind": "literal"
     },
@@ -2834,7 +2850,7 @@
       "title": "Export file - Verify headers, data, and time format display correctly",
       "norm": "export file - verify headers, data, and time format display correctly",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 268,
+      "line": 275,
       "suite": "web",
       "kind": "literal"
     },
@@ -2842,7 +2858,47 @@
       "title": "Open the Order history full list",
       "norm": "open the order history full list",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 275,
+      "line": 282,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Reuse the latest completed export, or run a new one",
+      "norm": "reuse the latest completed export, or run a new one",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 287,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify the downloaded CSV has a header row and data rows",
+      "norm": "verify the downloaded csv has a header row and data rows",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 296,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "export did not complete",
+      "norm": "export did not complete",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 299,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Export file - Verify the size column for an Equity instrument is a finite number",
+      "norm": "export file - verify the size column for an equity instrument is a finite number",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 316,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Open the Order history full list",
+      "norm": "open the order history full list",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 328,
       "suite": "web",
       "kind": "test"
     },
@@ -2850,23 +2906,31 @@
       "title": "Export the order history as CSV",
       "norm": "export the order history as csv",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 280,
+      "line": 333,
       "suite": "web",
       "kind": "test"
     },
     {
-      "title": "Verify the exported file row renders correctly",
-      "norm": "verify the exported file row renders correctly",
+      "title": "Verify the ${EQUITY_INSTRUMENT} size parses as a finite number",
+      "norm": "verify the ${equity_instrument} size parses as a finite number",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 285,
+      "line": 338,
       "suite": "web",
       "kind": "test"
+    },
+    {
+      "title": "export did not complete",
+      "norm": "export did not complete",
+      "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
+      "line": 340,
+      "suite": "web",
+      "kind": "literal"
     },
     {
       "title": "Verify export is blocked beyond the daily quota (11th attempt)",
       "norm": "verify export is blocked beyond the daily quota (11th attempt)",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 295,
+      "line": 361,
       "suite": "web",
       "kind": "literal"
     },
@@ -2874,7 +2938,7 @@
       "title": "Open the Order history full list",
       "norm": "open the order history full list",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 300,
+      "line": 366,
       "suite": "web",
       "kind": "test"
     },
@@ -2882,7 +2946,7 @@
       "title": "Exhaust the daily quota of ${EXPORT_QUOTA_PER_DAY} exports",
       "norm": "exhaust the daily quota of ${export_quota_per_day} exports",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 305,
+      "line": 371,
       "suite": "web",
       "kind": "test"
     },
@@ -2890,7 +2954,7 @@
       "title": "Verify the export button is disabled",
       "norm": "verify the export button is disabled",
       "file": "ui_tests/tests/exportHistory/exportHistory.spec.ts",
-      "line": 319,
+      "line": 385,
       "suite": "web",
       "kind": "test"
     },
@@ -2898,7 +2962,7 @@
       "title": "Open the trading page signed out",
       "norm": "open the trading page signed out",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 45,
+      "line": 49,
       "suite": "web",
       "kind": "test"
     },
@@ -2906,7 +2970,7 @@
       "title": "Navigation header — presence",
       "norm": "navigation header — presence",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 65,
+      "line": 69,
       "suite": "web",
       "kind": "test"
     },
@@ -2914,7 +2978,7 @@
       "title": "Verify the top-level navigation header renders on every page",
       "norm": "verify the top-level navigation header renders on every page",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 67,
+      "line": 71,
       "suite": "web",
       "kind": "literal"
     },
@@ -2922,7 +2986,7 @@
       "title": "Navigation header — cross-page consistency",
       "norm": "navigation header — cross-page consistency",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 79,
+      "line": 83,
       "suite": "web",
       "kind": "test"
     },
@@ -2930,7 +2994,7 @@
       "title": "Verify the navigation header is identical on every page",
       "norm": "verify the navigation header is identical on every page",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 81,
+      "line": 85,
       "suite": "web",
       "kind": "literal"
     },
@@ -2938,7 +3002,7 @@
       "title": "Capture the header baseline on the trading page",
       "norm": "capture the header baseline on the trading page",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 85,
+      "line": 89,
       "suite": "web",
       "kind": "test"
     },
@@ -2946,7 +3010,7 @@
       "title": "the header on the trading page",
       "norm": "the header on the trading page",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 102,
+      "line": 106,
       "suite": "web",
       "kind": "literal"
     },
@@ -2954,7 +3018,7 @@
       "title": "Navigation header — typography and colour",
       "norm": "navigation header — typography and colour",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 111,
+      "line": 115,
       "suite": "web",
       "kind": "test"
     },
@@ -2962,7 +3026,7 @@
       "title": "Verify the navigation header typography and colour on every page",
       "norm": "verify the navigation header typography and colour on every page",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 113,
+      "line": 117,
       "suite": "web",
       "kind": "literal"
     },
@@ -2970,7 +3034,7 @@
       "title": "Navigation header — languages",
       "norm": "navigation header — languages",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 124,
+      "line": 128,
       "suite": "web",
       "kind": "test"
     },
@@ -2978,7 +3042,7 @@
       "title": "Verify the navigation header renders correctly across all supported locales",
       "norm": "verify the navigation header renders correctly across all supported locales",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 126,
+      "line": 130,
       "suite": "web",
       "kind": "literal"
     },
@@ -2986,7 +3050,7 @@
       "title": "Capture the English header baseline",
       "norm": "capture the english header baseline",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 130,
+      "line": 134,
       "suite": "web",
       "kind": "test"
     },
@@ -2994,7 +3058,7 @@
       "title": "Verify the navigation header in \"${lang}\"",
       "norm": "verify the navigation header in ${lang}",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 142,
+      "line": 146,
       "suite": "web",
       "kind": "test"
     },
@@ -3002,7 +3066,7 @@
       "title": "the English header",
       "norm": "the english header",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 154,
+      "line": 158,
       "suite": "web",
       "kind": "literal"
     },
@@ -3010,7 +3074,63 @@
       "title": "Restore the app language to English",
       "norm": "restore the app language to english",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 165,
+      "line": 169,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Navigation header — in-app route changes",
+      "norm": "navigation header — in-app route changes",
+      "file": "ui_tests/tests/headerNav.spec.ts",
+      "line": 181,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify the navigation header is identical after navigating between pages in-app",
+      "norm": "verify the navigation header is identical after navigating between pages in-app",
+      "file": "ui_tests/tests/headerNav.spec.ts",
+      "line": 183,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Capture the header baseline on the trading page",
+      "norm": "capture the header baseline on the trading page",
+      "file": "ui_tests/tests/headerNav.spec.ts",
+      "line": 187,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "the header on the trading page",
+      "norm": "the header on the trading page",
+      "file": "ui_tests/tests/headerNav.spec.ts",
+      "line": 199,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Verify the navigation header is identical after in-app navigation in every locale",
+      "norm": "verify the navigation header is identical after in-app navigation in every locale",
+      "file": "ui_tests/tests/headerNav.spec.ts",
+      "line": 210,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Verify in-app navigation in \"${lang}\"",
+      "norm": "verify in-app navigation in ${lang}",
+      "file": "ui_tests/tests/headerNav.spec.ts",
+      "line": 215,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Restore the app language to English",
+      "norm": "restore the app language to english",
+      "file": "ui_tests/tests/headerNav.spec.ts",
+      "line": 242,
       "suite": "web",
       "kind": "test"
     },
@@ -3018,7 +3138,7 @@
       "title": "Navigation header — render stability",
       "norm": "navigation header — render stability",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 177,
+      "line": 254,
       "suite": "web",
       "kind": "test"
     },
@@ -3026,7 +3146,7 @@
       "title": "Verify the navigation header stays identical across repeated reloads",
       "norm": "verify the navigation header stays identical across repeated reloads",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 179,
+      "line": 256,
       "suite": "web",
       "kind": "literal"
     },
@@ -3034,7 +3154,7 @@
       "title": "Verify the header survives ${RELOAD_ROUNDS} reloads on ${path}",
       "norm": "verify the header survives ${reload_rounds} reloads on ${path}",
       "file": "ui_tests/tests/headerNav.spec.ts",
-      "line": 185,
+      "line": 262,
       "suite": "web",
       "kind": "test"
     },
@@ -3394,7 +3514,7 @@
       "title": "Stress the sector and sub-sector switching",
       "norm": "stress the sector and sub-sector switching",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 313,
+      "line": 311,
       "suite": "web",
       "kind": "test"
     },
@@ -3402,7 +3522,7 @@
       "title": "Measure the switching performance",
       "norm": "measure the switching performance",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 316,
+      "line": 314,
       "suite": "web",
       "kind": "test"
     },
@@ -3410,7 +3530,7 @@
       "title": "Instrument sectors — accessibility",
       "norm": "instrument sectors — accessibility",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 323,
+      "line": 321,
       "suite": "web",
       "kind": "test"
     },
@@ -3418,7 +3538,7 @@
       "title": "Verify accessibility attributes, keyboard navigation, and scrolling work",
       "norm": "verify accessibility attributes, keyboard navigation, and scrolling work",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 325,
+      "line": 323,
       "suite": "web",
       "kind": "literal"
     },
@@ -3426,7 +3546,7 @@
       "title": "Verify basic accessibility attributes",
       "norm": "verify basic accessibility attributes",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 336,
+      "line": 334,
       "suite": "web",
       "kind": "test"
     },
@@ -3434,7 +3554,7 @@
       "title": "Verify keyboard navigation",
       "norm": "verify keyboard navigation",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 339,
+      "line": 337,
       "suite": "web",
       "kind": "test"
     },
@@ -3442,7 +3562,7 @@
       "title": "Verify the scroll behaviour",
       "norm": "verify the scroll behaviour",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 342,
+      "line": 340,
       "suite": "web",
       "kind": "test"
     },
@@ -3450,7 +3570,7 @@
       "title": "Instrument sectors — edge cases",
       "norm": "instrument sectors — edge cases",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 349,
+      "line": 347,
       "suite": "web",
       "kind": "test"
     },
@@ -3458,7 +3578,7 @@
       "title": "Verify sub-sectors stay stable under rapid tab switching",
       "norm": "verify sub-sectors stay stable under rapid tab switching",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 351,
+      "line": 349,
       "suite": "web",
       "kind": "literal"
     },
@@ -3466,7 +3586,7 @@
       "title": "Verify sub-sector stability",
       "norm": "verify sub-sector stability",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 362,
+      "line": 360,
       "suite": "web",
       "kind": "test"
     },
@@ -3474,7 +3594,7 @@
       "title": "Verify rapid tab switching",
       "norm": "verify rapid tab switching",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 366,
+      "line": 364,
       "suite": "web",
       "kind": "test"
     },
@@ -3482,7 +3602,7 @@
       "title": "Verify sector and search state survive navigation away and back",
       "norm": "verify sector and search state survive navigation away and back",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 373,
+      "line": 371,
       "suite": "web",
       "kind": "literal"
     },
@@ -3490,7 +3610,7 @@
       "title": "Verify the state survives navigation",
       "norm": "verify the state survives navigation",
       "file": "ui_tests/tests/instrumentSectors.spec.ts",
-      "line": 377,
+      "line": 375,
       "suite": "web",
       "kind": "test"
     },
@@ -3575,10 +3695,26 @@
       "kind": "literal"
     },
     {
+      "title": "買い/売り (buy/sell)",
+      "norm": "買い/売り (buy/sell)",
+      "file": "ui_tests/tests/languageUiLayout.spec.ts",
+      "line": 49,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "ロング/ショート (long/short)",
+      "norm": "ロング/ショート (long/short)",
+      "file": "ui_tests/tests/languageUiLayout.spec.ts",
+      "line": 50,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
       "title": "|| msg.type() ===",
       "norm": "|| msg.type() ===",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 185,
+      "line": 196,
       "suite": "web",
       "kind": "literal"
     },
@@ -3586,7 +3722,7 @@
       "title": "Log in with email",
       "norm": "log in with email",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 203,
+      "line": 214,
       "suite": "web",
       "kind": "test"
     },
@@ -3594,7 +3730,7 @@
       "title": "Language layout — switching",
       "norm": "language layout — switching",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 210,
+      "line": 221,
       "suite": "web",
       "kind": "test"
     },
@@ -3602,7 +3738,7 @@
       "title": "Switch app language to each supported locale",
       "norm": "switch app language to each supported locale",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 212,
+      "line": 223,
       "suite": "web",
       "kind": "literal"
     },
@@ -3610,7 +3746,7 @@
       "title": "Switch the app language to \"${lang}\"",
       "norm": "switch the app language to ${lang}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 224,
+      "line": 235,
       "suite": "web",
       "kind": "test"
     },
@@ -3618,7 +3754,7 @@
       "title": "Report any locales that failed to apply",
       "norm": "report any locales that failed to apply",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 255,
+      "line": 266,
       "suite": "web",
       "kind": "test"
     },
@@ -3626,7 +3762,7 @@
       "title": "Verify language preference persists after refresh and navigation",
       "norm": "verify language preference persists after refresh and navigation",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 264,
+      "line": 275,
       "suite": "web",
       "kind": "literal"
     },
@@ -3634,7 +3770,7 @@
       "title": "Switch the app language to Pусский",
       "norm": "switch the app language to pусский",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 267,
+      "line": 278,
       "suite": "web",
       "kind": "test"
     },
@@ -3642,7 +3778,7 @@
       "title": "Verify the language survives a refresh",
       "norm": "verify the language survives a refresh",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 273,
+      "line": 284,
       "suite": "web",
       "kind": "test"
     },
@@ -3650,7 +3786,7 @@
       "title": "Verify the language survives navigation",
       "norm": "verify the language survives navigation",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 277,
+      "line": 288,
       "suite": "web",
       "kind": "test"
     },
@@ -3658,7 +3794,7 @@
       "title": "Language layout — buttons",
       "norm": "language layout — buttons",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 287,
+      "line": 298,
       "suite": "web",
       "kind": "test"
     },
@@ -3666,7 +3802,7 @@
       "title": "Verify button layout: overflow, overlap, truncation and height stability across all locales",
       "norm": "verify button layout: overflow, overlap, truncation and height stability across all locales",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 289,
+      "line": 300,
       "suite": "web",
       "kind": "literal"
     },
@@ -3674,7 +3810,7 @@
       "title": "Capture the English button-height baseline",
       "norm": "capture the english button-height baseline",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 300,
+      "line": 311,
       "suite": "web",
       "kind": "test"
     },
@@ -3682,7 +3818,7 @@
       "title": "Verify the button layout in \"${lang}\" on ${url.replace(ENV.BASE_URL, \"\")}",
       "norm": "verify the button layout in ${lang} on ${url.replace(env.base_url, )}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 309,
+      "line": 325,
       "suite": "web",
       "kind": "test"
     },
@@ -3690,7 +3826,7 @@
       "title": "Language layout — navigation",
       "norm": "language layout — navigation",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 324,
+      "line": 341,
       "suite": "web",
       "kind": "test"
     },
@@ -3698,7 +3834,7 @@
       "title": "Verify navigation layout: overflow, overlap and height stability across all locales",
       "norm": "verify navigation layout: overflow, overlap and height stability across all locales",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 326,
+      "line": 343,
       "suite": "web",
       "kind": "literal"
     },
@@ -3706,7 +3842,7 @@
       "title": "Capture the English nav-height baseline",
       "norm": "capture the english nav-height baseline",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 332,
+      "line": 349,
       "suite": "web",
       "kind": "test"
     },
@@ -3714,7 +3850,7 @@
       "title": "Verify the navigation layout in \"${lang}\"",
       "norm": "verify the navigation layout in ${lang}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 339,
+      "line": 356,
       "suite": "web",
       "kind": "test"
     },
@@ -3722,7 +3858,7 @@
       "title": "Language layout — forms and dropdowns",
       "norm": "language layout — forms and dropdowns",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 353,
+      "line": 370,
       "suite": "web",
       "kind": "test"
     },
@@ -3730,7 +3866,7 @@
       "title": "Verify form and dropdown layout: labels, validation, alignment and options across all locales",
       "norm": "verify form and dropdown layout: labels, validation, alignment and options across all locales",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 355,
+      "line": 372,
       "suite": "web",
       "kind": "literal"
     },
@@ -3738,7 +3874,7 @@
       "title": "Verify the form layout in \"${lang}\" on ${url.replace(ENV.BASE_URL, \"\")}",
       "norm": "verify the form layout in ${lang} on ${url.replace(env.base_url, )}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 362,
+      "line": 379,
       "suite": "web",
       "kind": "test"
     },
@@ -3746,7 +3882,7 @@
       "title": "Language layout — modals",
       "norm": "language layout — modals",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 377,
+      "line": 394,
       "suite": "web",
       "kind": "test"
     },
@@ -3754,7 +3890,7 @@
       "title": "Verify modal layout: content, action buttons and close button across all locales",
       "norm": "verify modal layout: content, action buttons and close button across all locales",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 379,
+      "line": 396,
       "suite": "web",
       "kind": "literal"
     },
@@ -3762,7 +3898,7 @@
       "title": "Verify the modal layout in \"${lang}\"",
       "norm": "verify the modal layout in ${lang}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 383,
+      "line": 400,
       "suite": "web",
       "kind": "test"
     },
@@ -3770,7 +3906,7 @@
       "title": "Language layout — toasts",
       "norm": "language layout — toasts",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 392,
+      "line": 409,
       "suite": "web",
       "kind": "test"
     },
@@ -3778,7 +3914,7 @@
       "title": "Verify toast layout: message overflow and dismiss button across all locales",
       "norm": "verify toast layout: message overflow and dismiss button across all locales",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 394,
+      "line": 411,
       "suite": "web",
       "kind": "literal"
     },
@@ -3786,7 +3922,7 @@
       "title": "Verify the toast layout in \"${lang}\"",
       "norm": "verify the toast layout in ${lang}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 398,
+      "line": 415,
       "suite": "web",
       "kind": "test"
     },
@@ -3794,7 +3930,7 @@
       "title": "Language layout — table headers",
       "norm": "language layout — table headers",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 407,
+      "line": 424,
       "suite": "web",
       "kind": "test"
     },
@@ -3802,7 +3938,7 @@
       "title": "Verify table column headers stay on a single line across all locales",
       "norm": "verify table column headers stay on a single line across all locales",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 409,
+      "line": 426,
       "suite": "web",
       "kind": "literal"
     },
@@ -3810,7 +3946,7 @@
       "title": "Verify the table headers in \"${lang}\"",
       "norm": "verify the table headers in ${lang}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 413,
+      "line": 430,
       "suite": "web",
       "kind": "test"
     },
@@ -3818,7 +3954,7 @@
       "title": "Language layout — viewports",
       "norm": "language layout — viewports",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 422,
+      "line": 439,
       "suite": "web",
       "kind": "test"
     },
@@ -3826,7 +3962,7 @@
       "title": "Verify no text overflow across target viewports in Russian",
       "norm": "verify no text overflow across target viewports in russian",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 424,
+      "line": 441,
       "suite": "web",
       "kind": "literal"
     },
@@ -3834,7 +3970,7 @@
       "title": "Verify ${viewport.width}x${viewport.height} has no overflow",
       "norm": "verify ${viewport.width}x${viewport.height} has no overflow",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 429,
+      "line": 446,
       "suite": "web",
       "kind": "test"
     },
@@ -3842,7 +3978,7 @@
       "title": "Language layout — content integrity",
       "norm": "language layout — content integrity",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 440,
+      "line": 457,
       "suite": "web",
       "kind": "test"
     },
@@ -3850,15 +3986,55 @@
       "title": "Verify encoding, translations, number format and horizontal scroll across all locales",
       "norm": "verify encoding, translations, number format and horizontal scroll across all locales",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 442,
+      "line": 459,
       "suite": "web",
       "kind": "literal"
+    },
+    {
+      "title": "Capture the English Quick Order qty placeholder",
+      "norm": "capture the english quick order qty placeholder",
+      "file": "ui_tests/tests/languageUiLayout.spec.ts",
+      "line": 471,
+      "suite": "web",
+      "kind": "test"
     },
     {
       "title": "Verify content integrity in \"${lang}\" on ${url.replace(ENV.BASE_URL, \"\")}",
       "norm": "verify content integrity in ${lang} on ${url.replace(env.base_url, )}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 456,
+      "line": 480,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Localisation — order book terminology",
+      "norm": "localisation — order book terminology",
+      "file": "ui_tests/tests/languageUiLayout.spec.ts",
+      "line": 502,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify the Japanese order book footer does not mix buy/sell with long/short",
+      "norm": "verify the japanese order book footer does not mix buy/sell with long/short",
+      "file": "ui_tests/tests/languageUiLayout.spec.ts",
+      "line": 504,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Open the trading page in 日本語",
+      "norm": "open the trading page in 日本語",
+      "file": "ui_tests/tests/languageUiLayout.spec.ts",
+      "line": 507,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify both sides come from one vocabulary",
+      "norm": "verify both sides come from one vocabulary",
+      "file": "ui_tests/tests/languageUiLayout.spec.ts",
+      "line": 512,
       "suite": "web",
       "kind": "test"
     },
@@ -3866,7 +4042,7 @@
       "title": "Language layout — helper self-check",
       "norm": "language layout — helper self-check",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 471,
+      "line": 549,
       "suite": "web",
       "kind": "test"
     },
@@ -3874,7 +4050,7 @@
       "title": "Verify overflow detection utility correctly identifies violations",
       "norm": "verify overflow detection utility correctly identifies violations",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 473,
+      "line": 551,
       "suite": "web",
       "kind": "literal"
     },
@@ -3882,7 +4058,7 @@
       "title": "Verify the overflow detector flags violations",
       "norm": "verify the overflow detector flags violations",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 476,
+      "line": 554,
       "suite": "web",
       "kind": "test"
     },
@@ -3890,7 +4066,7 @@
       "title": "Language layout — Russian regression",
       "norm": "language layout — russian regression",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 484,
+      "line": 562,
       "suite": "web",
       "kind": "test"
     },
@@ -3898,7 +4074,7 @@
       "title": "Verify Russian layout regression: button overflow and navigation label overflow",
       "norm": "verify russian layout regression: button overflow and navigation label overflow",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 486,
+      "line": 564,
       "suite": "web",
       "kind": "literal"
     },
@@ -3906,7 +4082,7 @@
       "title": "Verify the Russian layout on ${url.replace(ENV.BASE_URL, \"\")}",
       "norm": "verify the russian layout on ${url.replace(env.base_url, )}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 497,
+      "line": 575,
       "suite": "web",
       "kind": "test"
     },
@@ -3914,7 +4090,7 @@
       "title": "Language layout — login and sign up screen",
       "norm": "language layout — login and sign up screen",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 508,
+      "line": 586,
       "suite": "web",
       "kind": "test"
     },
@@ -3922,7 +4098,7 @@
       "title": "Verify login page labels and buttons do not overflow across all locales",
       "norm": "verify login page labels and buttons do not overflow across all locales",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 518,
+      "line": 596,
       "suite": "web",
       "kind": "literal"
     },
@@ -3930,7 +4106,7 @@
       "title": "Verify the login page layout in \"${lang}\"",
       "norm": "verify the login page layout in ${lang}",
       "file": "ui_tests/tests/languageUiLayout.spec.ts",
-      "line": 522,
+      "line": 600,
       "suite": "web",
       "kind": "test"
     },
@@ -4922,7 +5098,7 @@
       "title": "//*[text()='Leverage Exceeds Maximum']",
       "norm": "//*[text()=leverage exceeds maximum]",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 66,
+      "line": 67,
       "suite": "web",
       "kind": "literal"
     },
@@ -4930,7 +5106,7 @@
       "title": "Log in with MetaMask",
       "norm": "log in with metamask",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 102,
+      "line": 109,
       "suite": "web",
       "kind": "test"
     },
@@ -4938,7 +5114,7 @@
       "title": "Verify MARKET order can be placed using Isolated margin mode",
       "norm": "verify market order can be placed using isolated margin mode",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 116,
+      "line": 123,
       "suite": "web",
       "kind": "literal"
     },
@@ -4946,7 +5122,7 @@
       "title": "Clear existing open orders and positions",
       "norm": "clear existing open orders and positions",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 128,
+      "line": 135,
       "suite": "web",
       "kind": "test"
     },
@@ -4954,7 +5130,7 @@
       "title": "Place an isolated MARKET order on ${instrument}",
       "norm": "place an isolated market order on ${instrument}",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 134,
+      "line": 141,
       "suite": "web",
       "kind": "test"
     },
@@ -4962,7 +5138,7 @@
       "title": "Verify the position is tagged Isolated",
       "norm": "verify the position is tagged isolated",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 139,
+      "line": 146,
       "suite": "web",
       "kind": "test"
     },
@@ -4970,7 +5146,7 @@
       "title": "Verify LIMIT order can be placed using Isolated margin mode",
       "norm": "verify limit order can be placed using isolated margin mode",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 153,
+      "line": 160,
       "suite": "web",
       "kind": "literal"
     },
@@ -4978,7 +5154,7 @@
       "title": "Clear existing open orders and positions",
       "norm": "clear existing open orders and positions",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 165,
+      "line": 172,
       "suite": "web",
       "kind": "test"
     },
@@ -4986,7 +5162,7 @@
       "title": "Place an isolated LIMIT order on ${instrument}",
       "norm": "place an isolated limit order on ${instrument}",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 171,
+      "line": 178,
       "suite": "web",
       "kind": "test"
     },
@@ -4994,7 +5170,7 @@
       "title": "Verify the order lands in Open Orders or Positions",
       "norm": "verify the order lands in open orders or positions",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 176,
+      "line": 183,
       "suite": "web",
       "kind": "test"
     },
@@ -5002,7 +5178,7 @@
       "title": "Verify user can add margin to an Isolated position",
       "norm": "verify user can add margin to an isolated position",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 195,
+      "line": 202,
       "suite": "web",
       "kind": "literal"
     },
@@ -5010,7 +5186,7 @@
       "title": "Ensure an isolated position exists",
       "norm": "ensure an isolated position exists",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 203,
+      "line": 210,
       "suite": "web",
       "kind": "test"
     },
@@ -5018,7 +5194,7 @@
       "title": "Open the adjust-margin dialog",
       "norm": "open the adjust-margin dialog",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 207,
+      "line": 214,
       "suite": "web",
       "kind": "test"
     },
@@ -5026,7 +5202,7 @@
       "title": "Verify an empty amount is rejected",
       "norm": "verify an empty amount is rejected",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 213,
+      "line": 220,
       "suite": "web",
       "kind": "test"
     },
@@ -5034,7 +5210,7 @@
       "title": "Verify a negative amount is rejected",
       "norm": "verify a negative amount is rejected",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 219,
+      "line": 226,
       "suite": "web",
       "kind": "test"
     },
@@ -5042,7 +5218,7 @@
       "title": "Verify an amount above the max addable margin is rejected",
       "norm": "verify an amount above the max addable margin is rejected",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 225,
+      "line": 232,
       "suite": "web",
       "kind": "test"
     },
@@ -5050,7 +5226,7 @@
       "title": "Add a valid margin amount",
       "norm": "add a valid margin amount",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 234,
+      "line": 241,
       "suite": "web",
       "kind": "test"
     },
@@ -5058,7 +5234,7 @@
       "title": "Verify the UI margin ratio matches the API",
       "norm": "verify the ui margin ratio matches the api",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 243,
+      "line": 250,
       "suite": "web",
       "kind": "test"
     },
@@ -5066,7 +5242,7 @@
       "title": "Verify user can remove margin from an Isolated position",
       "norm": "verify user can remove margin from an isolated position",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 260,
+      "line": 267,
       "suite": "web",
       "kind": "literal"
     },
@@ -5074,7 +5250,7 @@
       "title": "Ensure an isolated position exists",
       "norm": "ensure an isolated position exists",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 274,
+      "line": 281,
       "suite": "web",
       "kind": "test"
     },
@@ -5082,7 +5258,7 @@
       "title": "Add margin first, then open the remove-margin tab",
       "norm": "add margin first, then open the remove-margin tab",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 278,
+      "line": 285,
       "suite": "web",
       "kind": "test"
     },
@@ -5090,7 +5266,7 @@
       "title": "Verify an empty amount is rejected",
       "norm": "verify an empty amount is rejected",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 288,
+      "line": 295,
       "suite": "web",
       "kind": "test"
     },
@@ -5098,7 +5274,7 @@
       "title": "Verify a negative amount is rejected",
       "norm": "verify a negative amount is rejected",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 294,
+      "line": 301,
       "suite": "web",
       "kind": "test"
     },
@@ -5106,7 +5282,7 @@
       "title": "Verify an amount above the max removable margin is rejected",
       "norm": "verify an amount above the max removable margin is rejected",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 301,
+      "line": 308,
       "suite": "web",
       "kind": "test"
     },
@@ -5114,7 +5290,7 @@
       "title": "Remove a valid margin amount",
       "norm": "remove a valid margin amount",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 311,
+      "line": 318,
       "suite": "web",
       "kind": "test"
     },
@@ -5122,7 +5298,7 @@
       "title": "Verify the UI margin ratio matches the API",
       "norm": "verify the ui margin ratio matches the api",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 320,
+      "line": 327,
       "suite": "web",
       "kind": "test"
     },
@@ -5130,7 +5306,7 @@
       "title": "Verify margin mode can be switched while a position is open on the same instrument",
       "norm": "verify margin mode can be switched while a position is open on the same instrument",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 337,
+      "line": 344,
       "suite": "web",
       "kind": "literal"
     },
@@ -5138,7 +5314,7 @@
       "title": "Ensure an active position on ${inst}",
       "norm": "ensure an active position on ${inst}",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 349,
+      "line": 356,
       "suite": "web",
       "kind": "test"
     },
@@ -5146,7 +5322,7 @@
       "title": "Verify the margin mode cannot be changed",
       "norm": "verify the margin mode cannot be changed",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 354,
+      "line": 361,
       "suite": "web",
       "kind": "test"
     },
@@ -5154,7 +5330,7 @@
       "title": "Verify margin mode can be switched while a position is open on a different instrument",
       "norm": "verify margin mode can be switched while a position is open on a different instrument",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 364,
+      "line": 371,
       "suite": "web",
       "kind": "literal"
     },
@@ -5162,7 +5338,7 @@
       "title": "Clear existing open orders and positions",
       "norm": "clear existing open orders and positions",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 378,
+      "line": 385,
       "suite": "web",
       "kind": "test"
     },
@@ -5170,7 +5346,7 @@
       "title": "Ensure an active position on ${inst1}",
       "norm": "ensure an active position on ${inst1}",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 384,
+      "line": 391,
       "suite": "web",
       "kind": "test"
     },
@@ -5178,7 +5354,7 @@
       "title": "Verify the margin mode is locked on ${inst1}",
       "norm": "verify the margin mode is locked on ${inst1}",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 390,
+      "line": 397,
       "suite": "web",
       "kind": "test"
     },
@@ -5186,7 +5362,7 @@
       "title": "Verify the margin mode can still change on ${inst2}",
       "norm": "verify the margin mode can still change on ${inst2}",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 397,
+      "line": 404,
       "suite": "web",
       "kind": "test"
     },
@@ -5194,7 +5370,7 @@
       "title": "Verify an Isolated position can be closed partially and fully",
       "norm": "verify an isolated position can be closed partially and fully",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 408,
+      "line": 415,
       "suite": "web",
       "kind": "literal"
     },
@@ -5202,7 +5378,7 @@
       "title": "Ensure an isolated position exists",
       "norm": "ensure an isolated position exists",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 416,
+      "line": 423,
       "suite": "web",
       "kind": "test"
     },
@@ -5210,7 +5386,7 @@
       "title": "Open the close-position dialog",
       "norm": "open the close-position dialog",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 421,
+      "line": 428,
       "suite": "web",
       "kind": "test"
     },
@@ -5218,7 +5394,7 @@
       "title": "Close the position at market",
       "norm": "close the position at market",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 427,
+      "line": 434,
       "suite": "web",
       "kind": "test"
     },
@@ -5226,7 +5402,7 @@
       "title": "Verify leverage can be increased while an isolated position is open",
       "norm": "verify leverage can be increased while an isolated position is open",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 436,
+      "line": 443,
       "suite": "web",
       "kind": "literal"
     },
@@ -5234,7 +5410,7 @@
       "title": "Clear existing open orders and positions",
       "norm": "clear existing open orders and positions",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 445,
+      "line": 452,
       "suite": "web",
       "kind": "test"
     },
@@ -5242,7 +5418,7 @@
       "title": "Open an isolated position at ${levStart}x leverage",
       "norm": "open an isolated position at ${levstart}x leverage",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 451,
+      "line": 458,
       "suite": "web",
       "kind": "test"
     },
@@ -5250,7 +5426,7 @@
       "title": "Increase the leverage to ${levEnd}x",
       "norm": "increase the leverage to ${levend}x",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 458,
+      "line": 465,
       "suite": "web",
       "kind": "test"
     },
@@ -5258,7 +5434,7 @@
       "title": "Clean up open orders and positions",
       "norm": "clean up open orders and positions",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 464,
+      "line": 471,
       "suite": "web",
       "kind": "test"
     },
@@ -5266,7 +5442,7 @@
       "title": "Verify leverage reduction is blocked while an isolated position is open",
       "norm": "verify leverage reduction is blocked while an isolated position is open",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 473,
+      "line": 480,
       "suite": "web",
       "kind": "literal"
     },
@@ -5274,7 +5450,7 @@
       "title": "Clear existing open orders and positions",
       "norm": "clear existing open orders and positions",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 480,
+      "line": 487,
       "suite": "web",
       "kind": "test"
     },
@@ -5282,7 +5458,7 @@
       "title": "Open an isolated position at ${levStart}x leverage",
       "norm": "open an isolated position at ${levstart}x leverage",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 486,
+      "line": 493,
       "suite": "web",
       "kind": "test"
     },
@@ -5290,7 +5466,7 @@
       "title": "Verify reducing the leverage to ${levEnd}x is blocked",
       "norm": "verify reducing the leverage to ${levend}x is blocked",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 493,
+      "line": 500,
       "suite": "web",
       "kind": "test"
     },
@@ -5298,7 +5474,39 @@
       "title": "Clean up open orders and positions",
       "norm": "clean up open orders and positions",
       "file": "ui_tests/tests/placeOrders/isolatedMarginMode.spec.ts",
-      "line": 499,
+      "line": 506,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Log in with MetaMask",
+      "norm": "log in with metamask",
+      "file": "ui_tests/tests/placeOrders/maxLeverageOnInstrumentSwitch.spec.ts",
+      "line": 27,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Read the ${TO_INSTRUMENT} max leverage from the API",
+      "norm": "read the ${to_instrument} max leverage from the api",
+      "file": "ui_tests/tests/placeOrders/maxLeverageOnInstrumentSwitch.spec.ts",
+      "line": 49,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Open ${FROM_INSTRUMENT} so its higher leverage is the value on screen",
+      "norm": "open ${from_instrument} so its higher leverage is the value on screen",
+      "file": "ui_tests/tests/placeOrders/maxLeverageOnInstrumentSwitch.spec.ts",
+      "line": 63,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Switch to ${TO_INSTRUMENT} and poll the max leverage for ${POLL_DURATION_MS} ms",
+      "norm": "switch to ${to_instrument} and poll the max leverage for ${poll_duration_ms} ms",
+      "file": "ui_tests/tests/placeOrders/maxLeverageOnInstrumentSwitch.spec.ts",
+      "line": 73,
       "suite": "web",
       "kind": "test"
     },
@@ -5354,7 +5562,15 @@
       "title": "Log in with MetaMask",
       "norm": "log in with metamask",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 26,
+      "line": 32,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Cancel open orders and close open positions",
+      "norm": "cancel open orders and close open positions",
+      "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
+      "line": 44,
       "suite": "web",
       "kind": "test"
     },
@@ -5362,31 +5578,15 @@
       "title": "Verify price and size of a limit post-only order can be amended",
       "norm": "verify price and size of a limit post-only order can be amended",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 40,
+      "line": 51,
       "suite": "web",
       "kind": "literal"
     },
     {
-      "title": "Place a passive LIMIT buy order on ${instrument}",
-      "norm": "place a passive limit buy order on ${instrument}",
+      "title": "Submit the amendment",
+      "norm": "submit the amendment",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 51,
-      "suite": "web",
-      "kind": "test"
-    },
-    {
-      "title": "Open the edit dialog for the new order",
-      "norm": "open the edit dialog for the new order",
-      "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 64,
-      "suite": "web",
-      "kind": "test"
-    },
-    {
-      "title": "Amend the order price and size",
-      "norm": "amend the order price and size",
-      "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 71,
+      "line": 59,
       "suite": "web",
       "kind": "test"
     },
@@ -5394,7 +5594,7 @@
       "title": "Verify the modify confirmation toast",
       "norm": "verify the modify confirmation toast",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 81,
+      "line": 63,
       "suite": "web",
       "kind": "test"
     },
@@ -5402,15 +5602,63 @@
       "title": "Notification toast",
       "norm": "notification toast",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 84,
+      "line": 66,
       "suite": "web",
       "kind": "literal"
+    },
+    {
+      "title": "Verify an order on a newly listed instrument can be amended without an error toast",
+      "norm": "verify an order on a newly listed instrument can be amended without an error toast",
+      "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
+      "line": 74,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Resolve a newly listed instrument from the list-pair API",
+      "norm": "resolve a newly listed instrument from the list-pair api",
+      "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
+      "line": 79,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "No tradeable instrument in the API's New Listing sub-sector for this env",
+      "norm": "no tradeable instrument in the apis new listing sub-sector for this env",
+      "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
+      "line": 86,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Submit the amendment",
+      "norm": "submit the amendment",
+      "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
+      "line": 91,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify the confirmation toast for ${instrument}",
+      "norm": "verify the confirmation toast for ${instrument}",
+      "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
+      "line": 99,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify no error toast is shown",
+      "norm": "verify no error toast is shown",
+      "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
+      "line": 104,
+      "suite": "web",
+      "kind": "test"
     },
     {
       "title": "Verify price of a position-linked TP/SL order can be amended",
       "norm": "verify price of a position-linked tp/sl order can be amended",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 92,
+      "line": 121,
       "suite": "web",
       "kind": "literal"
     },
@@ -5418,7 +5666,7 @@
       "title": "Amend a position-linked TP/SL order using the ${randomTrigger} trigger",
       "norm": "amend a position-linked tp/sl order using the ${randomtrigger} trigger",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 97,
+      "line": 126,
       "suite": "web",
       "kind": "test"
     },
@@ -5426,7 +5674,7 @@
       "title": "Verify price of a standalone TP/SL order can be amended",
       "norm": "verify price of a standalone tp/sl order can be amended",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 104,
+      "line": 133,
       "suite": "web",
       "kind": "literal"
     },
@@ -5434,7 +5682,7 @@
       "title": "Amend a standalone TP/SL order using the ${randomTrigger} trigger",
       "norm": "amend a standalone tp/sl order using the ${randomtrigger} trigger",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 109,
+      "line": 138,
       "suite": "web",
       "kind": "test"
     },
@@ -5442,7 +5690,7 @@
       "title": "Verify price of an OCO order can be amended",
       "norm": "verify price of an oco order can be amended",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 116,
+      "line": 145,
       "suite": "web",
       "kind": "literal"
     },
@@ -5450,7 +5698,7 @@
       "title": "Amend an OCO order using the ${randomTrigger} trigger",
       "norm": "amend an oco order using the ${randomtrigger} trigger",
       "file": "ui_tests/tests/placeOrders/orderAmendments.spec.ts",
-      "line": 121,
+      "line": 150,
       "suite": "web",
       "kind": "test"
     },
@@ -5823,26 +6071,26 @@
       "kind": "test"
     },
     {
-      "title": "Verify Split TP/SL modal opens from the Positions tab",
-      "norm": "verify split tp/sl modal opens from the positions tab",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 51,
-      "suite": "web",
-      "kind": "literal"
-    },
-    {
       "title": "Open a position to attach TP/SL to",
       "norm": "open a position to attach tp/sl to",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 55,
+      "line": 52,
       "suite": "web",
       "kind": "test"
+    },
+    {
+      "title": "Verify Split TP/SL modal opens from the Positions tab",
+      "norm": "verify split tp/sl modal opens from the positions tab",
+      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
+      "line": 60,
+      "suite": "web",
+      "kind": "literal"
     },
     {
       "title": "Open the Split TP/SL modal",
       "norm": "open the split tp/sl modal",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 57,
+      "line": 64,
       "suite": "web",
       "kind": "test"
     },
@@ -5850,7 +6098,7 @@
       "title": "Verify the modal tabs and Add button",
       "norm": "verify the modal tabs and add button",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 61,
+      "line": 68,
       "suite": "web",
       "kind": "test"
     },
@@ -5858,7 +6106,7 @@
       "title": "Partial Position",
       "norm": "partial position",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 64,
+      "line": 71,
       "suite": "web",
       "kind": "literal"
     },
@@ -5866,23 +6114,15 @@
       "title": "Verify first TP target row is added with an auto-calculated percent",
       "norm": "verify first tp target row is added with an auto-calculated percent",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 71,
+      "line": 78,
       "suite": "web",
       "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 75,
-      "suite": "web",
-      "kind": "test"
     },
     {
       "title": "Fill the first TP target",
       "norm": "fill the first tp target",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 80,
+      "line": 84,
       "suite": "web",
       "kind": "test"
     },
@@ -5890,7 +6130,7 @@
       "title": "Verify the percent is auto-calculated",
       "norm": "verify the percent is auto-calculated",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 88,
+      "line": 92,
       "suite": "web",
       "kind": "test"
     },
@@ -5898,7 +6138,7 @@
       "title": "Add the TP target",
       "norm": "add the tp target",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 94,
+      "line": 98,
       "suite": "web",
       "kind": "test"
     },
@@ -5906,23 +6146,15 @@
       "title": "Verify quantity clamps to the current max and TP percent stays within 100",
       "norm": "verify quantity clamps to the current max and tp percent stays within 100",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 102,
-      "suite": "web",
-      "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
       "line": 106,
       "suite": "web",
-      "kind": "test"
+      "kind": "literal"
     },
     {
       "title": "Commit a first TP target for a third of the position",
       "norm": "commit a first tp target for a third of the position",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 112,
+      "line": 113,
       "suite": "web",
       "kind": "test"
     },
@@ -5930,7 +6162,7 @@
       "title": "Verify the qty field clamps to the remaining max",
       "norm": "verify the qty field clamps to the remaining max",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 118,
+      "line": 119,
       "suite": "web",
       "kind": "test"
     },
@@ -5938,7 +6170,7 @@
       "title": "Add the clamped TP target",
       "norm": "add the clamped tp target",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 126,
+      "line": 127,
       "suite": "web",
       "kind": "test"
     },
@@ -5946,23 +6178,15 @@
       "title": "Verify up to 6 TP targets can be added and confirmed",
       "norm": "verify up to 6 tp targets can be added and confirmed",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 134,
+      "line": 135,
       "suite": "web",
       "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 138,
-      "suite": "web",
-      "kind": "test"
     },
     {
       "title": "Verify the position is large enough for 6 targets",
       "norm": "verify the position is large enough for 6 targets",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 143,
+      "line": 141,
       "suite": "web",
       "kind": "test"
     },
@@ -5970,7 +6194,7 @@
       "title": "Add 6 TP targets",
       "norm": "add 6 tp targets",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 151,
+      "line": 149,
       "suite": "web",
       "kind": "test"
     },
@@ -5978,7 +6202,7 @@
       "title": "Verify the 7th target is blocked",
       "norm": "verify the 7th target is blocked",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 157,
+      "line": 155,
       "suite": "web",
       "kind": "test"
     },
@@ -5986,7 +6210,7 @@
       "title": "Confirm and verify 6 Take Profit orders exist",
       "norm": "confirm and verify 6 take profit orders exist",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 162,
+      "line": 160,
       "suite": "web",
       "kind": "test"
     },
@@ -5994,23 +6218,15 @@
       "title": "Verify Positions tab shows the TP/SL badge count",
       "norm": "verify positions tab shows the tp/sl badge count",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 170,
+      "line": 168,
       "suite": "web",
       "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 174,
-      "suite": "web",
-      "kind": "test"
     },
     {
       "title": "Add ${N} TP targets and confirm",
       "norm": "add ${n} tp targets and confirm",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 180,
+      "line": 175,
       "suite": "web",
       "kind": "test"
     },
@@ -6018,7 +6234,7 @@
       "title": "Verify the Positions tab shows the (${N}) badge",
       "norm": "verify the positions tab shows the (${n}) badge",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 187,
+      "line": 182,
       "suite": "web",
       "kind": "test"
     },
@@ -6026,23 +6242,15 @@
       "title": "Verify editing a TP target trigger price persists after Confirm",
       "norm": "verify editing a tp target trigger price persists after confirm",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 194,
+      "line": 189,
       "suite": "web",
       "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 198,
-      "suite": "web",
-      "kind": "test"
     },
     {
       "title": "Add an initial TP target and confirm",
       "norm": "add an initial tp target and confirm",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 204,
+      "line": 196,
       "suite": "web",
       "kind": "test"
     },
@@ -6050,7 +6258,7 @@
       "title": "Re-add the TP target at trigger ${newTrigger}",
       "norm": "re-add the tp target at trigger ${newtrigger}",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 211,
+      "line": 203,
       "suite": "web",
       "kind": "test"
     },
@@ -6058,17 +6266,9 @@
       "title": "Verify the new trigger price persists in Open Orders",
       "norm": "verify the new trigger price persists in open orders",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 217,
+      "line": 209,
       "suite": "web",
       "kind": "test"
-    },
-    {
-      "title": ").replace(/,/g,",
-      "norm": ").replace(/,/g,",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 222,
-      "suite": "web",
-      "kind": "literal"
     },
     {
       "title": "Verify Cancel All TP/SL removes the badge from Positions",
@@ -6079,18 +6279,10 @@
       "kind": "literal"
     },
     {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 234,
-      "suite": "web",
-      "kind": "test"
-    },
-    {
       "title": "Add two TP targets and confirm",
       "norm": "add two tp targets and confirm",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 239,
+      "line": 236,
       "suite": "web",
       "kind": "test"
     },
@@ -6098,7 +6290,7 @@
       "title": "Cancel all TP/SL orders",
       "norm": "cancel all tp/sl orders",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 247,
+      "line": 244,
       "suite": "web",
       "kind": "test"
     },
@@ -6106,7 +6298,7 @@
       "title": "Verify the Positions badge disappears",
       "norm": "verify the positions badge disappears",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 252,
+      "line": 249,
       "suite": "web",
       "kind": "test"
     },
@@ -6114,23 +6306,15 @@
       "title": "Verify a TP target added by ROI value is displayed correctly",
       "norm": "verify a tp target added by roi value is displayed correctly",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 259,
+      "line": 256,
       "suite": "web",
       "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 263,
-      "suite": "web",
-      "kind": "test"
     },
     {
       "title": "Switch the TP form to ROI% and fill it",
       "norm": "switch the tp form to roi% and fill it",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 268,
+      "line": 263,
       "suite": "web",
       "kind": "test"
     },
@@ -6138,7 +6322,7 @@
       "title": "Verify the ROI and derived trigger price",
       "norm": "verify the roi and derived trigger price",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 275,
+      "line": 270,
       "suite": "web",
       "kind": "test"
     },
@@ -6146,7 +6330,7 @@
       "title": "Add the TP target",
       "norm": "add the tp target",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 283,
+      "line": 278,
       "suite": "web",
       "kind": "test"
     },
@@ -6154,23 +6338,15 @@
       "title": "Verify first SL target row is added with an auto-calculated percent",
       "norm": "verify first sl target row is added with an auto-calculated percent",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 291,
+      "line": 286,
       "suite": "web",
       "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 295,
-      "suite": "web",
-      "kind": "test"
     },
     {
       "title": "Fill the first SL target",
       "norm": "fill the first sl target",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 300,
+      "line": 292,
       "suite": "web",
       "kind": "test"
     },
@@ -6178,7 +6354,7 @@
       "title": "Verify the percent is auto-calculated",
       "norm": "verify the percent is auto-calculated",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 309,
+      "line": 301,
       "suite": "web",
       "kind": "test"
     },
@@ -6186,7 +6362,7 @@
       "title": "Add the SL target and confirm",
       "norm": "add the sl target and confirm",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 316,
+      "line": 308,
       "suite": "web",
       "kind": "test"
     },
@@ -6194,23 +6370,15 @@
       "title": "Verify first TP or SL target can be added with a Limit price",
       "norm": "verify first tp or sl target can be added with a limit price",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 326,
+      "line": 318,
       "suite": "web",
       "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 330,
-      "suite": "web",
-      "kind": "test"
     },
     {
       "title": "Fill the first SL target with a limit price",
       "norm": "fill the first sl target with a limit price",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 336,
+      "line": 325,
       "suite": "web",
       "kind": "test"
     },
@@ -6218,7 +6386,7 @@
       "title": "Verify the percent is auto-calculated",
       "norm": "verify the percent is auto-calculated",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 346,
+      "line": 335,
       "suite": "web",
       "kind": "test"
     },
@@ -6226,7 +6394,7 @@
       "title": "Add the SL target and confirm",
       "norm": "add the sl target and confirm",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 353,
+      "line": 342,
       "suite": "web",
       "kind": "test"
     },
@@ -6234,23 +6402,15 @@
       "title": "Verify adding a TP and an SL together shows badge 2 on Positions",
       "norm": "verify adding a tp and an sl together shows badge 2 on positions",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 363,
+      "line": 352,
       "suite": "web",
       "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 367,
-      "suite": "web",
-      "kind": "test"
     },
     {
       "title": "Add a TP and an SL target and confirm",
       "norm": "add a tp and an sl target and confirm",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 372,
+      "line": 358,
       "suite": "web",
       "kind": "test"
     },
@@ -6258,7 +6418,7 @@
       "title": "Verify the Positions badge shows (2)",
       "norm": "verify the positions badge shows (2)",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 379,
+      "line": 365,
       "suite": "web",
       "kind": "test"
     },
@@ -6266,23 +6426,15 @@
       "title": "Verify data resets when a row is deleted or the tab is switched",
       "norm": "verify data resets when a row is deleted or the tab is switched",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 386,
+      "line": 372,
       "suite": "web",
       "kind": "literal"
-    },
-    {
-      "title": "Open a position to attach TP/SL to",
-      "norm": "open a position to attach tp/sl to",
-      "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 390,
-      "suite": "web",
-      "kind": "test"
     },
     {
       "title": "Add a TP target and confirm",
       "norm": "add a tp target and confirm",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 395,
+      "line": 378,
       "suite": "web",
       "kind": "test"
     },
@@ -6290,7 +6442,7 @@
       "title": "Switch tabs with a pending row",
       "norm": "switch tabs with a pending row",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 402,
+      "line": 385,
       "suite": "web",
       "kind": "test"
     },
@@ -6298,7 +6450,7 @@
       "title": "Verify the form was reset",
       "norm": "verify the form was reset",
       "file": "ui_tests/tests/placeOrders/splitTPSL.spec.ts",
-      "line": 409,
+      "line": 392,
       "suite": "web",
       "kind": "test"
     },
@@ -6746,7 +6898,7 @@
       "title": "Log in with MetaMask",
       "norm": "log in with metamask",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 44,
+      "line": 54,
       "suite": "web",
       "kind": "test"
     },
@@ -6754,7 +6906,7 @@
       "title": "Verify order history shows correct records for 7D/30D/60D",
       "norm": "verify order history shows correct records for 7d/30d/60d",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 57,
+      "line": 67,
       "suite": "web",
       "kind": "literal"
     },
@@ -6762,7 +6914,7 @@
       "title": "Read Order History for each date filter",
       "norm": "read order history for each date filter",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 63,
+      "line": 73,
       "suite": "web",
       "kind": "test"
     },
@@ -6770,7 +6922,7 @@
       "title": "Verify a wider date filter never returns fewer orders",
       "norm": "verify a wider date filter never returns fewer orders",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 72,
+      "line": 81,
       "suite": "web",
       "kind": "test"
     },
@@ -6778,15 +6930,15 @@
       "title": "Open the Order history full list",
       "norm": "open the order history full list",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 77,
+      "line": 86,
       "suite": "web",
       "kind": "test"
     },
     {
-      "title": "Verify the full list matches the 7D widget row",
-      "norm": "verify the full list matches the 7d widget row",
+      "title": "Verify the full list matches the newest widget row",
+      "norm": "verify the full list matches the newest widget row",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 83,
+      "line": 92,
       "suite": "web",
       "kind": "test"
     },
@@ -6794,7 +6946,7 @@
       "title": "Verify trade history shows correct records for 7D/30D/60D",
       "norm": "verify trade history shows correct records for 7d/30d/60d",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 99,
+      "line": 108,
       "suite": "web",
       "kind": "literal"
     },
@@ -6802,7 +6954,7 @@
       "title": "Read Trade History for each date filter",
       "norm": "read trade history for each date filter",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 105,
+      "line": 114,
       "suite": "web",
       "kind": "test"
     },
@@ -6810,7 +6962,7 @@
       "title": "Verify a wider date filter never returns fewer trades",
       "norm": "verify a wider date filter never returns fewer trades",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 114,
+      "line": 122,
       "suite": "web",
       "kind": "test"
     },
@@ -6818,15 +6970,15 @@
       "title": "Open the Trade history full list",
       "norm": "open the trade history full list",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 119,
+      "line": 127,
       "suite": "web",
       "kind": "test"
     },
     {
-      "title": "Verify the full list matches the 7D widget row",
-      "norm": "verify the full list matches the 7d widget row",
+      "title": "Verify the full list matches the newest widget row",
+      "norm": "verify the full list matches the newest widget row",
       "file": "ui_tests/tests/placeOrders/validateOrderHistoryAndTradeHistory.spec.ts",
-      "line": 125,
+      "line": 133,
       "suite": "web",
       "kind": "test"
     },
@@ -7554,7 +7706,7 @@
       "title": "Verify changing config on one sub-account leaves the other sub-account's config unchanged",
       "norm": "verify changing config on one sub-account leaves the other sub-accounts config unchanged",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 73,
+      "line": 72,
       "suite": "web",
       "kind": "literal"
     },
@@ -7562,7 +7714,7 @@
       "title": "Check A and B keep own config",
       "norm": "check a and b keep own config",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 80,
+      "line": 79,
       "suite": "web",
       "kind": "test"
     },
@@ -7570,7 +7722,7 @@
       "title": "Switch back to A",
       "norm": "switch back to a",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 102,
+      "line": 101,
       "suite": "web",
       "kind": "test"
     },
@@ -7578,7 +7730,7 @@
       "title": "Re-edit A, check B untouched",
       "norm": "re-edit a, check b untouched",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 105,
+      "line": 104,
       "suite": "web",
       "kind": "test"
     },
@@ -7586,7 +7738,7 @@
       "title": "Verify per-sub-account config persists after a page refresh",
       "norm": "verify per-sub-account config persists after a page refresh",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 118,
+      "line": 117,
       "suite": "web",
       "kind": "literal"
     },
@@ -7594,7 +7746,7 @@
       "title": "Refresh ${label(i)}",
       "norm": "refresh ${label(i)}",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 126,
+      "line": 125,
       "suite": "web",
       "kind": "test"
     },
@@ -7602,7 +7754,7 @@
       "title": "Verify per-sub-account config persists after an app restart",
       "norm": "verify per-sub-account config persists after an app restart",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 136,
+      "line": 135,
       "suite": "web",
       "kind": "literal"
     },
@@ -7610,7 +7762,7 @@
       "title": "Verify global preferences are shared across sub-accounts and sub-account config is not written globally",
       "norm": "verify global preferences are shared across sub-accounts and sub-account config is not written globally",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 153,
+      "line": 152,
       "suite": "web",
       "kind": "literal"
     },
@@ -7618,7 +7770,7 @@
       "title": "Change theme on A",
       "norm": "change theme on a",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 160,
+      "line": 159,
       "suite": "web",
       "kind": "test"
     },
@@ -7626,7 +7778,7 @@
       "title": "Switch to B without reloading",
       "norm": "switch to b without reloading",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 168,
+      "line": 167,
       "suite": "web",
       "kind": "test"
     },
@@ -7634,7 +7786,7 @@
       "title": "Check storage has no sub-account key",
       "norm": "check storage has no sub-account key",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 180,
+      "line": 179,
       "suite": "web",
       "kind": "test"
     },
@@ -7642,7 +7794,7 @@
       "title": "Sub-account config must not be written at global scope",
       "norm": "sub-account config must not be written at global scope",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 186,
+      "line": 185,
       "suite": "web",
       "kind": "literal"
     },
@@ -7650,7 +7802,7 @@
       "title": "Check API config differs per sub-account",
       "norm": "check api config differs per sub-account",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 190,
+      "line": 189,
       "suite": "web",
       "kind": "test"
     },
@@ -7658,7 +7810,7 @@
       "title": "Config across sub-accounts without a saved session",
       "norm": "config across sub-accounts without a saved session",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 203,
+      "line": 202,
       "suite": "web",
       "kind": "test"
     },
@@ -7666,7 +7818,7 @@
       "title": "Clear the saved session and log in",
       "norm": "clear the saved session and log in",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 206,
+      "line": 205,
       "suite": "web",
       "kind": "test"
     },
@@ -7674,7 +7826,7 @@
       "title": "Verify a position opened on one sub-account does not appear on another sub-account",
       "norm": "verify a position opened on one sub-account does not appear on another sub-account",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 211,
+      "line": 210,
       "suite": "web",
       "kind": "literal"
     },
@@ -7682,7 +7834,7 @@
       "title": "Baseline B positions",
       "norm": "baseline b positions",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 220,
+      "line": 219,
       "suite": "web",
       "kind": "test"
     },
@@ -7690,7 +7842,7 @@
       "title": "Open position on A",
       "norm": "open position on a",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 229,
+      "line": 228,
       "suite": "web",
       "kind": "test"
     },
@@ -7698,7 +7850,7 @@
       "title": "Check position only on A",
       "norm": "check position only on a",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 235,
+      "line": 234,
       "suite": "web",
       "kind": "test"
     },
@@ -7706,7 +7858,7 @@
       "title": "Check B positions unchanged",
       "norm": "check b positions unchanged",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 245,
+      "line": 244,
       "suite": "web",
       "kind": "test"
     },
@@ -7714,7 +7866,7 @@
       "title": "Verify per-sub-account config persists after logout and re-login",
       "norm": "verify per-sub-account config persists after logout and re-login",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 261,
+      "line": 260,
       "suite": "web",
       "kind": "literal"
     },
@@ -7722,7 +7874,7 @@
       "title": "Logout and login",
       "norm": "logout and login",
       "file": "ui_tests/tests/subAccounts/configAcrossSubAccounts.spec.ts",
-      "line": 267,
+      "line": 266,
       "suite": "web",
       "kind": "test"
     },
@@ -7871,8 +8023,8 @@
       "kind": "literal"
     },
     {
-      "title": "Open /download-app via the header popover",
-      "norm": "open /download-app via the header popover",
+      "title": "Open the /download-app page while logged in",
+      "norm": "open the /download-app page while logged in",
       "file": "ui_tests/tests/themeUiLayout.spec.ts",
       "line": 139,
       "suite": "web",
@@ -7882,7 +8034,7 @@
       "title": "Verify the UI Theme toggle is hidden",
       "norm": "verify the ui theme toggle is hidden",
       "file": "ui_tests/tests/themeUiLayout.spec.ts",
-      "line": 143,
+      "line": 142,
       "suite": "web",
       "kind": "test"
     },
@@ -7890,7 +8042,7 @@
       "title": "Theme UI — public pages (no login)",
       "norm": "theme ui — public pages (no login)",
       "file": "ui_tests/tests/themeUiLayout.spec.ts",
-      "line": 151,
+      "line": 150,
       "suite": "web",
       "kind": "test"
     },
@@ -7898,7 +8050,7 @@
       "title": "Verify theme toggle, icons, and rendering work on all public pages in both themes",
       "norm": "verify theme toggle, icons, and rendering work on all public pages in both themes",
       "file": "ui_tests/tests/themeUiLayout.spec.ts",
-      "line": 165,
+      "line": 164,
       "suite": "web",
       "kind": "literal"
     },
@@ -7906,7 +8058,7 @@
       "title": "Verify icons and layout in light theme",
       "norm": "verify icons and layout in light theme",
       "file": "ui_tests/tests/themeUiLayout.spec.ts",
-      "line": 175,
+      "line": 174,
       "suite": "web",
       "kind": "literal"
     },
@@ -7914,7 +8066,7 @@
       "title": "Verify icons and layout in dark theme",
       "norm": "verify icons and layout in dark theme",
       "file": "ui_tests/tests/themeUiLayout.spec.ts",
-      "line": 182,
+      "line": 181,
       "suite": "web",
       "kind": "literal"
     },
@@ -7922,7 +8074,7 @@
       "title": "Verify the theme toggle is hidden and the layout holds",
       "norm": "verify the theme toggle is hidden and the layout holds",
       "file": "ui_tests/tests/themeUiLayout.spec.ts",
-      "line": 190,
+      "line": 189,
       "suite": "web",
       "kind": "literal"
     },
@@ -7930,7 +8082,7 @@
       "title": "Trading login session",
       "norm": "trading login session",
       "file": "ui_tests/tests/tradingLoginSession.spec.ts",
-      "line": 14,
+      "line": 24,
       "suite": "web",
       "kind": "test"
     },
@@ -7938,7 +8090,7 @@
       "title": "Log in with MetaMask",
       "norm": "log in with metamask",
       "file": "ui_tests/tests/tradingLoginSession.spec.ts",
-      "line": 19,
+      "line": 30,
       "suite": "web",
       "kind": "test"
     },
@@ -7946,7 +8098,7 @@
       "title": "Verify trading login sessions can be created and all tokens terminated",
       "norm": "verify trading login sessions can be created and all tokens terminated",
       "file": "ui_tests/tests/tradingLoginSession.spec.ts",
-      "line": 33,
+      "line": 44,
       "suite": "web",
       "kind": "literal"
     },
@@ -7954,7 +8106,7 @@
       "title": "Open the Security settings page",
       "norm": "open the security settings page",
       "file": "ui_tests/tests/tradingLoginSession.spec.ts",
-      "line": 42,
+      "line": 53,
       "suite": "web",
       "kind": "test"
     },
@@ -7962,15 +8114,31 @@
       "title": "Verify the trading login session UI",
       "norm": "verify the trading login session ui",
       "file": "ui_tests/tests/tradingLoginSession.spec.ts",
-      "line": 49,
+      "line": 60,
       "suite": "web",
       "kind": "test"
+    },
+    {
+      "title": "Verify the active session fields hold real values",
+      "norm": "verify the active session fields hold real values",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 65,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "trading login token",
+      "norm": "trading login token",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 77,
+      "suite": "web",
+      "kind": "literal"
     },
     {
       "title": "Terminate all trading login tokens",
       "norm": "terminate all trading login tokens",
       "file": "ui_tests/tests/tradingLoginSession.spec.ts",
-      "line": 78,
+      "line": 108,
       "suite": "web",
       "kind": "test"
     },
@@ -7978,7 +8146,135 @@
       "title": "Remove all other sessions",
       "norm": "remove all other sessions",
       "file": "ui_tests/tests/tradingLoginSession.spec.ts",
-      "line": 90,
+      "line": 120,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify the trading login session survives navigation, reloads and tab switches",
+      "norm": "verify the trading login session survives navigation, reloads and tab switches",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 136,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Open the trading page and confirm the session is valid",
+      "norm": "open the trading page and confirm the session is valid",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 154,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "the trading login was created",
+      "norm": "the trading login was created",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 157,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Navigate across the top-level pages",
+      "norm": "navigate across the top-level pages",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 160,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Reload the trading page",
+      "norm": "reload the trading page",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 169,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Switch to another tab and back",
+      "norm": "switch to another tab and back",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 175,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Verify a failed session validation request does not end the trading login session",
+      "norm": "verify a failed session validation request does not end the trading login session",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 191,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Open the trading page and confirm the session is valid",
+      "norm": "open the trading page and confirm the session is valid",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 201,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "the trading login prompt is already showing before the test starts",
+      "norm": "the trading login prompt is already showing before the test starts",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 206,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Fail the next session validation request",
+      "norm": "fail the next session validation request",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 210,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "Aborted one /query to fail the session validation",
+      "norm": "aborted one /query to fail the session validation",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 214,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Verify the session is not treated as invalid",
+      "norm": "verify the session is not treated as invalid",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 222,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "a failed /query was misclassified as an invalid session — the trading login prompt is showing",
+      "norm": "a failed /query was misclassified as an invalid session — the trading login prompt is showing",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 225,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Verify the session is re-validated on the next navigation",
+      "norm": "verify the session is re-validated on the next navigation",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 229,
+      "suite": "web",
+      "kind": "test"
+    },
+    {
+      "title": "the session was never re-validated after the failed /query",
+      "norm": "the session was never re-validated after the failed /query",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 234,
+      "suite": "web",
+      "kind": "literal"
+    },
+    {
+      "title": "Verify the trading login token is still listed on the Security page",
+      "norm": "verify the trading login token is still listed on the security page",
+      "file": "ui_tests/tests/tradingLoginSession.spec.ts",
+      "line": 238,
       "suite": "web",
       "kind": "test"
     },
@@ -8927,10 +9223,18 @@
       "kind": "scenario"
     },
     {
+      "title": "Verify Quick Order on a Spot pair rejects an amount above the available balance",
+      "norm": "verify quick order on a spot pair rejects an amount above the available balance",
+      "file": "mobile_tests/features/e2e-tests-privy.feature",
+      "line": 335,
+      "suite": "mobile",
+      "kind": "scenario"
+    },
+    {
       "title": "Verify user can invest in their own vault and in another vault",
       "norm": "verify user can invest in their own vault and in another vault",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 334,
+      "line": 364,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -8938,7 +9242,7 @@
       "title": "Verify user can redeem a vault share and is blocked when redeeming above the available shares",
       "norm": "verify user can redeem a vault share and is blocked when redeeming above the available shares",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 350,
+      "line": 380,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -8946,7 +9250,7 @@
       "title": "Verify APY value updates when switching period without stale or duplicated values",
       "norm": "verify apy value updates when switching period without stale or duplicated values",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 379,
+      "line": 409,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -8954,7 +9258,7 @@
       "title": "Verify APY shows the defined empty-state when a period has no value",
       "norm": "verify apy shows the defined empty-state when a period has no value",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 385,
+      "line": 415,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -8962,7 +9266,7 @@
       "title": "Verify user can invest 25% of funding balance into and fully redeem from an Ungated CEV with no cap restriction",
       "norm": "verify user can invest 25% of funding balance into and fully redeem from an ungated cev with no cap restriction",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 391,
+      "line": 421,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -8970,7 +9274,7 @@
       "title": "Verify user can cancel a pending redemption on an Ungated CEV with no 10% cap error",
       "norm": "verify user can cancel a pending redemption on an ungated cev with no 10% cap error",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 408,
+      "line": 438,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -8978,7 +9282,7 @@
       "title": "Verify a gated GLP vault still applies its cap restriction after the Ungated fix",
       "norm": "verify a gated glp vault still applies its cap restriction after the ungated fix",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 423,
+      "line": 453,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -8986,7 +9290,7 @@
       "title": "Verify user can initiate an external transfer from an Ungated CEV",
       "norm": "verify user can initiate an external transfer from an ungated cev",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 429,
+      "line": 459,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -8994,7 +9298,7 @@
       "title": "Verify user can initiate a withdrawal after investing in an Ungated CEV",
       "norm": "verify user can initiate a withdrawal after investing in an ungated cev",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 440,
+      "line": 470,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9002,7 +9306,7 @@
       "title": "Verify a new MetaMask user can create a Funding Account and a Trading Account",
       "norm": "verify a new metamask user can create a funding account and a trading account",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 453,
+      "line": 483,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9010,7 +9314,7 @@
       "title": "Verify a new Sub-Account can be created",
       "norm": "verify a new sub-account can be created",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 460,
+      "line": 490,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9018,7 +9322,7 @@
       "title": "Verify active trading-login session expires after logout",
       "norm": "verify active trading-login session expires after logout",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 467,
+      "line": 497,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9026,7 +9330,7 @@
       "title": "Verify INTERNAL fund transfer from Funding Account to Trading Account is successful",
       "norm": "verify internal fund transfer from funding account to trading account is successful",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 476,
+      "line": 506,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9034,7 +9338,7 @@
       "title": "Verify EXTERNAL fund transfer from Funding Account to Funding Account is successful",
       "norm": "verify external fund transfer from funding account to funding account is successful",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 484,
+      "line": 514,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9042,7 +9346,7 @@
       "title": "Verify user can withdraw successfully",
       "norm": "verify user can withdraw successfully",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 493,
+      "line": 523,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9050,7 +9354,7 @@
       "title": "Verify USDC is hidden in the Send and Grvt asset lists while the Funding account holds no USDC",
       "norm": "verify usdc is hidden in the send and grvt asset lists while the funding account holds no usdc",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 504,
+      "line": 534,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9058,7 +9362,7 @@
       "title": "Verify USDC appears in the Send and Grvt asset lists while the Funding account holds USDC",
       "norm": "verify usdc appears in the send and grvt asset lists while the funding account holds usdc",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 516,
+      "line": 546,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9066,7 +9370,7 @@
       "title": "Verify user can withdraw USDC successfully",
       "norm": "verify user can withdraw usdc successfully",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 530,
+      "line": 560,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9074,7 +9378,7 @@
       "title": "Verify Funding Account balance is updated after free USDT minting",
       "norm": "verify funding account balance is updated after free usdt minting",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 542,
+      "line": 572,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9082,7 +9386,7 @@
       "title": "Verify user can log out after login",
       "norm": "verify user can log out after login",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 552,
+      "line": 582,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9090,7 +9394,7 @@
       "title": "Verify logout stays stable across the mobile app",
       "norm": "verify logout stays stable across the mobile app",
       "file": "mobile_tests/features/e2e-tests-privy.feature",
-      "line": 560,
+      "line": 590,
       "suite": "mobile",
       "kind": "scenario"
     },
@@ -9115,6 +9419,62 @@
       "norm": "verify user can deposit successfully",
       "file": "mobile_tests/features/e2e-tests-wallet.feature",
       "line": 26,
+      "suite": "mobile",
+      "kind": "scenario"
+    },
+    {
+      "title": "Verify the estimated liquidation price is populated and bounded for <marginType> with <unitPreference>",
+      "norm": "verify the estimated liquidation price is populated and bounded for <margintype> with <unitpreference>",
+      "file": "mobile_tests/features/estimated-liq-price.feature",
+      "line": 14,
+      "suite": "mobile",
+      "kind": "scenario"
+    },
+    {
+      "title": "Verify the maximum leverage offered on the order builder matches the risk config",
+      "norm": "verify the maximum leverage offered on the order builder matches the risk config",
+      "file": "mobile_tests/features/estimated-liq-price.feature",
+      "line": 37,
+      "suite": "mobile",
+      "kind": "scenario"
+    },
+    {
+      "title": "Verify the liquidation distance matches the maintenance-margin math",
+      "norm": "verify the liquidation distance matches the maintenance-margin math",
+      "file": "mobile_tests/features/estimated-liq-price.feature",
+      "line": 42,
+      "suite": "mobile",
+      "kind": "scenario"
+    },
+    {
+      "title": "Verify switching unit preference does not change the liquidation price",
+      "norm": "verify switching unit preference does not change the liquidation price",
+      "file": "mobile_tests/features/estimated-liq-price.feature",
+      "line": 49,
+      "suite": "mobile",
+      "kind": "scenario"
+    },
+    {
+      "title": "Verify toggling the margin type recalculates the liquidation price",
+      "norm": "verify toggling the margin type recalculates the liquidation price",
+      "file": "mobile_tests/features/estimated-liq-price.feature",
+      "line": 54,
+      "suite": "mobile",
+      "kind": "scenario"
+    },
+    {
+      "title": "Verify the liquidation price reacts to slider quantity under <marginType>",
+      "norm": "verify the liquidation price reacts to slider quantity under <margintype>",
+      "file": "mobile_tests/features/estimated-liq-price.feature",
+      "line": 60,
+      "suite": "mobile",
+      "kind": "scenario"
+    },
+    {
+      "title": "Verify the liquidation price is recomputed per instrument",
+      "norm": "verify the liquidation price is recomputed per instrument",
+      "file": "mobile_tests/features/estimated-liq-price.feature",
+      "line": 71,
       "suite": "mobile",
       "kind": "scenario"
     },

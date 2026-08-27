@@ -13,6 +13,7 @@ In Claude Code, from `c:\Gravity\qa-checking`:
 
 ```
 /daily-triage      Block 1 + Block 2
+/review-results    review the open failures: flaky or genuine, then fix-and-track or task-and-post
 /script-rca        root-cause everything labelled SCRIPT (run after the above)
 ```
 

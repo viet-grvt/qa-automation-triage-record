@@ -121,8 +121,14 @@ if (!isTest && !has("confirm")) {
 }
 
 // ---------------------------------------------------------------- send
+const updateTs = getArg("update");
+
 async function viaToken() {
-  const res = await fetch("https://slack.com/api/chat.postMessage", {
+  // --update rewrites a message already in the channel. The daily note is the case for it: on a
+  // busy suite the run count keeps growing, and posting a fresh note each time leaves older ones
+  // behind stating counts that are now wrong.
+  const method = updateTs ? "chat.update" : "chat.postMessage";
+  const res = await fetch(`https://slack.com/api/${method}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json; charset=utf-8",
@@ -131,7 +137,7 @@ async function viaToken() {
     body: JSON.stringify({
       channel,
       text,
-      ...(threadTs ? { thread_ts: threadTs } : {}),
+      ...(updateTs ? { ts: updateTs } : threadTs ? { thread_ts: threadTs } : {}),
       unfurl_links: false,
       unfurl_media: false,
     }),
@@ -140,7 +146,7 @@ async function viaToken() {
   // Slack does not fail when thread_ts names a message that is gone — it quietly posts the reply
   // at the top of the channel instead. Reporting that as a success is how a triage reply ends up
   // detached from the run it answers, so check what actually happened.
-  if (body.ok && threadTs && body.message?.thread_ts !== threadTs) {
+  if (body.ok && !updateTs && threadTs && body.message?.thread_ts !== threadTs) {
     console.warn(
       `  ⚠️ posted TOP-LEVEL, not in the thread — parent ${threadTs} is missing or deleted.`,
     );
@@ -202,7 +208,7 @@ function toOutbox() {
 try {
   if (token) {
     const ts = await viaToken();
-    console.log(`\n✔ posted · ts ${ts}`);
+    console.log(`\n✔ ${updateTs ? "updated" : "posted"} · ts ${ts}`);
     console.log(`  node tools/bin/triage-log.js --record --run <runId> --reply-ts ${ts}`);
   } else if (webhook) {
     await viaWebhook();

@@ -339,7 +339,21 @@ if (has("scheduled-only")) {
   }
 }
 
-const open = found.filter((f) => !f.answered && !f.skipped);
+// greenNotesOnly: this channel gets the "checked, all green" note but no per-run reply. Useful
+// while the red replies are still being trialled — they are the loud ones, and they assert a
+// streak, a leaning and a root cause that the green note never claims.
+const greenOnlyKeys = new Set(
+  (cfg.channels || []).filter((c) => c.greenNotesOnly).map((c) => c.key),
+);
+const held = found.filter((f) => !f.answered && !f.skipped && greenOnlyKeys.has(f.channel.key));
+if (held.length) {
+  console.log(`\nHolding ${held.length} red-run repl(ies) — these channels are greenNotesOnly:`);
+  for (const f of held) console.log(`  · ${f.channel.name}  ${f.title}`);
+}
+
+const open = found.filter(
+  (f) => !f.answered && !f.skipped && !greenOnlyKeys.has(f.channel.key),
+);
 console.log(`${found.length} red run(s) seen · ${open.length} unanswered\n`);
 for (const f of found) {
   const mark = f.answered ? `✔ answered by ${f.answeredBy}` : "→ needs a reply";
@@ -405,10 +419,26 @@ if (has("post") && !has("no-refresh")) {
 // Posting on that alone would put a fresh copy under every new run, so the note is tracked as posted
 // once per suite per day and never repeated.
 const dailyLog = path.join(ROOT, "reports", todayLocal(), ".posted-daily.json");
+
+/**
+ * Losing this file means every note looks unposted and gets sent again, so an unreadable one must
+ * not be treated as "nothing posted yet". Missing is fine — that is a genuinely new day. Corrupt
+ * is not: it stops the daily notes for this pass rather than duplicating them.
+ *
+ * The realistic corruption is a UTF-8 BOM: anything on Windows that writes the file with
+ * PowerShell's Set-Content -Encoding utf8 prepends one, and JSON.parse throws on it. Strip it.
+ */
+let postedUnreadable = false;
 const readPosted = () => {
+  if (!fs.existsSync(dailyLog)) return {};
   try {
-    return JSON.parse(fs.readFileSync(dailyLog, "utf8"));
-  } catch {
+    return JSON.parse(fs.readFileSync(dailyLog, "utf8").replace(/^﻿/, ""));
+  } catch (e) {
+    postedUnreadable = true;
+    console.error(`  ⚠️ ${path.relative(ROOT, dailyLog)} is unreadable (${e.message}).`);
+    console.error(`     Not posting daily notes this pass — treating it as unknown rather than`);
+    console.error(`     as "nothing posted yet", which would repeat every note already sent.`);
+    console.error(`     Fix or delete the file, then run again.`);
     return {};
   }
 };
@@ -425,36 +455,73 @@ function dailyNotes() {
     const m = raw.match(/<!--\s*channel:\s*([^\s·]+)[^>]*?suite:\s*([^\s·]+)[^>]*?(?:thread_ts:\s*([\d.]+))?\s*-->/);
     if (!m || !keys.has(m[1])) continue;
     const id = `${m[1]}:${m[2]}`;
+    // Track the note's CONTENT, not just "was something posted today". A channel like web-prod
+    // has ten green runs a day: the first note says "1 run(s) today" and is pinned under the run
+    // that was latest at the time, leaving the other nine unattested. When report.js regenerates
+    // a different body (more runs, more tests passed) the note is re-posted under the new latest
+    // run. An unchanged body posts nothing, so a quiet suite still gets exactly one note.
+    const body = raw.replace(/^(?:<!--[\s\S]*?-->\s*)+/, "").replace(/^\s*---\s*\n/, "").trim();
+    const stamp = `${m[3] || "none"}|${body.length}|${(body.match(/(\d+) run\(s\)/) || [, "?"])[1]}`;
+    const prev = posted[id];
+    // Older entries stored a bare ts string; treat those as posted-and-unchanged.
+    const seen = prev && typeof prev === "object" ? prev.stamp : prev ? stamp : null;
     out.push({
       id,
       file: path.relative(ROOT, path.join(dir, name)),
       channelKey: m[1],
       threadTs: m[3] || null,
-      already: !!posted[id],
+      stamp,
+      already: seen === stamp,
+      updating: !!prev && seen !== stamp,
     });
   }
   return out;
 }
 
 const dailies = dailyNotes();
+
+// Entries written before content-tracking existed are a bare ts string. Upgrade them in place to
+// the stamp seen now: the note that is already in Slack stays put, and the NEXT change to it is
+// detected. Without this the first day after the upgrade never updates.
+{
+  const posted = readPosted();
+  let migrated = 0;
+  for (const d of dailies) {
+    if (typeof posted[d.id] === "string") {
+      posted[d.id] = { ts: posted[d.id], stamp: d.stamp, at: new Date().toISOString() };
+      migrated++;
+    }
+  }
+  if (migrated) {
+    fs.mkdirSync(path.dirname(dailyLog), { recursive: true });
+    fs.writeFileSync(dailyLog, JSON.stringify(posted, null, 2) + "\n");
+  }
+}
+
 if (dailies.length) {
   const pending = dailies.filter((d) => !d.already);
   console.log(`\n${dailies.length} daily note(s) · ${pending.length} not yet posted`);
   for (const d of dailies) {
-    console.log(`  ${d.already ? "✔ posted today" : "→ needs posting"}  ${d.id}${d.threadTs ? "" : "  (no run today — goes to the channel, not a thread)"}`);
+    const state = d.already ? "✔ posted today" : d.updating ? "↻ new runs since" : "→ needs posting";
+    console.log(`  ${state}  ${d.id}${d.threadTs ? "" : "  (no run today — goes to the channel, not a thread)"}`);
   }
-  if (has("post")) {
+  if (has("post") && postedUnreadable) {
+    console.log(`  skipped — the record of what was already posted could not be read.`);
+  } else if (has("post")) {
     const posted = readPosted();
     for (const d of pending) {
       try {
-        const out = execFileSync(
-          process.execPath,
-          [path.join(ROOT, "tools", "bin", "post.js"), "--file", d.file, "--confirm"],
-          { cwd: ROOT, encoding: "utf8", env: process.env },
-        );
-        const ts = (out.match(/posted · ts ([\d.]+)/) || [])[1];
-        posted[d.id] = ts || true;
-        console.log(`  ✔ ${d.id} → ts ${ts || "?"}`);
+        // When the note has already been sent today, edit that message rather than sending a new
+        // one. Otherwise a suite with ten runs a day accumulates ten notes, and the nine older
+        // ones sit there stating counts that are no longer true.
+        const prevTs = typeof posted[d.id] === "object" ? posted[d.id]?.ts : posted[d.id];
+        const args = [path.join(ROOT, "tools", "bin", "post.js"), "--file", d.file, "--confirm"];
+        if (d.updating && prevTs) args.push("--update", prevTs);
+
+        const out = execFileSync(process.execPath, args, { cwd: ROOT, encoding: "utf8", env: process.env });
+        const ts = (out.match(/(?:posted|updated) · ts ([\d.]+)/) || [])[1] || prevTs;
+        posted[d.id] = { ts: ts || null, stamp: d.stamp, at: new Date().toISOString() };
+        console.log(`  ✔ ${d.id} ${d.updating ? "(edited in place)" : ""} → ts ${ts || "?"}`);
       } catch (e) {
         console.log(`  ✘ ${d.id} — ${String(e.stdout || e.message).trim().split("\n").pop()}`);
       }

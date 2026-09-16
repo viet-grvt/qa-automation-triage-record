@@ -1692,10 +1692,16 @@ for (const { run, su } of [...redRuns].reverse()) {
   });
 }
 
-// "Daily failure triage" means every working day, not only the days something went red. A suite
-// that ran clean still gets a short message: it is the difference between "checked, all green" and
-// "nobody looked", and from outside the channel those look identical. Weekends produce nothing.
-if (isBusinessDay(date)) {
+// "Daily failure triage" means every day something ran, not only the days something went red. A
+// suite that ran clean still gets a short message: it is the difference between "checked, all
+// green" and "nobody looked", and from outside the channel those look identical.
+//
+// This used to skip weekends, which only ever reflected the fact that the note was written by
+// hand and nobody was at a desk on Saturday. The CI does not stop — prod runs every 15 minutes
+// all weekend — so those runs were going unattested. A run that happened is a run that owes a
+// note. The "no run today" warning below is still weekday-only, because a quiet Saturday is
+// expected and crying about it every weekend is how a real silence gets ignored.
+{
   for (const su of [...suites].reverse()) {
     const dayRuns = su.runs.filter((r) => r.iso.slice(0, 10) === date);
     if (dayRuns.some((r) => !r.green)) continue; // its red runs already have their own replies
@@ -1704,6 +1710,9 @@ if (isBusinessDay(date)) {
     // ad-hoc suite like mobile `manual` would be a false alarm every morning, and a false alarm
     // every morning is how the real silence gets ignored.
     if (!last) {
+      // Nothing ran. On a weekday that is worth flagging; on a weekend it is normal, so stay quiet
+      // rather than posting "no run today" into every channel each Saturday.
+      if (!isBusinessDay(date)) continue;
       const days = new Set(
         su.runs.filter((r) => r.iso.slice(0, 10) <= date && r.iso.slice(0, 10) > shiftDate(date, -7)).map((r) => r.iso.slice(0, 10)),
       );

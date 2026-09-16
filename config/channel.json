@@ -38,7 +38,8 @@
       "enabled": true,
       "baselineGreenPct": 100,
       "critical": true,
-      "note": "Baseline 40+ consecutive green runs. Any failure here is escalated immediately."
+      "note": "Baseline 40+ consecutive green runs. Any failure here is escalated immediately.",
+      "greenNotesOnly": true
     },
     {
       "key": "web-testnet",
@@ -49,7 +50,8 @@
       "enabled": true,
       "baselineGreenPct": 54,
       "critical": false,
-      "note": "Baseline ~54% fully-green runs."
+      "note": "Baseline ~54% fully-green runs.",
+      "greenNotesOnly": true
     },
     {
       "key": "web-staging",
@@ -60,7 +62,8 @@
       "enabled": true,
       "baselineGreenPct": 0,
       "critical": true,
-      "note": "Red on every run since Aug 13 — highest priority."
+      "note": "Red on every run since Aug 13 — highest priority.",
+      "greenNotesOnly": true
     },
     {
       "key": "mobile-testnet",
@@ -71,7 +74,8 @@
       "enabled": true,
       "baselineGreenPct": null,
       "critical": true,
-      "note": "iOS silent since Aug 11 — check every morning whether an iOS run happened."
+      "note": "iOS silent since Aug 11 — check every morning whether an iOS run happened.",
+      "greenNotesOnly": true
     },
     {
       "key": "pwa-testnet",
@@ -82,7 +86,8 @@
       "enabled": false,
       "baselineGreenPct": null,
       "critical": false,
-      "note": "One PWA Android/Metamask run a day at ~06:20, green most days. Not part of the daily set — enable per run with --channels pwa-testnet."
+      "note": "One PWA Android/Metamask run a day at ~06:20, green most days. Not part of the daily set — enable per run with --channels pwa-testnet.",
+      "greenNotesOnly": true
     }
   ],
   "watchlist": [

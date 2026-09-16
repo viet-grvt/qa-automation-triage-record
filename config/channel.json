@@ -151,5 +151,6 @@
       "confirmed": false
     },
     "noExternalPosts": true
-  }
+  },
+  "defaultOwner": "Viet"
 }

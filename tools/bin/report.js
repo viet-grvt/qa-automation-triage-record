@@ -1639,7 +1639,10 @@ function threadReply(run) {
     p(``);
   }
 
-  p(`Owner: ${[...new Set(run.failures.map((f) => testFor(run, f)?.owner).filter(Boolean))].join(", ") || "⚠️ unassigned"}`);
+  // Nothing is "unassigned" in practice — an untriaged run belongs to whoever is on QA duty until
+  // it is classified. Naming them is more useful in the thread than a warning nobody can action.
+  const owners = [...new Set(run.failures.map((f) => testFor(run, f)?.owner).filter(Boolean))];
+  p(`Owner: ${owners.join(", ") || cfg.defaultOwner || "⚠️ unassigned"}`);
   p(`<${run.reportUrl || run.jobUrl}|Test report>${run.runId ? ` · run ${run.runId}` : ""}`);
   return R.join(NL).trimEnd();
 }

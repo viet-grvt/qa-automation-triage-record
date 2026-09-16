@@ -265,10 +265,9 @@ for (const ch of watched) {
   }
 }
 
-if (!found.length) {
-  console.log("No red runs in the window. Nothing to answer.");
-  process.exit(0);
-}
+// An all-green day is not "nothing to do" — that is exactly when the daily note is owed, so this
+// reports and carries on rather than exiting.
+if (!found.length) console.log("No red runs in the window.");
 
 /**
  * Slack does not say whether a run was cron'd or dispatched by hand, but GitHub does. The token
@@ -327,10 +326,7 @@ for (const f of found) {
   console.log(`     ${f.failures} failing test(s) · run ${f.runId || "?"} · ts ${f.ts}`);
 }
 
-if (!open.length) {
-  console.log("\nEvery red run already has a reply.");
-  process.exit(0);
-}
+if (found.length && !open.length) console.log("\nEvery red run already has a reply.");
 
 // ---------------------------------------------------------------- answer
 // The reply text is whatever report.js generated for that run. Matching on thread_ts is exact:
@@ -355,8 +351,10 @@ function replyFileFor(ts) {
 // The reply files are produced by report.js, which reads state, which is fed by ingest.js. Run the
 // chain here so one scheduled command covers the whole loop; --no-refresh skips it when the caller
 // has already done it by hand.
+// Refresh for every watched channel, not just the ones with open red runs: on an all-green day
+// there are no open runs, and the daily note still has to be generated.
 if (has("post") && !has("no-refresh")) {
-  const keys = [...new Set(open.map((f) => f.channel.key))].join(",");
+  const keys = watched.map((c) => c.key).join(",");
   for (const [label, script] of [
     ["ingest", "ingest.js"],
     ["report", "report.js"],
@@ -373,6 +371,74 @@ if (has("post") && !has("no-refresh")) {
       console.error(String(e.stderr || e.stdout || e.message).trim().split("\n").slice(-3).join("\n"));
       process.exit(1);
     }
+  }
+}
+
+// ---------------------------------------------------------------- the daily "checked, all green" note
+// A suite that ran clean still owes the channel a message: from outside it, "all green" and "nobody
+// looked" are indistinguishable. report.js emits one daily-*.md per suite per business day, but only
+// for suites with no red run that day (a red one gets per-run replies instead).
+//
+// Its thread_ts points at the LATEST green run, which moves as more green runs land during the day.
+// Posting on that alone would put a fresh copy under every new run, so the note is tracked as posted
+// once per suite per day and never repeated.
+const dailyLog = path.join(ROOT, "reports", todayLocal(), ".posted-daily.json");
+const readPosted = () => {
+  try {
+    return JSON.parse(fs.readFileSync(dailyLog, "utf8"));
+  } catch {
+    return {};
+  }
+};
+
+function dailyNotes() {
+  const dir = path.join(ROOT, "reports", todayLocal(), "posts");
+  if (!fs.existsSync(dir)) return [];
+  const keys = new Set(watched.map((c) => c.key));
+  const posted = readPosted();
+  const out = [];
+  for (const name of fs.readdirSync(dir)) {
+    if (!name.startsWith("daily-")) continue;
+    const raw = fs.readFileSync(path.join(dir, name), "utf8");
+    const m = raw.match(/<!--\s*channel:\s*([^\s·]+)[^>]*?suite:\s*([^\s·]+)[^>]*?(?:thread_ts:\s*([\d.]+))?\s*-->/);
+    if (!m || !keys.has(m[1])) continue;
+    const id = `${m[1]}:${m[2]}`;
+    out.push({
+      id,
+      file: path.relative(ROOT, path.join(dir, name)),
+      channelKey: m[1],
+      threadTs: m[3] || null,
+      already: !!posted[id],
+    });
+  }
+  return out;
+}
+
+const dailies = dailyNotes();
+if (dailies.length) {
+  const pending = dailies.filter((d) => !d.already);
+  console.log(`\n${dailies.length} daily note(s) · ${pending.length} not yet posted`);
+  for (const d of dailies) {
+    console.log(`  ${d.already ? "✔ posted today" : "→ needs posting"}  ${d.id}${d.threadTs ? "" : "  (no run today — goes to the channel, not a thread)"}`);
+  }
+  if (has("post")) {
+    const posted = readPosted();
+    for (const d of pending) {
+      try {
+        const out = execFileSync(
+          process.execPath,
+          [path.join(ROOT, "tools", "bin", "post.js"), "--file", d.file, "--confirm"],
+          { cwd: ROOT, encoding: "utf8", env: process.env },
+        );
+        const ts = (out.match(/posted · ts ([\d.]+)/) || [])[1];
+        posted[d.id] = ts || true;
+        console.log(`  ✔ ${d.id} → ts ${ts || "?"}`);
+      } catch (e) {
+        console.log(`  ✘ ${d.id} — ${String(e.stdout || e.message).trim().split("\n").pop()}`);
+      }
+    }
+    fs.mkdirSync(path.dirname(dailyLog), { recursive: true });
+    fs.writeFileSync(dailyLog, JSON.stringify(posted, null, 2) + "\n");
   }
 }
 

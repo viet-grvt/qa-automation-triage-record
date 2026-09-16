@@ -72,6 +72,17 @@
       "baselineGreenPct": null,
       "critical": true,
       "note": "iOS silent since Aug 11 — check every morning whether an iOS run happened."
+    },
+    {
+      "key": "pwa-testnet",
+      "id": "C0BJ098AAJX",
+      "name": "qa-pwa-automation-tesnet",
+      "platform": "mobile",
+      "env": "testnet",
+      "enabled": false,
+      "baselineGreenPct": null,
+      "critical": false,
+      "note": "One PWA Android/Metamask run a day at ~06:20, green most days. Not part of the daily set — enable per run with --channels pwa-testnet."
     }
   ],
   "watchlist": [

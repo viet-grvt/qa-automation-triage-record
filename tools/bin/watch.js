@@ -480,6 +480,30 @@ function dailyNotes() {
 
 const dailies = dailyNotes();
 
+/**
+ * The local record is an optimisation, not the truth. Slack is. reports/<date>/ is gitignored, so
+ * losing it is easy — a tidy-up, a fresh clone — and a lost record used to mean every note was
+ * posted a second time. Before sending, look in the thread: if this bot's note for this suite is
+ * already there, adopt its ts instead of posting again. Red replies have always worked this way.
+ */
+async function noteAlreadyInThread(d) {
+  if (!d.threadTs) return null; // no run today: it goes to the channel, not a thread
+  const ch = (cfg.channels || []).find((c) => c.key === d.channelKey);
+  if (!ch?.id) return null;
+  try {
+    const thread = await slack("conversations.replies", { channel: ch.id, ts: d.threadTs, limit: 50 });
+    const suite = d.id.split(":").slice(1).join(":");
+    const mine = thread.messages.filter(
+      (m) => m.ts !== d.threadTs && m.user === me && /Daily triage/.test(m.text || ""),
+    );
+    // Match on the suite name so two suites posting into one thread stay distinct.
+    const exact = mine.find((m) => new RegExp(`·\\s*${suite}\\b`).test(m.text || "")) || mine[0];
+    return exact?.ts || null;
+  } catch {
+    return null; // a thread we cannot read is not evidence that nothing was posted
+  }
+}
+
 // Entries written before content-tracking existed are a bare ts string. Upgrade them in place to
 // the stamp seen now: the note that is already in Slack stays put, and the NEXT change to it is
 // detected. Without this the first day after the upgrade never updates.
@@ -514,9 +538,19 @@ if (dailies.length) {
         // When the note has already been sent today, edit that message rather than sending a new
         // one. Otherwise a suite with ten runs a day accumulates ten notes, and the nine older
         // ones sit there stating counts that are no longer true.
-        const prevTs = typeof posted[d.id] === "object" ? posted[d.id]?.ts : posted[d.id];
+        let prevTs = typeof posted[d.id] === "object" ? posted[d.id]?.ts : posted[d.id];
+
+        // No local record? Ask Slack before assuming nothing was sent.
+        if (!prevTs) {
+          const inThread = await noteAlreadyInThread(d);
+          if (inThread) {
+            prevTs = inThread;
+            d.updating = true;
+            console.log(`     found an existing note in the thread (${inThread}) — editing it`);
+          }
+        }
         const args = [path.join(ROOT, "tools", "bin", "post.js"), "--file", d.file, "--confirm"];
-        if (d.updating && prevTs) args.push("--update", prevTs);
+        if (prevTs) args.push("--update", prevTs);
 
         let out;
         try {
@@ -526,7 +560,7 @@ if (dailies.length) {
           // run. Falling back to a fresh post keeps the note current; retrying the edit for ever
           // would leave the suite silently stuck on a stale count.
           const why = String(e.stdout || e.message);
-          if (!(d.updating && /message_not_found/.test(why))) throw e;
+          if (!(prevTs && /message_not_found/.test(why))) throw e;
           console.log(`     the note being edited is gone - posting a new one`);
           out = execFileSync(
             process.execPath,

@@ -1,0 +1,155 @@
+{
+  "timezone": "Asia/Ho_Chi_Minh",
+  "repoPath": "c:/Gravity/qa-automation",
+  "repoSlug": "gravity-technologies/qa-automation",
+  "jira": {
+    "cloudId": "56c14758-cc74-4db5-9e9f-40da67731510",
+    "site": "https://grvt.atlassian.net",
+    "epic": "QE-964",
+    "tracked": [
+      "QE-935",
+      "QE-948",
+      "QE-949",
+      "QE-965",
+      "QE-966"
+    ],
+    "bugProject": "PRO"
+  },
+  "channels": [
+    {
+      "key": "manual-automation",
+      "id": "C0BJ6L6E44A",
+      "name": "qa-manual-automation",
+      "platform": "web",
+      "env": "mixed",
+      "enabled": false,
+      "adhoc": true,
+      "baselineGreenPct": null,
+      "critical": false,
+      "note": "Optional. Not part of the daily run — enable per run with --channels manual-automation. Receives manual workflow_dispatch runs, so environment and suite size vary per run: streak and flakiness here are indicative only, not a baseline.",
+      "optional": true
+    },
+    {
+      "key": "web-prod",
+      "id": "C083HQRCGR3",
+      "name": "qa-web-automation-prod",
+      "platform": "web",
+      "env": "prod",
+      "enabled": true,
+      "baselineGreenPct": 100,
+      "critical": true,
+      "note": "Baseline 40+ consecutive green runs. Any failure here is escalated immediately."
+    },
+    {
+      "key": "web-testnet",
+      "id": "C07KPL4CUAC",
+      "name": "qa-web-automation-testnet",
+      "platform": "web",
+      "env": "testnet",
+      "enabled": true,
+      "baselineGreenPct": 54,
+      "critical": false,
+      "note": "Baseline ~54% fully-green runs."
+    },
+    {
+      "key": "web-staging",
+      "id": "C07QWGUE2G6",
+      "name": "qa-web-automation-staging",
+      "platform": "web",
+      "env": "staging",
+      "enabled": true,
+      "baselineGreenPct": 0,
+      "critical": true,
+      "note": "Red on every run since Aug 13 — highest priority."
+    },
+    {
+      "key": "mobile-testnet",
+      "id": "C0ANDUMDZU2",
+      "name": "qa-mobile-automation-testnet",
+      "platform": "mobile",
+      "env": "testnet",
+      "enabled": true,
+      "baselineGreenPct": null,
+      "critical": true,
+      "note": "iOS silent since Aug 11 — check every morning whether an iOS run happened."
+    }
+  ],
+  "watchlist": [
+    {
+      "match": "button layout",
+      "channel": "web-staging",
+      "since": "QE-935",
+      "note": "~17 consecutive failures — needs a bug ticket or a quarantine decision"
+    },
+    {
+      "match": "displays selected language correctly",
+      "channel": "web-testnet",
+      "since": "QE-935",
+      "note": "regression suite, 8 occurrences"
+    },
+    {
+      "match": "download card",
+      "channel": "web-staging",
+      "since": "QE-935",
+      "note": "7 occurrences"
+    },
+    {
+      "match": "sub-account",
+      "channel": "web-testnet",
+      "since": "QE-935",
+      "note": "sub-account config persistence cluster, 6 occurrences"
+    },
+    {
+      "match": "long running",
+      "channel": "mobile-testnet",
+      "since": "QE-935",
+      "note": "30min/1h trade view — failed 5 of 7; real perf regression or miscalibrated budget?"
+    }
+  ],
+  "thresholds": {
+    "flakinessTargetPct": 3,
+    "quarantineAfterConsecutiveFails": 5,
+    "rollingWindow": 10,
+    "staleRunHours": 12,
+    "iosSilentAlertHours": 24,
+    "smokeAccuracyBreachOnScript": true
+  },
+  "targets": {
+    "dueDate": "2026-09-15",
+    "iosFlows": 12,
+    "bugScenarios": 15,
+    "proBugsRaised": 5,
+    "consecutiveGreenIosRuns": 5
+  },
+  "escalation": {
+    "prodSmokeAppBug": true,
+    "channelFullyRedDays": 3,
+    "testRedRunsWithoutDecision": 5,
+    "quotaMissedDays": 3,
+    "escalateTo": "Raj + team lead"
+  },
+  "posting": {
+    "_note": "Reports are only ever posted into the automation channels themselves. No DMs, no dev-team channels — sections 2.2 and 2.4 stay in the report for your own use and are not turned into messages.",
+    "triageRecord": {
+      "target": "thread of the failing run in the source channel",
+      "sections": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6"
+      ],
+      "confirmed": true
+    },
+    "standup": {
+      "target": "#qa-manual-automation",
+      "id": "C0BJ6L6E44A",
+      "sections": [
+        "2.1"
+      ],
+      "confirmed": false
+    },
+    "noExternalPosts": true
+  }
+}

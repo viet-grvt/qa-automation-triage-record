@@ -50,6 +50,15 @@ gh run download <runId> -D ./tmp-artifacts     # trace/screenshots when the log 
 | the flow no longer exists in the product | `obsolete` |
 | no stable attribute to target | `missing-testid` |
 
+Two groups in the Slack message settle the question before the log does. **FAILED (env-dependent)**
+means the spec is tagged `@envDependent` in the test repo — it asserts on account state that must
+already be there — so check the account before reading the code; the usual answer is ENV, not
+SCRIPT. **BLOCKED (preflight)** means the account gate failed and the suite body never ran: there is
+nothing to root-cause, and the run does not count toward the pass rate.
+
+A sharded regression run is several Slack messages under one workflow run id.
+`gh run view <runId> --log-failed` covers all of them, so run it once per run, not once per message.
+
 Mobile: BrowserStack MCP — `listBuildId` → `getBuildId` → `getFailureLogs` / `fetchRCA`, plus
 `fetchAutomationScreenshots` when ambiguous.
 

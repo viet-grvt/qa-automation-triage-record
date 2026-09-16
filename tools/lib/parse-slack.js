@@ -7,12 +7,29 @@
  *   .github/actions/slack-reporter-mobile/slack_custom_formatter.sh
  *
  * WEB:
- *   :x:WEB E2E Smoke Test [Chrome]
+ *   :x:WEB E2E Smoke Test [testnet · Chrome]
  *   :large_green_circle: *Passed:* 40
  *   :red_circle: *Failed:* 3
  *   <url|Actions Job>
  *   <url|Test Report>
+ *   *FAILED (stable)*
  *   ✘ <failed test title>
+ *
+ * Two things about the web header changed on 2026-09-15 and both change the numbers:
+ *
+ *   1. The context suffix went from `[Chrome]` to `[<env> · <Browser>]`, and the test type can now
+ *      carry a shard — `Regression (shard 1/2)` — or be the serial `Pre-shard` batch. One
+ *      regression *workflow run* therefore posts several messages (pre-shard + one per shard) that
+ *      share a single GitHub run id. They are parsed here as `parts` and stitched back into one
+ *      logical run by merge-runs.js: each shard runs a different half of the suite, so treating
+ *      them as separate runs makes every test in the other half look like it passed.
+ *   2. Failures are grouped under a heading that carries the reporter's own verdict:
+ *        *FAILED (stable)*         — failed on every retry, no @envDependent tag
+ *        *FAILED (env-dependent)*  — the spec asserts on pre-existing account state
+ *        *BLOCKED (preflight)*     — the account gate failed, the body never ran
+ *      A blocked run proves nothing about the product and does not count toward the pass rate.
+ *      Note that Playwright's `flaky` status (failed, passed on retry) is counted as *passed* by
+ *      the reporter, so a title that reaches Slack at all has already failed every retry.
  *
  * MOBILE:
  *   :white_check_mark: [MOBILE-E2E] [SMOKE] [ANDROID] - OKX
@@ -101,6 +118,70 @@ function pickField(body, label) {
   return null;
 }
 
+/** Failure group headings the frontend reporter emits, mapped to the short code stored per test. */
+const GROUP_HEADINGS = [
+  [/^FAILED \(stable\)$/i, "stable"],
+  [/^FAILED \(env-dependent\)$/i, "env-dependent"],
+  [/^BLOCKED \(preflight\)$/i, "blocked"],
+  [/^FAILED$/i, "stable"], // pre-2026-09-15 messages had no heading at all
+];
+
+/**
+ * Failure titles with the heading they appeared under. Titles before any heading (the old format,
+ * and the mobile reporter, which does not group) are recorded as `unknown` rather than guessed at:
+ * "stable" is a claim about retries, and inventing it would put a verdict in the tool's mouth.
+ */
+function pickFailures(body) {
+  const out = [];
+  let group = null;
+  for (const raw of body) {
+    const line = raw.trim();
+    if (!line) continue;
+    const heading = line.replace(/^\*|\*$/g, "").replace(/^_|_$/g, "").trim();
+    const hit = GROUP_HEADINGS.find(([re]) => re.test(heading));
+    if (hit) {
+      group = hit[1];
+      continue;
+    }
+    if (!line.startsWith("✘")) continue;
+    const title = line.replace(/^✘\s*/, "").trim();
+    if (title) out.push({ title, group: group || "unknown" });
+  }
+  return out;
+}
+
+/**
+ * "WEB E2E Regression (shard 1/2) Test [testnet · Chrome]" ->
+ *   { testType: "regression", part: "shard-1/2", shard: {index:1,total:2}, env, browser }
+ *
+ * `Pre-shard` is not a suite of its own: it is the serial batch of the same regression workflow,
+ * posted separately because it runs before the shards fan out. Filing it as its own suite would
+ * split one run's results across two suites and leave both looking like they half-ran.
+ */
+function parseWebHeader(headerLine) {
+  const clean = headerLine.replace(/^:[a-z_0-9]+:/i, "").trim();
+  const m = clean.match(/^WEB\s+E2E\s+(.+?)\s+Test\b(?:\s*\[([^\]]+)\])?(?:\s*[—-]\s*BLOCKED)?\s*$/i);
+  const rawType = (m ? m[1] : "Smoke").trim();
+  const ctx = m && m[2] ? m[2] : "";
+
+  const sh = rawType.match(/\(shard\s+(\d+)\s*\/\s*(\d+)\)/i);
+  const base = rawType.replace(/\(shard\s+\d+\s*\/\s*\d+\)/i, "").trim() || "Smoke";
+  const isPreshard = /^pre-?shard$/i.test(base);
+
+  const tokens = ctx.split(/\s*[·|]\s*/).map((t) => t.trim()).filter(Boolean);
+  // Old format carried the browser alone; the new one prefixes the environment.
+  const browser = tokens.length ? tokens[tokens.length - 1].toLowerCase() : null;
+  const env = tokens.length > 1 ? tokens[0].toLowerCase() : null;
+
+  return {
+    testType: isPreshard ? "regression" : base.toLowerCase().replace(/\s+/g, "-"),
+    part: sh ? `shard-${sh[1]}/${sh[2]}` : isPreshard ? "pre-shard" : null,
+    shard: sh ? { index: Number(sh[1]), total: Number(sh[2]) } : null,
+    env,
+    browser,
+  };
+}
+
 /** GitHub Actions run id, taken from the "Actions Job" link — used to fetch logs via gh. */
 function runIdFromUrl(url) {
   const m = url && url.match(/\/actions\/runs\/(\d+)/);
@@ -134,10 +215,8 @@ export function parseChannel(raw, channel) {
 
     const passed = pickNumber(body, "Passed");
     const failed = pickNumber(body, "Failed");
-    const failures = body
-      .filter((l) => l.trimStart().startsWith("✘"))
-      .map((l) => l.replace(/^\s*✘\s*/, "").trim())
-      .filter(Boolean);
+    const failureDetail = pickFailures(body);
+    const failures = failureDetail.map((f) => f.title);
 
     const jobUrl = pickLink(body, "Actions Job");
     const run = {
@@ -155,7 +234,15 @@ export function parseChannel(raw, channel) {
       passed,
       failed,
       failures,
+      failureDetail,
       truncatedFailureList: failed != null && failures.length > 0 && failed > failures.length,
+      // The preflight account gate failed, so the suite body never ran. The reporter says outright
+      // that these results do not count toward the pass rate — so they must not set a streak, and
+      // they must never be read as "the product is broken".
+      blocked:
+        /BLOCKED \(preflight\)/i.test(body.join("\n")) ||
+        /no_entry/.test(headerLine) ||
+        /[—-]\s*BLOCKED\s*$/i.test(headerLine.trim()),
       jobUrl,
       runId: runIdFromUrl(jobUrl),
       reportUrl: pickLink(body, "Test Report"),
@@ -167,11 +254,15 @@ export function parseChannel(raw, channel) {
 
     if (isWeb) {
       run.suite = "web";
-      const t = headerLine.match(/E2E\s+(\w+)\s+Test/i);
-      run.testType = (t ? t[1] : "Smoke").toLowerCase();
-      const b = headerLine.match(/\[([A-Za-z]+)\]\s*$/);
-      run.browser = b ? b[1].toLowerCase() : null;
+      const h = parseWebHeader(headerLine);
+      run.testType = h.testType;
+      run.part = h.part;
+      run.shard = h.shard;
+      run.browser = h.browser;
       run.variant = run.browser;
+      // The header now names the environment it ran against. Trust it over the channel default —
+      // a channel is a place messages land, not a guarantee of which env produced them.
+      if (h.env) run.env = h.env;
     } else {
       run.suite = "mobile";
       const tags = [...headerLine.matchAll(/\[([^\]]+)\]/g)].map((m) => m[1]);
@@ -190,8 +281,10 @@ export function parseChannel(raw, channel) {
 
     // Suite key: streaks are only ever compared within the same test suite.
     run.suiteKey = `${channel.key}::${run.suite}:${run.testType}`;
-    run.green = run.ok && (failed === 0 || failed == null) && (passed || 0) > 0;
-    run.infra = (passed || 0) === 0; // zero passes usually means infrastructure, not a test defect
+    run.green = run.ok && !run.blocked && (failed === 0 || failed == null) && (passed || 0) > 0;
+    // Zero passes usually means infrastructure, not a test defect. A blocked run is the same in
+    // effect — nothing ran — so it is excluded from pass inference by the same flag.
+    run.infra = (passed || 0) === 0 || run.blocked;
 
     runs.push(run);
   }
@@ -200,4 +293,11 @@ export function parseChannel(raw, channel) {
   return { runs, skipped };
 }
 
-export const _internal = { splitMessages, parseDisplayTime, unescapeSlack, runIdFromUrl };
+export const _internal = {
+  splitMessages,
+  parseDisplayTime,
+  unescapeSlack,
+  runIdFromUrl,
+  parseWebHeader,
+  pickFailures,
+};

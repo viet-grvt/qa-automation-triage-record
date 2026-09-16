@@ -65,6 +65,13 @@ make the channel healthy when the regression run failed 16 tests. Every number �
 fully-green %, flakiness, smoke accuracy — is per suite (channel × smoke/regression), and a red run
 in one suite never gets answered in the other suite's thread.
 
+**A regression run is several messages.** Since 2026-09-15 the web regression fans out into a
+`Pre-shard` batch plus one message per shard, all under one workflow run id. The tool merges them
+into one logical run: §1.1's pass/total is their sum, one reply answers the whole run, and a shard
+that never posted is flagged as a gap rather than quietly shrinking the suite. Do not treat the
+shard messages as separate runs — each shard runs a different half, so read apart they make a
+genuinely red test look like it passes on alternate runs.
+
 **Only runs since the last sign-off are triaged.** A Slack pull reaches back days. Each suite
 carries a checkpoint; the window is everything after it. Older runs stay in the history for
 streaks but are not re-triaged. A failure still red but not re-run in the window is marked
@@ -91,6 +98,16 @@ back-filling is safe).
 git -C c:/Gravity/qa-automation pull
 node tools/bin/index-tests.js
 ```
+
+Also when the **reporter's message format** changed: stored runs were parsed by the old parser and
+stay misread until the archive is read again.
+
+```bash
+node tools/bin/ingest.js --all     # re-parse every data/raw/<date>/ from scratch
+node --test "tools/test/*.test.js" # the format tests — run these after touching the parser
+```
+
+Labels, tickets, owners and root causes are keyed by test and survive it.
 
 ## Step 1 — Pull Slack
 
@@ -161,6 +178,8 @@ The first question for every failure. 1.2 gives the leaning and the evidence; **
 
 | Pattern | History | Usually |
 |---|---|---|
+| tagged @envDependent | the reporter grouped it under **FAILED (env-dependent)** | **the environment** — the spec asserts on pre-existing account state, so the shared account has usually drifted. A hint, not a verdict: check the state before labelling ENV |
+| never ran — preflight gate | grouped under **BLOCKED (preflight)** | **nothing** — the account gate failed, the suite body never ran, and the reporter excludes it from the pass rate. Do not classify from it |
 | flaky pattern | passed and failed over the same period | **our test** — the product does not change between two runs ten minutes apart |
 | fails every run | red every run, never passing | **something really changed** |
 | one browser only | fails on one browser, passes elsewhere | ambiguous: a browser-specific defect and a locator that only matches elsewhere look identical |

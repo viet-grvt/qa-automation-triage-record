@@ -137,6 +137,14 @@ async function viaToken() {
     }),
   });
   const body = await res.json();
+  // Slack does not fail when thread_ts names a message that is gone — it quietly posts the reply
+  // at the top of the channel instead. Reporting that as a success is how a triage reply ends up
+  // detached from the run it answers, so check what actually happened.
+  if (body.ok && threadTs && body.message?.thread_ts !== threadTs) {
+    console.warn(
+      `  ⚠️ posted TOP-LEVEL, not in the thread — parent ${threadTs} is missing or deleted.`,
+    );
+  }
   if (!body.ok) {
     const hint =
       body.error === "not_in_channel"

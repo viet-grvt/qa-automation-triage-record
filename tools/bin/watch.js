@@ -518,7 +518,22 @@ if (dailies.length) {
         const args = [path.join(ROOT, "tools", "bin", "post.js"), "--file", d.file, "--confirm"];
         if (d.updating && prevTs) args.push("--update", prevTs);
 
-        const out = execFileSync(process.execPath, args, { cwd: ROOT, encoding: "utf8", env: process.env });
+        let out;
+        try {
+          out = execFileSync(process.execPath, args, { cwd: ROOT, encoding: "utf8", env: process.env });
+        } catch (e) {
+          // The message being edited can be gone - deleted by hand, or cleaned up after a bad
+          // run. Falling back to a fresh post keeps the note current; retrying the edit for ever
+          // would leave the suite silently stuck on a stale count.
+          const why = String(e.stdout || e.message);
+          if (!(d.updating && /message_not_found/.test(why))) throw e;
+          console.log(`     the note being edited is gone - posting a new one`);
+          out = execFileSync(
+            process.execPath,
+            [path.join(ROOT, "tools", "bin", "post.js"), "--file", d.file, "--confirm"],
+            { cwd: ROOT, encoding: "utf8", env: process.env },
+          );
+        }
         const ts = (out.match(/(?:posted|updated) · ts ([\d.]+)/) || [])[1] || prevTs;
         posted[d.id] = { ts: ts || null, stamp: d.stamp, at: new Date().toISOString() };
         console.log(`  ✔ ${d.id} ${d.updating ? "(edited in place)" : ""} → ts ${ts || "?"}`);

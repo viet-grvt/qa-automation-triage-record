@@ -105,9 +105,31 @@ function startOfTodayTs() {
   return String(Math.floor(d.getTime() / 1000) - secsIntoDay);
 }
 
+/** Epoch seconds at 00:00 on a YYYY-MM-DD, in the configured timezone. */
+function startOfDateTs(date) {
+  const noonUtc = Date.parse(`${date}T12:00:00Z`);
+  if (Number.isNaN(noonUtc)) {
+    console.error(`--from expects YYYY-MM-DD, got "${date}".`);
+    process.exit(2);
+  }
+  const hour = Number(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: cfg.timezone || "Asia/Ho_Chi_Minh",
+      hour: "2-digit",
+      hour12: false,
+    }).format(new Date(noonUtc)),
+  );
+  // How far local noon sits from UTC noon is the zone's offset for that date.
+  return String(Math.floor(noonUtc / 1000) - 12 * 3600 - (hour - 12) * 3600);
+}
+
 // Answering a three-week backlog on the first run would bury the channel. Default to today only;
-// --since lets you widen it deliberately, --all turns the window off.
-const since = has("all") ? null : getArg("since") || startOfTodayTs();
+// --from <date> starts from a given day, --since takes a raw ts, --all turns the window off.
+const fromDate = getArg("from");
+const since = has("all")
+  ? null
+  : getArg("since") || (fromDate ? startOfDateTs(fromDate) : startOfTodayTs());
+if (fromDate) console.log(`Window: from ${fromDate} (${since})`);
 
 /** Red if the reporter marked it failed. Both formats put the state in the first line. */
 function isRed(text = "") {

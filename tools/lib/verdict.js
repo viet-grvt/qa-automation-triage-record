@@ -69,7 +69,27 @@ export function stability(t, { commits = [] } = {}) {
 
   let pattern, leaning, plain;
 
-  if (observed < 3) {
+  const lastFail = [...history].reverse().find((h) => h.status === "fail");
+  const envTagged = history.some((h) => h.status === "fail" && h.group === "env-dependent");
+
+  if (lastFail?.group === "blocked") {
+    pattern = "blocked";
+    leaning = "blocked";
+    plain = `The run never got past its preflight account gate, so this test did not actually execute. The reporter says outright that a blocked run does not count toward the pass rate — it is evidence about the account setup, not about the test or the product.`;
+    why.push("listed under BLOCKED (preflight) — the suite body never ran");
+    nextCheck.push("Fix or re-run the gated account, then judge the test on the next run that actually executes. Do not classify it from this one.");
+  } else if (envTagged) {
+    // The test repo tags these @envDependent because they assert on pre-existing account state —
+    // balance, open positions, vault shares, trade history. The reporter groups them separately for
+    // exactly this reason, and it is the one signal that points at the environment before any log
+    // is opened. It still is not proof: the same assertion fails when the product really breaks.
+    pattern = "env-dependent";
+    leaning = "env";
+    plain = `The test repo tags this one @envDependent: it asserts on account state that has to be there already — a balance, an open position, vault shares, trade history. When it goes red the shared account has usually drifted, not the product.`;
+    why.push("the reporter listed it under FAILED (env-dependent)");
+    if (t.consecutiveFails > 1) why.push(`${t.consecutiveFails} consecutive failures — the account has not been restored`);
+    nextCheck.push("Check the account state the test expects before touching anything else. If the state is right and it still fails, the tag is misleading and this is a real failure — classify it on the log, not on the tag.");
+  } else if (observed < 3) {
     pattern = "too-early";
     leaning = "unclear";
     plain = `Only ${observed} run${observed === 1 ? "" : "s"} of this test are on record. That is not enough to tell a real problem from bad luck.`;
@@ -138,11 +158,15 @@ export const PATTERN_SHORT = {
   "always-fails": "fails every run",
   "first-time": "first failure",
   mixed: "no clear pattern",
+  "env-dependent": "tagged @envDependent",
+  blocked: "never ran — preflight gate",
 };
 
 export const LEANING_SHORT = {
   flaky: "🔁 likely our test",
   genuine: "🐞 likely the product",
+  env: "🌍 likely the environment",
+  blocked: "⛔ did not run",
   unclear: "❔ needs a look",
 };
 
@@ -150,5 +174,6 @@ export const LEANING_SHORT = {
 export function suggestedLabel(v) {
   if (v.leaning === "flaky") return "SCRIPT";
   if (v.leaning === "genuine") return "APP-BUG";
+  if (v.leaning === "env") return "ENV";
   return null;
 }

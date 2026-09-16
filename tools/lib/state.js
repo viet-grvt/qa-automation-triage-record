@@ -32,7 +32,10 @@ export function activeChannels(cfg, override = null) {
   return cfg.channels.filter((c) => c.enabled !== false);
 }
 
-const EMPTY_STATE = { version: 1, updatedAt: null, runs: {}, tests: {}, daily: {} };
+// `messages` holds one entry per Slack post; `runs` holds the logical runs those posts merge into
+// (a sharded regression run posts several messages under one workflow run id — see merge-runs.js).
+// Everything downstream reads `runs`.
+const EMPTY_STATE = { version: 1, updatedAt: null, messages: {}, runs: {}, tests: {}, daily: {} };
 
 export function loadState() {
   if (!fs.existsSync(paths.state)) return structuredClone(EMPTY_STATE);

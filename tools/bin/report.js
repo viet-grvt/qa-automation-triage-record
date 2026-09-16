@@ -28,6 +28,7 @@ import { execFileSync } from "node:child_process";
 import { findOwner, recentCommits, suggestLabel } from "../lib/hints.js";
 import { stability, PATTERN_SHORT, LEANING_SHORT, suggestedLabel } from "../lib/verdict.js";
 import { dueDate, slaStatus, runKey, isBusinessDay } from "../lib/sla.js";
+import { partLabel } from "../lib/merge-runs.js";
 import {
   prettyDate,
   prettyWhen,
@@ -551,6 +552,21 @@ for (const su of suites.filter((x) => x.stale && x.runs.length)) {
   w(
     `> ⚠️ **#${su.channel.name} · ${su.testType}** last ran ${prettyAge(hoursSince(su.latest.iso))}. Check the schedule before reading anything into the tests.`,
   );
+}
+// A sharded run's pass/total is a sum across several Slack messages. Say so, or the number looks
+// like it came from one place and a missing shard looks like a smaller suite rather than a gap.
+for (const su of suites.filter((x) => x.latest?.parts?.length > 1)) {
+  const parts = su.latest.parts
+    .map((p) => `${partLabel(p.part) || "run"} ${(p.passed || 0)}/${(p.passed || 0) + (p.failed || 0)}`)
+    .join(" · ");
+  w(
+    `> 🧩 **#${su.channel.name} · ${su.testType}** is sharded: the ${su.latest.iso.slice(11, 16)} run is ${su.latest.parts.length} Slack messages under one workflow run — ${parts}. The row above is their sum.`,
+  );
+  if (su.latest.missingShards?.length) {
+    w(
+      `> ⚠️ **Shard ${su.latest.missingShards.join(", ")} of that run never posted.** Part of the suite has no result at all, so its tests are neither passed nor failed here — do not read the pass rate as full coverage.`,
+    );
+  }
 }
 // QE-964's actual acceptance criterion: every red run answered in its thread within 1 business
 // day. Tests can all be classified and this can still be failing, so it is stated separately.
@@ -1530,6 +1546,24 @@ function threadReply(run) {
 
   p(`🔴 *Triage — ${head}* · ${prettyDate(run.iso)} ${run.iso.slice(11, 16)}`);
   p(`${run.failed} failed / ${run.passed} passed of ${total}${run.truncatedFailureList ? "  (Slack truncated the failure list)" : ""}`);
+  // A sharded run posts one message per shard, so this reply answers for messages the reader
+  // cannot see from here. Name them, or the counts look wrong against the message above the reply.
+  if (run.parts?.length > 1) {
+    p(
+      `Covers the whole run (${run.parts.length} messages, one workflow run ${run.runId || ""}): ` +
+        run.parts
+          .map((pt) => `${partLabel(pt.part) || "run"} ${pt.failed || 0} failed`)
+          .join(" · "),
+    );
+    if (run.missingShards?.length) {
+      p(`⚠️ Shard ${run.missingShards.join(", ")} never posted — part of the suite has no result.`);
+    }
+  }
+  if (run.blocked) {
+    p(
+      `⛔ *BLOCKED (preflight)* — the account gate failed, so the suite body never ran. These results do not count toward the pass rate and say nothing about the product.`,
+    );
+  }
   p(``);
 
   // A run can be red without naming a single test: it timed out, or the job died before it got
@@ -1559,6 +1593,12 @@ function threadReply(run) {
       const t = item.t;
       const raw = t?.rca?.detail || t?.note || "";
       const k = String(raw).replace(/\s+/g, " ").trim();
+      // Only tests that share a *stated* cause are one item. Without that guard everything with no
+      // note collapses into "N tests, same cause" — which claims a shared cause nobody established.
+      if (!k) {
+        seen.set(`__ungrouped:${item.title}`, [item]);
+        continue;
+      }
       if (!seen.has(k)) seen.set(k, []);
       seen.get(k).push(item);
     }
@@ -1628,7 +1668,11 @@ for (const { run, su } of [...redRuns].reverse()) {
     section: "thread reply",
     channelKey: su.channel.key,
     suiteId: su.id,
-    destination: `#${su.channel.name} — thread of the ${su.testType} run at ${run.iso.slice(11, 16)}`,
+    destination:
+      `#${su.channel.name} — thread of the ${su.testType} run at ${run.iso.slice(11, 16)}` +
+      (run.parts?.length > 1
+        ? ` (the "${partLabel(run.parts.at(-1).part) || "last"}" message; it is the last of ${run.parts.length} for this run, and the reply covers all of them)`
+        : ""),
     threadTs: run.ts,
     runId: run.runId || null,
     due: dueDate(run.iso, cfg.timezone),
@@ -1794,10 +1838,12 @@ if (needTicket.length) {
 }
 // The morning question the report cannot answer on its own: what did we decide yesterday, and did
 // it actually get fixed? track.js owns that, so point at it rather than duplicating it here.
-const leaning = { flaky: 0, genuine: 0, unclear: 0 };
+const leaning = { flaky: 0, genuine: 0, env: 0, blocked: 0, unclear: 0 };
 for (const r of rows) leaning[r.verdict.leaning]++;
 console.log(
-  `First read: ${leaning.flaky} lean flaky (our test), ${leaning.genuine} lean genuine (the product), ${leaning.unclear} need a look.`,
+  `First read: ${leaning.flaky} lean flaky (our test), ${leaning.genuine} lean genuine (the product), ` +
+    `${leaning.env} lean environment (@envDependent), ${leaning.unclear} need a look` +
+    `${leaning.blocked ? `, ${leaning.blocked} never ran (preflight gate)` : ""}.`,
 );
 console.log(`Then run: node tools/bin/track.js --overdue   # fixes decided earlier that are still not done`);
 

@@ -85,6 +85,8 @@ The table gives the leaning. **You decide**, and the leaning is never the decisi
 
 | Pattern | What the history shows | Usually |
 |---|---|---|
+| `env-dependent` | the reporter listed it under **FAILED (env-dependent)** | **the environment** — the spec is tagged `@envDependent` because it asserts on pre-existing account state (balance, open position, vault shares, trade history), so the shared account has usually drifted |
+| `blocked` | listed under **BLOCKED (preflight)** | **nothing** — the account gate failed and the suite body never ran. Do not classify from this run; it does not count toward the pass rate |
 | `intermittent` | passes and fails on the same code | **our test** — the product does not change between two runs ten minutes apart |
 | `always-fails` | red every run since the streak started, never green | **something really changed** |
 | `variant-only` | fails on one browser/device, passes on the others | ambiguous — a browser-specific defect and a locator that only matches elsewhere look identical |
@@ -93,6 +95,16 @@ The table gives the leaning. **You decide**, and the leaning is never the decisi
 
 `always-fails` **plus a commit to the test's own file just before the streak started** is ours, not
 the product's — the report names that commit, read the diff before anything else.
+
+`env-dependent` is a hint, not a verdict: the same assertion goes red when the product really
+breaks. Check the account state the test expects; if the state is right and it still fails, the tag
+is misleading and this is a real failure.
+
+**A web regression run is several Slack messages.** Since 2026-09-15 it fans out into a `Pre-shard`
+batch and one message per shard, all under one workflow run id, and the tool merges them into a
+single run. So the pass/total in §1.1 is a sum across messages, one reply answers the whole run, and
+a shard that never posted is flagged — its tests have no result at all, which is not the same as
+passing. `gh run view <runId> --log-failed` covers every shard of that run.
 
 One confirming artefact per cluster, then decide:
 
@@ -106,7 +118,7 @@ One confirming artefact per cluster, then decide:
 
 | Label | When | Then |
 |---|---|---|
-| `ENV` | infra: zero passes across the suite, timeouts, RPC/wallet/network errors | Do **not** touch the script. One line naming the condition, then monitor |
+| `ENV` | infra: zero passes across the suite, timeouts, RPC/wallet/network errors — or a confirmed `@envDependent` account drift | Do **not** touch the script. One line naming the condition, then monitor |
 | `APP-BUG` | a product defect you reproduced, or the log states it outright | **Step 4** |
 | `SCRIPT` | our test is wrong, flaky or obsolete | **Step 3** |
 

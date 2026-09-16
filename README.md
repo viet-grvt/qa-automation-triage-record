@@ -27,6 +27,7 @@ node tools/bin/daily.js --close     # phase 3 — sign off, check coverage
 # the individual steps, if you need one on its own
 node tools/bin/index-tests.js       # build the "test title → file:line" index from qa-automation
 node tools/bin/ingest.js            # parse the Slack dumps in data/raw/<today>/
+node tools/bin/ingest.js --all      # re-parse every data/raw/<date>/ — after the parser changes
 node tools/bin/report.js            # write reports/<today>/{triage,standup,log-row}.md
 node tools/bin/report.js --mark-checked   # sign off: tomorrow starts after tonight's runs
 node tools/bin/classify.js --pending
@@ -137,6 +138,17 @@ What the format enforces, and the tool flags:
   separate per suite (smoke ≠ regression) and per channel.
 - **Silent channels** — no new run for 12h is flagged before you start triaging tests that were
   never actually executed.
+- **Sharded regression runs** — since 2026-09-15 one regression run posts several Slack messages
+  (a serial `Pre-shard` batch, then one per shard) under a single workflow run id. They are merged
+  back into one run before anything is inferred, because each shard runs a *different half* of the
+  suite: read separately, shard 2 marks every test in shard 1 as passing, and a test that is red
+  all week starts to look flaky. A shard that never posted is named as a gap rather than averaged
+  away.
+- **The reporter's own grouping** — failures arrive under `FAILED (stable)`, `FAILED (env-dependent)`
+  or `BLOCKED (preflight)`, and each means something different. `env-dependent` marks a spec tagged
+  `@envDependent` in the test repo because it asserts on pre-existing account state, so it is the
+  first real hint toward ENV. `blocked` means the account gate failed and the suite body never ran —
+  those results prove nothing about the product and are kept out of the pass rate entirely.
 - **Partial runs** — a green run covering 5 of 20 cases is **not** used to infer that a test passed,
   which would otherwise wipe out a genuine streak.
 - **Browser/device-specific failures** — a test red only on Firefox while Chrome and Brave are green
@@ -166,13 +178,15 @@ What the format enforces, and the tool flags:
 ```
 config/channels.json      channels, baselines, watchlist, thresholds   ← edit here
 tools/lib/parse-slack.js  parser for the qa-ui-bot / mobile bot messages
+tools/lib/merge-runs.js   stitches a sharded run's several Slack messages back into one run
 tools/lib/state.js        state I/O, channel selection, title normalisation
 tools/lib/hints.js        test → file mapping, git history, label heuristics
 tools/lib/smells.js       anti-pattern rules and local-import resolution
 tools/lib/propose.js      before/after fix suggestions and the per-test fix plan
 tools/lib/plain.js        plain-language layer: turns every number into a sentence
 tools/bin/*.js            index-tests · ingest · report · classify · script-rca
-data/state.json           run history, streaks and verdicts (survives every re-ingest)
+tools/test/*.test.js      node --test "tools/test/*.test.js" — reporter-format regressions
+data/state.json           messages, merged runs, streaks and verdicts (judgement survives re-ingest)
 data/raw/<date>/          raw Slack dumps (gitignored)
 ```
 

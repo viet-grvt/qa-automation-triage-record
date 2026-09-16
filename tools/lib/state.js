@@ -7,9 +7,9 @@ export const ROOT = path.resolve(__dirname, "..", "..");
 
 export const paths = {
   root: ROOT,
-  config: path.join(ROOT, "config", "channels.json"),
-  state: path.join(ROOT, "data", "state.json"),
-  testIndex: path.join(ROOT, "data", "test-index.json"),
+  config: path.join(ROOT, "config", "channel.json"),
+  state: path.join(ROOT, "config", "state.json"),
+  testIndex: path.join(ROOT, "config", "test-index.json"),
   raw: path.join(ROOT, "data", "raw"),
   reports: path.join(ROOT, "reports"),
 };

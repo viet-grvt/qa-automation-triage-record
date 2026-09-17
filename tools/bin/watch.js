@@ -221,6 +221,7 @@ function stamp(ts) {
 // ---------------------------------------------------------------- scan
 const me = (await slack("auth.test", {}, true)).user_id;
 const found = [];
+const greenRuns = [];
 
 for (const ch of watched) {
   let history;
@@ -254,6 +255,30 @@ for (const ch of watched) {
     const out = path.join(dir, `${ch.key}.txt`);
     fs.writeFileSync(out, `${dump}\n`);
     console.log(`  wrote ${runs.length} run message(s) → ${path.relative(ROOT, out)}`);
+  }
+
+  // Every GREEN run gets its own note, in its own thread. The alternative - one note a day, edited
+  // as runs land - produces a message stamped 02:00, sitting under the 00:21 run, whose text reads
+  // "Latest: 07:52": three different runs referenced by one message, and a timestamp claiming the
+  // check happened hours before the run it describes.
+  const greens = history.messages
+    .map((m) => ({ m, body: bodyOf(m) }))
+    .filter(({ body }) => isRun(body) && !isRed(body));
+  for (const { m, body } of greens) {
+    let answered = false;
+    if (m.reply_count > 0) {
+      const thread = await slack("conversations.replies", { channel: ch.id, ts: m.ts, limit: 50 });
+      answered = thread.messages.some((r) => r.ts !== m.ts && r.user === me);
+    }
+    greenRuns.push({
+      channel: ch,
+      ts: m.ts,
+      runId: runIdOf(body),
+      title: titleOf(body),
+      passed: Number((body.replace(/\*/g, "").match(/Passed:\s*(\d+)/i) || [])[1] || 0),
+      reportUrl: (body.match(/<([^|>]+)\|Test Report>/i) || [])[1] || null,
+      answered,
+    });
   }
 
   const reds = history.messages
@@ -410,173 +435,97 @@ if (has("post") && !has("no-refresh")) {
   }
 }
 
-// ---------------------------------------------------------------- the daily "checked, all green" note
-// A suite that ran clean still owes the channel a message: from outside it, "all green" and "nobody
-// looked" are indistinguishable. report.js emits one daily-*.md per suite per business day, but only
-// for suites with no red run that day (a red one gets per-run replies instead).
+// ---------------------------------------------------------------- green runs
+// Every green run is answered in its own thread, once. The alternative — a single note per suite
+// per day, edited as more runs land — produced a message stamped 02:00, sitting under the 00:21
+// run, whose text read "Latest: 07:52": three different runs referenced by one message, and a
+// timestamp claiming the check happened hours before the run it describes.
 //
-// Its thread_ts points at the LATEST green run, which moves as more green runs land during the day.
-// Posting on that alone would put a fresh copy under every new run, so the note is tracked as posted
-// once per suite per day and never repeated.
-const dailyLog = path.join(ROOT, "reports", todayLocal(), ".posted-daily.json");
+// Whether a run has been answered is read from its thread on Slack, so there is no local record to
+// lose and a note written by hand counts too.
+// Answering literally every green run follows the CI, not the check interval, and on a channel
+// like web-prod the CI is faster: gaps of 37, 40, 47 minutes are normal, so a 2-hourly bot still
+// emits ~20 notes a day, several under an hour apart. Hold a minimum gap between ANSWERED runs
+// instead — one attestation per --min-gap per suite. The runs in between are covered by the note
+// either side of them; a gap larger than the check interval is what stops a note ever being late.
+const minGapMin = Number(getArg("min-gap", "120"));
+const suiteOf = (g) => `${g.channel.key}::${g.title.replace(/\s*\[[^\]]*\]\s*$/, "").trim()}`;
 
-/**
- * Losing this file means every note looks unposted and gets sent again, so an unreadable one must
- * not be treated as "nothing posted yet". Missing is fine — that is a genuinely new day. Corrupt
- * is not: it stops the daily notes for this pass rather than duplicating them.
- *
- * The realistic corruption is a UTF-8 BOM: anything on Windows that writes the file with
- * PowerShell's Set-Content -Encoding utf8 prepends one, and JSON.parse throws on it. Strip it.
- */
-let postedUnreadable = false;
-const readPosted = () => {
-  if (!fs.existsSync(dailyLog)) return {};
-  try {
-    return JSON.parse(fs.readFileSync(dailyLog, "utf8").replace(/^﻿/, ""));
-  } catch (e) {
-    postedUnreadable = true;
-    console.error(`  ⚠️ ${path.relative(ROOT, dailyLog)} is unreadable (${e.message}).`);
-    console.error(`     Not posting daily notes this pass — treating it as unknown rather than`);
-    console.error(`     as "nothing posted yet", which would repeat every note already sent.`);
-    console.error(`     Fix or delete the file, then run again.`);
-    return {};
-  }
-};
-
-function dailyNotes() {
-  const dir = path.join(ROOT, "reports", todayLocal(), "posts");
-  if (!fs.existsSync(dir)) return [];
-  const keys = new Set(watched.map((c) => c.key));
-  const posted = readPosted();
-  const out = [];
-  for (const name of fs.readdirSync(dir)) {
-    if (!name.startsWith("daily-")) continue;
-    const raw = fs.readFileSync(path.join(dir, name), "utf8");
-    const m = raw.match(/<!--\s*channel:\s*([^\s·]+)[^>]*?suite:\s*([^\s·]+)[^>]*?(?:thread_ts:\s*([\d.]+))?\s*-->/);
-    if (!m || !keys.has(m[1])) continue;
-    const id = `${m[1]}:${m[2]}`;
-    // Track the note's CONTENT, not just "was something posted today". A channel like web-prod
-    // has ten green runs a day: the first note says "1 run(s) today" and is pinned under the run
-    // that was latest at the time, leaving the other nine unattested. When report.js regenerates
-    // a different body (more runs, more tests passed) the note is re-posted under the new latest
-    // run. An unchanged body posts nothing, so a quiet suite still gets exactly one note.
-    const body = raw.replace(/^(?:<!--[\s\S]*?-->\s*)+/, "").replace(/^\s*---\s*\n/, "").trim();
-    const stamp = `${m[3] || "none"}|${body.length}|${(body.match(/(\d+) run\(s\)/) || [, "?"])[1]}`;
-    const prev = posted[id];
-    // Older entries stored a bare ts string; treat those as posted-and-unchanged.
-    const seen = prev && typeof prev === "object" ? prev.stamp : prev ? stamp : null;
-    out.push({
-      id,
-      file: path.relative(ROOT, path.join(dir, name)),
-      channelKey: m[1],
-      threadTs: m[3] || null,
-      stamp,
-      already: seen === stamp,
-      updating: !!prev && seen !== stamp,
-    });
-  }
-  return out;
-}
-
-const dailies = dailyNotes();
-
-/**
- * The local record is an optimisation, not the truth. Slack is. reports/<date>/ is gitignored, so
- * losing it is easy — a tidy-up, a fresh clone — and a lost record used to mean every note was
- * posted a second time. Before sending, look in the thread: if this bot's note for this suite is
- * already there, adopt its ts instead of posting again. Red replies have always worked this way.
- */
-async function noteAlreadyInThread(d) {
-  if (!d.threadTs) return null; // no run today: it goes to the channel, not a thread
-  const ch = (cfg.channels || []).find((c) => c.key === d.channelKey);
-  if (!ch?.id) return null;
-  try {
-    const thread = await slack("conversations.replies", { channel: ch.id, ts: d.threadTs, limit: 50 });
-    const suite = d.id.split(":").slice(1).join(":");
-    const mine = thread.messages.filter(
-      (m) => m.ts !== d.threadTs && m.user === me && /Daily triage/.test(m.text || ""),
-    );
-    // Match on the suite name so two suites posting into one thread stay distinct.
-    const exact = mine.find((m) => new RegExp(`·\\s*${suite}\\b`).test(m.text || "")) || mine[0];
-    return exact?.ts || null;
-  } catch {
-    return null; // a thread we cannot read is not evidence that nothing was posted
-  }
-}
-
-// Entries written before content-tracking existed are a bare ts string. Upgrade them in place to
-// the stamp seen now: the note that is already in Slack stays put, and the NEXT change to it is
-// detected. Without this the first day after the upgrade never updates.
+const openGreens = [];
 {
-  const posted = readPosted();
-  let migrated = 0;
-  for (const d of dailies) {
-    if (typeof posted[d.id] === "string") {
-      posted[d.id] = { ts: posted[d.id], stamp: d.stamp, at: new Date().toISOString() };
-      migrated++;
+  // Already-answered runs anchor the clock, so a restart does not re-open a gap that was closed.
+  const lastAnswered = new Map();
+  for (const g of [...greenRuns].sort((a, b) => Number(a.ts) - Number(b.ts))) {
+    const k = suiteOf(g);
+    if (g.answered) {
+      lastAnswered.set(k, Number(g.ts));
+      continue;
     }
+    const prev = lastAnswered.get(k);
+    const gapMin = prev == null ? Infinity : (Number(g.ts) - prev) / 60;
+    if (gapMin < minGapMin) {
+      g.heldFor = Math.round(gapMin);
+      continue;
+    }
+    openGreens.push(g);
+    lastAnswered.set(k, Number(g.ts));
   }
-  if (migrated) {
-    fs.mkdirSync(path.dirname(dailyLog), { recursive: true });
-    fs.writeFileSync(dailyLog, JSON.stringify(posted, null, 2) + "\n");
-  }
+  openGreens.reverse(); // newest first, matching how the rest of the output reads
 }
 
-if (dailies.length) {
-  const pending = dailies.filter((d) => !d.already);
-  console.log(`\n${dailies.length} daily note(s) · ${pending.length} not yet posted`);
-  for (const d of dailies) {
-    const state = d.already ? "✔ posted today" : d.updating ? "↻ new runs since" : "→ needs posting";
-    console.log(`  ${state}  ${d.id}${d.threadTs ? "" : "  (no run today — goes to the channel, not a thread)"}`);
+const heldGreens = greenRuns.filter((g) => g.heldFor != null);
+if (greenRuns.length) {
+  console.log(`\n${greenRuns.length} green run(s) · ${openGreens.length} to answer · ${heldGreens.length} within ${minGapMin} min of one already answered`);
+  for (const g of heldGreens.slice(0, 6)) {
+    console.log(`  · skipping ${g.title} — ${g.heldFor} min after the last answered run`);
   }
-  if (has("post") && postedUnreadable) {
-    console.log(`  skipped — the record of what was already posted could not be read.`);
-  } else if (has("post")) {
-    const posted = readPosted();
-    for (const d of pending) {
-      try {
-        // When the note has already been sent today, edit that message rather than sending a new
-        // one. Otherwise a suite with ten runs a day accumulates ten notes, and the nine older
-        // ones sit there stating counts that are no longer true.
-        let prevTs = typeof posted[d.id] === "object" ? posted[d.id]?.ts : posted[d.id];
+  if (heldGreens.length > 6) console.log(`  · …and ${heldGreens.length - 6} more`);
+}
 
-        // No local record? Ask Slack before assuming nothing was sent.
-        if (!prevTs) {
-          const inThread = await noteAlreadyInThread(d);
-          if (inThread) {
-            prevTs = inThread;
-            d.updating = true;
-            console.log(`     found an existing note in the thread (${inThread}) — editing it`);
-          }
-        }
-        const args = [path.join(ROOT, "tools", "bin", "post.js"), "--file", d.file, "--confirm"];
-        if (prevTs) args.push("--update", prevTs);
+/** One run, one note. Every figure in it comes from that run and stays true. */
+function greenNote(g) {
+  const when = new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(new Date(Number(g.ts) * 1000));
+  const out = [
+    `:white_check_mark: *Triage — ${g.title}* · ${when}`,
+    `${g.passed} test(s) passed, none failed — nothing to classify.`,
+  ];
+  if (g.reportUrl) out.push(`<${g.reportUrl}|Test report>${g.runId ? ` · run ${g.runId}` : ""}`);
+  return out.join("\n");
+}
 
-        let out;
-        try {
-          out = execFileSync(process.execPath, args, { cwd: ROOT, encoding: "utf8", env: process.env });
-        } catch (e) {
-          // The message being edited can be gone - deleted by hand, or cleaned up after a bad
-          // run. Falling back to a fresh post keeps the note current; retrying the edit for ever
-          // would leave the suite silently stuck on a stale count.
-          const why = String(e.stdout || e.message);
-          if (!(prevTs && /message_not_found/.test(why))) throw e;
-          console.log(`     the note being edited is gone - posting a new one`);
-          out = execFileSync(
-            process.execPath,
-            [path.join(ROOT, "tools", "bin", "post.js"), "--file", d.file, "--confirm"],
-            { cwd: ROOT, encoding: "utf8", env: process.env },
-          );
-        }
-        const ts = (out.match(/(?:posted|updated) · ts ([\d.]+)/) || [])[1] || prevTs;
-        posted[d.id] = { ts: ts || null, stamp: d.stamp, at: new Date().toISOString() };
-        console.log(`  ✔ ${d.id} ${d.updating ? "(edited in place)" : ""} → ts ${ts || "?"}`);
-      } catch (e) {
-        console.log(`  ✘ ${d.id} — ${String(e.stdout || e.message).trim().split("\n").pop()}`);
-      }
+if (openGreens.length) {
+  console.log(`\n--- ${has("post") ? "answering green runs" : "dry run — pass --post to send"} ---`);
+  for (const g of openGreens) {
+    const text = greenNote(g);
+    if (!has("post")) {
+      console.log(`  · would post to ${g.channel.name} thread ${g.ts}`);
+      console.log(`      ${text.split("\n")[0]}`);
+      continue;
     }
-    fs.mkdirSync(path.dirname(dailyLog), { recursive: true });
-    fs.writeFileSync(dailyLog, JSON.stringify(posted, null, 2) + "\n");
+    try {
+      const out = execFileSync(
+        process.execPath,
+        [
+          path.join(ROOT, "tools", "bin", "post.js"),
+          "--text", text,
+          "--channel", g.channel.id,
+          "--thread", g.ts,
+          "--confirm",
+        ],
+        { cwd: ROOT, encoding: "utf8", env: process.env },
+      );
+      const ts = (out.match(/posted · ts ([\d.]+)/) || [])[1];
+      console.log(`  ✔ ${g.channel.name} · ${g.title} → ts ${ts || "?"}`);
+    } catch (e) {
+      console.log(`  ✘ ${g.channel.name} · ${g.title} — ${String(e.stdout || e.message).trim().split("\n").pop()}`);
+    }
   }
 }
 

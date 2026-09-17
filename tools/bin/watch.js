@@ -538,8 +538,8 @@ function greenNote(g) {
     `:white_check_mark: *Triage — ${g.title}* · ${when}`,
     // Both halves of the day, so a failure is never invisible behind a green note.
     t.red > 0
-      ? `${t.total} run(s) so far today — ${t.green} green, ${t.red} red (${t.failed} test(s) failed) · ${t.passed} test(s) passed.`
-      : `${t.green} run(s) so far today, all green — ${t.passed} test(s) passed, nothing to classify.`,
+      ? `${t.total} run(s) today — ${t.green} green, ${t.red} red (${t.failed} test(s) failed) · ${t.passed} test(s) passed.`
+      : `${t.green} run(s) today, all green — ${t.passed} test(s) passed, nothing to classify.`,
   ];
   // The run id is already in the link's URL and in the run message above; printing it adds a long
   // number to every note and tells the reader nothing they cannot click through to.

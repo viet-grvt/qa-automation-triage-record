@@ -1,6 +1,7 @@
 node_modules/
 data/raw/
 tmp-artifacts/
+reports/
 
 # holds BrowserStack credentials — copy from .mcp.json.example and fill in locally
 .mcp.json

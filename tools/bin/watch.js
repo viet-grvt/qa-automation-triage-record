@@ -482,21 +482,68 @@ if (greenRuns.length) {
   if (heldGreens.length > 6) console.log(`  · …and ${heldGreens.length - 6} more`);
 }
 
+/**
+ * How many green runs this suite has had today, counting up to and including this one, and how
+ * many tests they passed between them.
+ *
+ * Phrased "so far" on purpose. The old daily note said "4 run(s) today" and had to be edited every
+ * time another landed — which is what put a message stamped 02:00 under the 00:21 run reading
+ * "Latest: 07:52". A total that is true AS AT THIS RUN stays true for ever.
+ */
+function tallyAt(g) {
+  const day = new Intl.DateTimeFormat("en-CA", {
+    timeZone: TZ,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const dayOf = (ts) => day.format(new Date(Number(ts) * 1000));
+  const today = dayOf(g.ts);
+  const sameDaySuite = (x) =>
+    x.channel.key === g.channel.key &&
+    suiteOf(x) === suiteOf(g) &&
+    dayOf(x.ts) === today &&
+    Number(x.ts) <= Number(g.ts);
+
+  const green = greenRuns.filter(sameDaySuite);
+  // Red runs are counted too. A note that only ever mentions the green ones reads as though the
+  // day had no failures — prod ran red at 14:11 today and every green note above it said nothing.
+  const red = found.filter(sameDaySuite);
+  return {
+    green: green.length,
+    red: red.length,
+    total: green.length + red.length,
+    passed: green.reduce((s, x) => s + (x.passed || 0), 0),
+    failed: red.reduce((s, x) => s + (x.failures || 0), 0),
+  };
+}
+
 /** One run, one note. Every figure in it comes from that run and stays true. */
 function greenNote(g) {
+  // Date only. The time belongs to the "Latest:" line; carrying it here as well prints the same
+  // clock time twice in a three-line message.
   const when = new Intl.DateTimeFormat("en-GB", {
     timeZone: TZ,
     day: "numeric",
     month: "short",
+  }).format(new Date(Number(g.ts) * 1000));
+  const t = tallyAt(g);
+  const hhmm = new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ,
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
   }).format(new Date(Number(g.ts) * 1000));
   const out = [
     `:white_check_mark: *Triage — ${g.title}* · ${when}`,
-    `${g.passed} test(s) passed, none failed — nothing to classify.`,
+    // Both halves of the day, so a failure is never invisible behind a green note.
+    t.red > 0
+      ? `${t.total} run(s) so far today — ${t.green} green, ${t.red} red (${t.failed} test(s) failed) · ${t.passed} test(s) passed.`
+      : `${t.green} run(s) so far today, all green — ${t.passed} test(s) passed, nothing to classify.`,
   ];
-  if (g.reportUrl) out.push(`<${g.reportUrl}|Test report>${g.runId ? ` · run ${g.runId}` : ""}`);
+  // The run id is already in the link's URL and in the run message above; printing it adds a long
+  // number to every note and tells the reader nothing they cannot click through to.
+  if (g.reportUrl) out.push(`Latest: ${hhmm} · <${g.reportUrl}|Test report>`);
   return out.join("\n");
 }
 
@@ -506,7 +553,7 @@ if (openGreens.length) {
     const text = greenNote(g);
     if (!has("post")) {
       console.log(`  · would post to ${g.channel.name} thread ${g.ts}`);
-      console.log(`      ${text.split("\n")[0]}`);
+      for (const line of text.split("\n")) console.log(`      ${line}`);
       continue;
     }
     try {

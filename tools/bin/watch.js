@@ -453,24 +453,41 @@ const suiteOf = (g) => `${g.channel.key}::${g.title.replace(/\s*\[[^\]]*\]\s*$/,
 
 const openGreens = [];
 {
-  // Already-answered runs anchor the clock, so a restart does not re-open a gap that was closed.
-  const lastAnswered = new Map();
-  for (const g of [...greenRuns].sort((a, b) => Number(a.ts) - Number(b.ts))) {
+  // Newest first within each suite. Walking oldest-first answered the EARLIEST eligible run and
+  // then restarted the clock from it, which is backwards: at the 08:00 pass both 07:09 and 07:48
+  // were waiting, 07:09 won, and the note went out already 51 minutes behind the real state.
+  // Taking the newest means the note describes the suite as it actually is, and the older runs in
+  // the same window are the ones held.
+  const bySuite = new Map();
+  for (const g of greenRuns) {
     const k = suiteOf(g);
-    if (g.answered) {
-      lastAnswered.set(k, Number(g.ts));
-      continue;
-    }
-    const prev = lastAnswered.get(k);
-    const gapMin = prev == null ? Infinity : (Number(g.ts) - prev) / 60;
-    if (gapMin < minGapMin) {
-      g.heldFor = Math.round(gapMin);
-      continue;
-    }
-    openGreens.push(g);
-    lastAnswered.set(k, Number(g.ts));
+    if (!bySuite.has(k)) bySuite.set(k, []);
+    bySuite.get(k).push(g);
   }
-  openGreens.reverse(); // newest first, matching how the rest of the output reads
+
+  for (const runs of bySuite.values()) {
+    // Already-answered runs anchor the clock, so a restart cannot reopen a gap already closed.
+    const anchors = runs.filter((r) => r.answered).map((r) => Number(r.ts));
+    const newestFirst = runs.filter((r) => !r.answered).sort((a, b) => Number(b.ts) - Number(a.ts));
+
+    for (const g of newestFirst) {
+      const ts = Number(g.ts);
+      // Distance to the nearest answered run either side: a run too close to one already answered
+      // is held whichever direction it sits in.
+      const nearest = anchors.reduce(
+        (best, a) => Math.min(best, Math.abs(ts - a) / 60),
+        Infinity,
+      );
+      if (nearest < minGapMin) {
+        g.heldFor = Math.round(nearest);
+        continue;
+      }
+      openGreens.push(g);
+      anchors.push(ts);
+    }
+  }
+
+  openGreens.sort((a, b) => Number(b.ts) - Number(a.ts));
 }
 
 const heldGreens = greenRuns.filter((g) => g.heldFor != null);
